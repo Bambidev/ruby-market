@@ -1,11 +1,17 @@
 # Ruby on Records
 
 ` ♫⋆｡♪.✧₊˚♬⋆♭ ´
+
  ` _________ ´
+
 ` /_|_____|_\ ´
+
   '. \   / .'
+
     '.\ /.'
+
       '.'
+
 
 WIP!
 Estamos trabajando en una aplicación de gestión de inventario de una disquería que vende CDs y vinilos, tanto nuevos como usados.
