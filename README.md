@@ -1,5 +1,6 @@
 # Ruby on Records
 
+
     ` ♫⋆｡♪.✧₊˚♬⋆♭ ´
      ` _________ ´
     ` /_|_____|_\ ´
@@ -7,8 +8,17 @@
         '.\ /.'
           '.'
 
+```text
+` ♫⋆｡♪.✧₊˚♬⋆♭ ´
+ ` _________ ´
+` /_|_____|_\ ´
+  '. \   / .'
+    '.\ /.'
+      '.'
+```
 
-WIP!
+## WIP!
+
 Estamos trabajando en una aplicación de gestión de inventario de una disquería que vende CDs y vinilos, tanto nuevos como usados.
 La aplicación permitirá al personal del negocio administrar el stock de productos y asentar ventas. Además, incluirá una página pública que permita al público ver un catálogo con los discos que la tienda ofrece.
 
