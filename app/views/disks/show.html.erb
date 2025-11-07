@@ -1,0 +1,10 @@
+<p style="color: green"><%= notice %></p>
+
+<%= render @disk %>
+
+<div>
+  <%= link_to "Edit this disk", edit_disk_path(@disk) %> |
+  <%= link_to "Back to disks", disks_path %>
+
+  <%= button_to "Destroy this disk", @disk, method: :delete %>
+</div>
