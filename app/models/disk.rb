@@ -16,7 +16,7 @@ class Disk < ApplicationRecord
   validates :description, presence: true
 
   #:price ::= Precio unitario
-  validates :price, presence: true, presence: true, :numericality => { :greater_than_or_equal_to => 0 }
+  validates :price, presence: true, :numericality => { :greater_than_or_equal_to => 0 }
 
   #:stock ::= Cantidad disponible
   validates :stock, presence: true, presence: true, :numericality => {
