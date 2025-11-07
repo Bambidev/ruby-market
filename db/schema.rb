@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.1].define(version: 2025_11_02_194232) do
+ActiveRecord::Schema[8.1].define(version: 2025_11_04_221402) do
   create_table "discos", force: :cascade do |t|
     t.string "artista"
     t.integer "año"
@@ -22,6 +22,29 @@ ActiveRecord::Schema[8.1].define(version: 2025_11_02_194232) do
     t.integer "stock"
     t.string "tipo"
     t.string "titulo"
+    t.datetime "updated_at", null: false
+  end
+
+  create_table "generos", force: :cascade do |t|
+    t.datetime "created_at", null: false
+    t.string "nombre"
+    t.datetime "updated_at", null: false
+  end
+
+  create_table "usuarios", force: :cascade do |t|
+    t.string "contraseña"
+    t.datetime "created_at", null: false
+    t.string "email"
+    t.string "nombre_completo"
+    t.datetime "updated_at", null: false
+  end
+
+  create_table "venta", force: :cascade do |t|
+    t.boolean "cancelada"
+    t.integer "cantidad"
+    t.datetime "created_at", null: false
+    t.string "datos_comprador"
+    t.float "total_venta"
     t.datetime "updated_at", null: false
   end
 end

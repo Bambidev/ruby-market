@@ -9,6 +9,9 @@
 #   end
 
 Disco.destroy_all
+Usuario.destroy_all
+Venta.destroy_all
+Genero.destroy_all
 
 # Sugerencia... cada disco podría tener varios géneros, para así crear las relaciones necesarias para el algoritmo de descubrimiento.
 # Ejemplo: Diamonds and Pearls podría ser [R&B, pop soul, funk] en vez de sólo R&B.
@@ -68,5 +71,16 @@ Disco.create!([{
   tipo: "Vinilo",
   fecha_de_baja: nil
 }])
+
+Usuario.create!(contraseña:"contraseña", email:"email@mail.com", nombre_completo:"Jose Marcos Patron")
+
+Usuario.create!(contraseña:"12345", email:"email2@mail.com", nombre_completo:"Mercedes Saenz")
+.ventas.create!(
+  precio_total: 150.50,
+  cancelada: false
+)
+
+
 p "#{Disco.count} discos creados!"
 p "#{Disco.all}"
+p "#{Usuario.count} usuarios creados!"
