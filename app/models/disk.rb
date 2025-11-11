@@ -1,4 +1,7 @@
 class Disk < ApplicationRecord
+
+  # === Validadores === #
+
   #:title ::= Titulo del disco
   validates :titulo, presence: true
 
@@ -8,12 +11,12 @@ class Disk < ApplicationRecord
   #:year ::= Año de lanzamiento
   validates :year, presence: true, :numericality => {
     :only_integer => true,
-    :greater_than_or_equal_to => 1900,
+    :greater_than_or_equal_to => 1870,
     :less_than_or_equal_to => Date.current.year
   }
 
   #:description ::= Texto descriptivo
-  validates :description, presence: true
+  validates :description, presence: true, :length => { :minimum => 10 }
 
   #:price ::= Precio unitario
   validates :price, presence: true, :numericality => { :greater_than_or_equal_to => 0 }
@@ -31,5 +34,21 @@ class Disk < ApplicationRecord
   #:state ::= Nuevo o usado
   validates :state, presence: true, :inclusion => { :in => %w(Nuevo Usado),
       :message => "No trabajamos discos en estado '%{value}'" }
+
+  # === Relaciones === #
+
+  # Un mismo Disco puede estar presente en varios Items de varias Ventas
+  has_many :items
+
+  # Un Disco puede pertenecer a varios Géneros
+  has_and_belongs_to_many :genres
+
+  # A has_and_belongs_to_many association creates a direct many-to-many relationship with another model,
+  # with no intervening model. This association indicates that each instance of the declaring model refers
+  # to zero or more instances of another model.
+  # You'd use has_and_belongs_to_many when:
+  # * The association is simple and does not require additional attributes or behaviors on the join table.
+  # * You do not need validations, callbacks, or extra methods on the join table.
+  # https://guides.rubyonrails.org/association_basics.html#has-and-belongs-to-many
 
 end
