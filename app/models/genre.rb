@@ -2,8 +2,8 @@ class Genre < ApplicationRecord
 
   # === Validadores === #
 
-  #:genre ::= nombre del género musical
-  validates :genre, presence: true
+  #:name ::= nombre del género musical
+  validates :name, presence: true
 
   # === Relaciones === #
 

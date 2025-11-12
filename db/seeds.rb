@@ -1,6 +1,7 @@
-# This file should ensure the existence of records required to run the application in every environment (production,
-# development, test). The code here should be idempotent so that it can be executed at any point in every environment.
-# The data can then be loaded with the bin/rails db:seed command (or created alongside the database with db:setup).
+# This file should ensure the existence of records required to run the application in every environment
+# (production, development, test). The code here should be idempotent so that it can be executed at any
+# point in every environment. The data can then be loaded with the bin/rails db:seed command
+# (or created alongside the database with db:setup).
 #
 # Example:
 #
@@ -8,79 +9,94 @@
 #     MovieGenre.find_or_create_by!(name: genre_name)
 #   end
 
-Disco.destroy_all
-Usuario.destroy_all
-Venta.destroy_all
-Genero.destroy_all
+Disk.destroy_all
+Client.destroy_all
+Genre.destroy_all
+Item.destroy_all
+Sale.destroy_all
+User.destroy_all
 
-# Sugerencia... cada disco podría tener varios géneros, para así crear las relaciones necesarias para el algoritmo de descubrimiento.
-# Ejemplo: Diamonds and Pearls podría ser [R&B, pop soul, funk] en vez de sólo R&B.
-# Para evitar usar un array, los géneros podrían ser una entidad (Genero) y tener una relacion (1,n) con Disco.
-Disco.create!([{
-  titulo: "Diamonds and Pearls",
-  año: 1991,
-  descripcion: "Este fue el segundo trabajo de Prince en ser lanzado oficialmente junto a The New Power Generation. Diamonds and Pearls presenta una fusión de estilos musicales, desde el funk y el soul hasta el rock y baladas.",
-  artista: "The New Power Generation",
-  precio_unitario: 20_000,
-  stock: 100,
-  genero: "R&B",
-  tipo: "CD",
-  fecha_de_baja: nil
-},
-{
-  titulo: "Yours Truly, Angry Mob",
-  año: 2007,
-  descripcion: "El lanzamiento de este álbum estuvo precedido por el lanzamiento de Ruby, el primer sencillo del álbum. Al igual que el álbum debut de la banda, Employment, Yours Truly, Angry Mob fue producido, una vez más por Stephen Street, siendo este disco, con respecto a las letras, más oscuro y con más conciencia social que el anterior, con canciones que tratan de temas tales como los crímenes, la violencia y la fama.",
-  artista: "Kaiser Chiefs",
-  precio_unitario: 15_000,
-  stock: 50,
-  genero: "Indie Rock",
-  tipo: "CD",
-  fecha_de_baja: nil
-},
-{
-  titulo: "Wish You Were Here",
-  año: 1975,
-  descripcion: "Los temas líricos del álbum se refieren a la alienación y la crítica del negocio de la música. La mayor parte del álbum está ocupada por «Shine On You Crazy Diamond», un tributo de nueve partes al miembro fundador Syd Barrett, quien dejó la banda siete años antes debido al deterioro de su salud mental.",
-  artista: "Pink Floyd",
-  precio_unitario: 50_000,
-  stock: 20,
-  genero: "Rock progresivo",
-  tipo: "Vinilo",
-  fecha_de_baja: nil
-},
-{
-  titulo: "Jessico",
-  año: 2001,
-  descripcion: "Jessico es el sexto álbum de estudio de la banda argentina Babasónicos. El disco significó para la banda la entrada a la lista de los grupos más importantes de la Argentina, en el momento donde había ocurrido una crisis en diciembre de 2001 en el país. Jessico está considerado como el #16 entre los 100 mejores álbumes del rock argentino según la lista de la revista Rolling Stone.",
-  artista: "Babasónicos",
-  precio_unitario: 20_000,
-  stock: 200,
-  genero: "Rock argentino",
-  tipo: "CD",
-  fecha_de_baja: nil
-},
-{
-  titulo: "Alma de Diamante",
-  año: 1980,
-  descripcion: "El disco está integrado por siete temas compuestos por Spinetta bajo la inspiración de sus lecturas de cuatro libros relacionados con el chamanismo, del antropólogo Carlos Castaneda: Las enseñanzas de Don Juan, Una realidad aparte, Viaje a Ixtlán y Relatos de poder.",
-  artista: "Spinetta Jade",
-  precio_unitario: 55_000,
-  stock: 10,
-  genero: "Rock argentino",
-  tipo: "Vinilo",
-  fecha_de_baja: nil
-}])
+# === Géneros Musicales === #
 
-Usuario.create!(contraseña:"contraseña", email:"email@mail.com", nombre_completo:"Jose Marcos Patron")
+genres = [
+  "R&B", "Pop", "Soul", "Funk", "Indie rock", "Rock", "Rock progresivo", "Folklore", "Cumbia", "Cumbia villera",
+  "Psicodelico", "Rock argentino", "Rock alternativo", "Pop rock", "Jazz", "Tango", "Movida tropical", "Chacarera",
+  "Bolero", "Balada romántica", "Cuarteto", "Electrónica", "Música clásica", "Ballet", "Chamamé", "Milonga",
+  "Carnavalito", "Pericón", "Zamba", "Samba", "Trap", "Hip-Hop", "Rap Argentino", "Rap", "RKT", "Murga", "Cumbia santafesina"
+]
 
-Usuario.create!(contraseña:"12345", email:"email2@mail.com", nombre_completo:"Mercedes Saenz")
-.ventas.create!(
-  precio_total: 150.50,
-  cancelada: false
-)
+genres.each do |genre_name|
+  Genre.find_or_create_by!(name: genre_name)
+end
 
+# === Discos === #
 
-p "#{Disco.count} discos creados!"
+disk = Disk.create!(title: "Diamonds and Pearls",
+year: 1991,
+description: "Este fue el segundo trabajo de Prince en ser lanzado oficialmente junto a The New Power Generation. Diamonds and Pearls presenta una fusión de estilos musicales, desde el funk y el soul hasta el rock y baladas.",
+artist: "The New Power Generation",
+price: 20_000,
+stock: 100,
+format: "CD",
+state: "Nuevo")
+disk.genres << Genre.find_or_create_by!(name: "R&B")
+disk.genres << Genre.find_or_create_by!(name: "Pop")
+disk.genres << Genre.find_or_create_by!(name: "Soul")
+disk.genres << Genre.find_or_create_by!(name: "Funk")
+
+disk = Disk.create!(title: "Yours Truly, Angry Mob",
+year: 2007,
+description: "El lanzamiento de este álbum estuvo precedido por el lanzamiento de Ruby, el primer sencillo del álbum. Al igual que el álbum debut de la banda, Employment, Yours Truly, Angry Mob fue producido, una vez más por Stephen Street, siendo este disco, con respecto a las letras, más oscuro y con más conciencia social que el anterior, con canciones que tratan de temas tales como los crímenes, la violencia y la fama.",
+artist: "Kaiser Chiefs",
+price: 15_000,
+stock: 50,
+format: "CD",
+state: "Nuevo")
+disk.genres << Genre.find_or_create_by!(name: "Indie")
+disk.genres << Genre.find_or_create_by!(name: "Rock")
+disk.genres << Genre.find_or_create_by!(name: "Rock alternativo")
+
+disk = Disk.create!(title: "Wish You Were Here",
+year: 1975,
+description: "Los temas líricos del álbum se refieren a la alienación y la crítica del negocio de la música. La mayor parte del álbum está ocupada por «Shine On You Crazy Diamond», un tributo de nueve partes al miembro fundador Syd Barrett, quien dejó la banda siete años antes debido al deterioro de su salud mental.",
+artist: "Pink Floyd",
+price: 70_000,
+stock: 20,
+format: "Vinilo",
+state: "Usado")
+disk.genres << Genre.find_or_create_by!(name: "Rock progresivo")
+disk.genres << Genre.find_or_create_by!(name: "Rock")
+disk.genres << Genre.find_or_create_by!(name: "Psicodelico")
+
+disk = Disk.create!(title: "Jessico",
+year: 2001,
+description: "Jessico es el sexto álbum de estudio de la banda argentina Babasónicos. El disco significó para la banda la entrada a la lista de los grupos más importantes de la Argentina, en el momento donde había ocurrido una crisis en diciembre de 2001 en el país. Jessico está considerado como el #16 entre los 100 mejores álbumes del rock argentino según la lista de la revista Rolling Stone.",
+artist: "Babasónicos",
+price: 20_000,
+stock: 200,
+format: "CD",
+state: "Nuevo")
+disk.genres << Genre.find_or_create_by!(name: "Rock argentino")
+disk.genres << Genre.find_or_create_by!(name: "Rock")
+disk.genres << Genre.find_or_create_by!(name: "Psicodelico")
+disk.genres << Genre.find_or_create_by!(name: "Pop rock")
+disk.genres << Genre.find_or_create_by!(name: "Pop")
+
+disk = Disk.create!(title: "Alma de Diamante",
+year: 1980,
+description: "El disco está integrado por siete temas compuestos por Spinetta bajo la inspiración de sus lecturas de cuatro libros relacionados con el chamanismo, del antropólogo Carlos Castaneda: Las enseñanzas de Don Juan, Una realidad aparte, Viaje a Ixtlán y Relatos de poder.",
+artist: "Spinetta Jade",
+price: 150_000,
+stock: 10,
+format: "Vinilo",
+state: "Usado")
+disk.genres << Genre.find_or_create_by!(name: "Rock argentino")
+disk.genres << Genre.find_or_create_by!(name: "Rock")
+disk.genres << Genre.find_or_create_by!(name: "Jazz")
+disk.genres << Genre.find_or_create_by!(name: "Rock progresivo")
+
+p "* * * #{Genre.count} géneros creados * * *"
+p "* * * #{Disk.count} discos creados * * *"
+p "* * * * * * * * * * * * * * * "
 p "#{Disco.all}"
 p "#{Usuario.count} usuarios creados!"

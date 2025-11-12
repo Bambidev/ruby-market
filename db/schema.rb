@@ -10,7 +10,14 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.1].define(version: 2025_11_07_193907) do
+ActiveRecord::Schema[8.1].define(version: 2025_11_07_204258) do
+  create_table "clients", force: :cascade do |t|
+    t.datetime "created_at", null: false
+    t.integer "dni"
+    t.string "name"
+    t.datetime "updated_at", null: false
+  end
+
   create_table "discos", force: :cascade do |t|
     t.string "artista"
     t.integer "año"
@@ -41,6 +48,33 @@ ActiveRecord::Schema[8.1].define(version: 2025_11_07_193907) do
   create_table "generos", force: :cascade do |t|
     t.datetime "created_at", null: false
     t.string "nombre"
+    t.datetime "updated_at", null: false
+  end
+
+  create_table "genres", force: :cascade do |t|
+    t.datetime "created_at", null: false
+    t.string "genre"
+    t.datetime "updated_at", null: false
+  end
+
+  create_table "items", force: :cascade do |t|
+    t.integer "amount"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
+
+  create_table "sales", force: :cascade do |t|
+    t.boolean "cancelled"
+    t.datetime "created_at", null: false
+    t.float "total"
+    t.datetime "updated_at", null: false
+  end
+
+  create_table "users", force: :cascade do |t|
+    t.datetime "created_at", null: false
+    t.string "email"
+    t.string "full_name"
+    t.string "password_digest"
     t.datetime "updated_at", null: false
   end
 
