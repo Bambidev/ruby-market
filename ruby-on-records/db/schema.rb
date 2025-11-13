@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.1].define(version: 2025_11_13_190436) do
+ActiveRecord::Schema[8.1].define(version: 2025_11_13_202308) do
   create_table "clients", force: :cascade do |t|
     t.datetime "created_at", null: false
     t.integer "dni"
@@ -30,6 +30,11 @@ ActiveRecord::Schema[8.1].define(version: 2025_11_13_190436) do
     t.string "type"
     t.datetime "updated_at", null: false
     t.integer "year"
+  end
+
+  create_table "disks_genres", id: false, force: :cascade do |t|
+    t.integer "disk_id", null: false
+    t.integer "genre_id", null: false
   end
 
   create_table "genres", force: :cascade do |t|

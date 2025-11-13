@@ -7,5 +7,5 @@ class Genre < ApplicationRecord
   # === Validadores === #
 
   # :name ::= nombre del género musical
-  validates :name, presence: true
+  validates :genre_name, presence: true
 end
