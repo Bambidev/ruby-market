@@ -1,16 +1,14 @@
 class Client < ApplicationRecord
-
   # === Validadores === #
 
-  #:name ::= Nombre del cliente
+  # :name ::= Nombre del cliente
   validates :name, presence: true
 
-  #:dni ::= Numero de DNI del cliente
-  validates :dni, presence: true, :numericality => { :only_integer => true }
+  # :dni ::= Numero de DNI del cliente
+  validates :dni, presence: true, numericality: { only_integer: true }
 
   # === Relaciones === #
 
   # Un Cliente puede tener varias Ventas a su nombre
   has_many :sales
-
 end

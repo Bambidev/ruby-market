@@ -1,12 +1,11 @@
 class Sale < ApplicationRecord
-
   # === Validadores === #
 
-  #:cancelled ::= Venta cancelada (True) o no (False)
+  # :cancelled ::= Venta cancelada (True) o no (False)
   validates :cancelled, presence: true
 
-  #:total ::= Total a pagar de una Venta
-  validates :total, presence: true, :numericality => { :greater_than_or_equal_to => 0 }
+  # :total ::= Total a pagar de una Venta
+  validates :total, presence: true, numericality: { greater_than_or_equal_to: 0 }
 
   # === Relaciones === #
 
@@ -33,5 +32,4 @@ class Sale < ApplicationRecord
   # has_many establishes a one-to-many relationship between models, allowing each instance of the declaring
   # model (Author) to have multiple instances of the associated model (Book).
   # https://guides.rubyonrails.org/association_basics.html#has-many
-
 end
