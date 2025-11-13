@@ -1,0 +1,2 @@
+class UsedDisk < Disk
+end

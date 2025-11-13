@@ -1,0 +1,11 @@
+<% content_for :title, "New disk" %>
+
+<h1>New disk</h1>
+
+<%= render "form", disk: @disk %>
+
+<br>
+
+<div>
+  <%= link_to "Back to disks", disks_path %>
+</div>

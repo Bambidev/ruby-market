@@ -1,4 +1,14 @@
 Rails.application.routes.draw do
+  resources :items
+  resources :employees
+  resources :managers
+  resources :admins
+  resources :users
+  resources :clients
+  resources :sales
+  resources :genres
+  resources :used_disks
+  resources :disks
   # Define your application routes per the DSL in https://guides.rubyonrails.org/routing.html
 
   # Reveal health status on /up that returns 200 if the app boots with no exceptions, otherwise 500.
