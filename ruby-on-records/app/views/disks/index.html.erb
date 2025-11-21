@@ -1,0 +1,16 @@
+<p style="color: green"><%= notice %></p>
+
+<% content_for :title, "Disks" %>
+
+<h1>Disks</h1>
+
+<div id="disks">
+  <% @disks.each do |disk| %>
+    <%= render disk %>
+    <p>
+      <%= link_to "Show this disk", disk %>
+    </p>
+  <% end %>
+</div>
+
+<%= link_to "New disk", new_disk_path %>
