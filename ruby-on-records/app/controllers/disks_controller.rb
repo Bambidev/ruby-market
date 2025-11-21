@@ -1,5 +1,6 @@
 class DisksController < ApplicationController
   before_action :set_disk, only: %i[ show edit update destroy ]
+  layout "application"
 
   # GET /disks or /disks.json
   def index

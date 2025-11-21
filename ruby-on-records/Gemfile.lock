@@ -204,6 +204,8 @@ GEM
     parser (3.3.10.0)
       ast (~> 2.4.1)
       racc
+    pico-rails (1.5.3)
+      sassc (~> 2.0)
     pp (0.6.3)
       prettyprint
     prettyprint (0.2.0)
@@ -301,6 +303,8 @@ GEM
       ffi (~> 1.12)
       logger
     rubyzip (3.2.2)
+    sassc (2.4.0)
+      ffi (~> 1.9)
     securerandom (0.4.1)
     selenium-webdriver (4.38.0)
       base64 (~> 0.2)
@@ -390,6 +394,7 @@ DEPENDENCIES
   importmap-rails
   jbuilder
   kamal
+  pico-rails
   propshaft
   puma (>= 5.0)
   rails (~> 8.1.1)
