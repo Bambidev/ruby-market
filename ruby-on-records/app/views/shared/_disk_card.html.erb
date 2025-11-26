@@ -1,0 +1,41 @@
+<%= link_to disk, style: "text-decoration: none;" do %>
+  <article class="disk-card" style="transition: transform 0.2s ease, box-shadow 0.2s ease;">
+    <% if disk.respond_to?(:image) && disk.image.present? %>
+      <%= image_tag disk.image, alt: disk.title, class: "disk-cover", style: "border-radius: var(--pico-border-radius) var(--pico-border-radius) 0 0;" %>
+    <% else %>
+      <div class="disk-cover" style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); display: flex; align-items: center; justify-content: center; color: white; border-radius: var(--pico-border-radius) var(--pico-border-radius) 0 0;">
+        <span style="font-size: 4rem;">🎵</span>
+      </div>
+    <% end %>
+    
+    <div style="padding: 1rem;">
+      <h3 class="disk-title" style="margin: 0 0 0.5rem 0; font-size: 1.1rem; font-weight: 600; color: var(--pico-contrast);">
+        <%= disk.title %>
+      </h3>
+      
+      <p class="disk-artist" style="margin: 0 0 1rem 0; color: var(--pico-muted-color); font-size: 0.9rem;">
+        <%= disk.artist %>
+      </p>
+      
+      <p class="disk-price" style="margin: 0 0 0.5rem 0; font-size: 1.5rem; font-weight: 700; color: var(--pico-primary);">
+        $<%= number_to_currency(disk.price, unit: '', delimiter: '.', separator: ',', precision: 0) %>
+      </p>
+      
+      <div style="display: flex; gap: 0.5rem; font-size: 0.85rem; color: var(--pico-muted-color); white-space: nowrap;">
+        <span title="Formato"><%= disk.format %></span>
+        <span>•</span>
+        <span title="Estado"><%= disk.state %></span>
+      </div>
+      
+      <% if disk.stock > 0 %>
+        <small style="display: block; margin-top: 0.5rem; color: var(--pico-ins-color);">
+          ✓ <%= disk.stock %> disponibles
+        </small>
+      <% else %>
+        <small style="display: block; margin-top: 0.5rem; color: var(--pico-del-color);">
+          ✗ Sin stock
+        </small>
+      <% end %>
+    </div>
+  </article>
+<% end %>

@@ -1,0 +1,58 @@
+<%= form_with(model: [:admin, disk]) do |form| %>
+  <% if disk.errors.any? %>
+    <article>
+      <header><strong><%= pluralize(disk.errors.count, "error") %></strong> impidieron guardar este disco:</header>
+      <ul>
+        <% disk.errors.each do |error| %>
+          <li><%= error.full_message %></li>
+        <% end %>
+      </ul>
+    </article>
+  <% end %>
+
+  <label>
+    Título
+    <%= form.text_field :title, placeholder: "Nombre del disco", required: true %>
+  </label>
+
+  <label>
+    Artista
+    <%= form.text_field :artist, placeholder: "Nombre del artista o banda", required: true %>
+  </label>
+
+  <div class="grid">
+    <label>
+      Año
+      <%= form.number_field :year, placeholder: "Año de lanzamiento", required: true %>
+    </label>
+
+    <label>
+      Precio
+      <%= form.number_field :price, step: 0.01, placeholder: "0.00", required: true %>
+    </label>
+
+    <label>
+      Stock
+      <%= form.number_field :stock, placeholder: "Cantidad disponible", required: true %>
+    </label>
+  </div>
+
+  <label>
+    Descripción
+    <%= form.text_area :description, placeholder: "Descripción del disco", rows: 4, required: true %>
+  </label>
+
+  <div class="grid">
+    <label>
+      Formato
+      <%= form.select :format, ['CD', 'Vinilo'], { prompt: 'Selecciona un formato' }, required: true %>
+    </label>
+
+    <label>
+      Estado
+      <%= form.select :state, ['Nuevo', 'Usado'], { prompt: 'Selecciona un estado' }, required: true %>
+    </label>
+  </div>
+
+  <%= form.submit %>
+<% end %>

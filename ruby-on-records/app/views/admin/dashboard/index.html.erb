@@ -1,0 +1,93 @@
+<% content_for :title, "Dashboard - Admin" %>
+
+<hgroup>
+  <h1>Dashboard</h1>
+  <p>Bienvenido al panel de administración, <%= current_user.full_name %></p>
+</hgroup>
+
+<div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 1.5rem; margin: 2rem 0;">
+  <!-- Card de Discos -->
+  <article style="text-align: center;">
+    <header>
+      <h2 style="font-size: 3rem; margin: 0;">📀</h2>
+    </header>
+    <h3 style="font-size: 2.5rem; margin: 0.5rem 0;"><%= @total_disks %></h3>
+    <p style="color: var(--pico-muted-color);">Discos en catálogo</p>
+    <footer>
+      <%= link_to "Ver todos", admin_disks_path, role: "button" %>
+    </footer>
+  </article>
+
+  <!-- Card de Ventas -->
+  <article style="text-align: center;">
+    <header>
+      <h2 style="font-size: 3rem; margin: 0;">💰</h2>
+    </header>
+    <h3 style="font-size: 2.5rem; margin: 0.5rem 0;"><%= @total_sales %></h3>
+    <p style="color: var(--pico-muted-color);">Ventas realizadas</p>
+    <footer>
+      <%= link_to "Ver todas", admin_sales_path, role: "button" %>
+    </footer>
+  </article>
+
+  <!-- Card de Clientes -->
+  <article style="text-align: center;">
+    <header>
+      <h2 style="font-size: 3rem; margin: 0;">👥</h2>
+    </header>
+    <h3 style="font-size: 2.5rem; margin: 0.5rem 0;"><%= @total_clients %></h3>
+    <p style="color: var(--pico-muted-color);">Clientes registrados</p>
+    <footer>
+      <%= link_to "Ver todos", admin_clients_path, role: "button" %>
+    </footer>
+  </article>
+
+  <% if current_user.admin? %>
+    <!-- Card de Usuarios (solo admin) -->
+    <article style="text-align: center;">
+      <header>
+        <h2 style="font-size: 3rem; margin: 0;">🔐</h2>
+      </header>
+      <h3 style="font-size: 2.5rem; margin: 0.5rem 0;"><%= @total_users %></h3>
+      <p style="color: var(--pico-muted-color);">Usuarios del sistema</p>
+      <footer>
+        <%= link_to "Gestionar", admin_users_path, role: "button" %>
+      </footer>
+    </article>
+  <% end %>
+</div>
+
+<% if @recent_disks.any? %>
+  <article style="margin-top: 3rem;">
+    <header>
+      <h2>Discos Recientes</h2>
+    </header>
+    <table>
+      <thead>
+        <tr>
+          <th>Título</th>
+          <th>Artista</th>
+          <th>Precio</th>
+          <th>Stock</th>
+          <th>Estado</th>
+          <th>Acciones</th>
+        </tr>
+      </thead>
+      <tbody>
+        <% @recent_disks.each do |disk| %>
+          <tr>
+            <td><%= link_to disk.title, [:admin, disk] %></td>
+            <td><%= disk.artist %></td>
+            <td>$<%= number_to_currency(disk.price, unit: '', delimiter: '.', precision: 0) %></td>
+            <td><%= disk.stock %></td>
+            <td><%= disk.state %></td>
+            <td>
+              <%= link_to "✏️", edit_admin_disk_path(disk) %>
+              <%= button_to "🗑️", [:admin, disk], method: :delete, form: { data: { turbo_confirm: "¿Estás seguro?" } }, style: "display: inline;" %>
+            </td>
+          </tr>
+        <% end %>
+      </tbody>
+    </table>
+  </article>
+<% end %>

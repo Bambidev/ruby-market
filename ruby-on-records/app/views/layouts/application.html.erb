@@ -36,5 +36,51 @@
     <title>Hello world!</title>
   </head>
 
-  <body><%= yield %></body>
+  <body>
+    <header data-theme="light" style="background-color: #E4B657;">
+      <nav class="container">
+        <ul>
+          <li>
+            <%= link_to root_path, style: "display: flex; align-items: center; gap: 0.5rem; text-decoration: none;" do %>
+              <%= image_tag "logo.png", alt: "Ruby On Records", style: "height: 80px; width: auto;" %>
+            <% end %>
+          </li>
+        </ul>
+        <ul>
+          <li><%= link_to "Home", root_path %></li>
+          <li><%= link_to "Catálogo", disks_path %></li>
+          <li><%= link_to "Nuevos", disks_path(filter: "new") %></li>
+          <li><%= link_to "Usados", disks_path(filter: "used") %></li>
+        </ul>
+        <ul>
+          <li>
+            <%= form_with url: root_path, method: :get, data: { turbo: false } do |f| %>
+              <%= f.search_field :q, placeholder: "Search...", "aria-label": "Search" %>
+            <% end %>
+          </li>
+          <% if logged_in? %>
+            <li>
+              <details class="dropdown">
+                <summary><%= current_user.full_name %></summary>
+                <ul>
+                  <li><%= link_to "🏪 Backstore", admin_root_path %></li>
+                  <li><%= button_to "🚪 Cerrar sesión", logout_path, method: :delete %></li>
+                </ul>
+              </details>
+            </li>
+          <% else %>
+            <li><%= link_to "🔐 Ingresar", login_path, role: "button", class: "contrast" %></li>
+          <% end %>
+        </ul>
+      </nav>
+    </header>
+
+    <main class="container">
+      <%= yield %>
+    </main>
+
+    <footer class="container" style="margin-top: 3rem; padding: 2rem 0; border-top: 1px solid var(--pico-muted-border-color); text-align: center;">
+      <p><small>© <%= Time.current.year %> Ruby On Records. Made with ❤️ and Ruby</small></p>
+    </footer>
+  </body>
 </html>

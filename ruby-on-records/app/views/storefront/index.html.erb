@@ -1,19 +1,21 @@
-<p style="color: green"><%= notice %></p>
-
 <% content_for :title, "Ruby on Records" %>
 
-<main class="container-fluid">
-  <h1>Storefront!</h1>
-
-  <h3>New arrivals</h3>
-
-  <div id="disks">
-    <% @disks.each do |disk| %>
-      <%= render disk %>
-
-      <p><%= link_to "Show this disk", disk %></p>
-    <% end %>
+<!-- Hero Section -->
+<section class="hero-section">
+  <div class="container">
+    <%= image_tag "hero.png", alt: "Spin Your Story", class: "hero-image hero-main-image", style: "border-radius: 20px;" %>
   </div>
+</section>
 
-  <%= link_to "New disk", new_disk_path %>
-</main>
+<!-- New Arrivals -->
+<section style="margin-top: 3rem;">
+  <div class="container">
+    <h2>New Arrivals</h2>
+    
+    <div class="disk-grid">
+      <% @disks.each do |disk| %>
+        <%= render 'shared/disk_card', disk: disk %>
+      <% end %>
+    </div>
+  </div>
+</section>

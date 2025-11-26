@@ -92,7 +92,39 @@ disk.genres << Genre.find_or_create_by!(genre_name: "Rock")
 disk.genres << Genre.find_or_create_by!(genre_name: "Jazz")
 disk.genres << Genre.find_or_create_by!(genre_name: "Rock progresivo")
 
+# === Usuarios === #
+
+User.destroy_all
+
+# Admin
+User.create!(
+  full_name: "Nicolas Admin",
+  email: "admin@rubyonrecords.com",
+  password: "admin123",
+  password_confirmation: "admin123",
+  role: :admin
+)
+
+# Gerente
+User.create!(
+  full_name: "Maria Gerente",
+  email: "gerente@rubyonrecords.com",
+  password: "gerente123",
+  password_confirmation: "gerente123",
+  role: :gerente
+)
+
+# Empleado
+User.create!(
+  full_name: "Juan Empleado",
+  email: "empleado@rubyonrecords.com",
+  password: "empleado123",
+  password_confirmation: "empleado123",
+  role: :empleado
+)
+
 p "* * * * * * * * * * * * * * * "
 p "* * * #{Genre.count} géneros creados * * *"
 p "* * * #{Disk.count} discos creados * * *"
+p "* * * #{User.count} usuarios creados * * *"
 p "* * * * * * * * * * * * * * * "

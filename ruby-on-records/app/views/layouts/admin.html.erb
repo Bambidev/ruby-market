@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title><%= content_for(:title) || "Admin - Ruby On Records" %></title>
+
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <%= csrf_meta_tags %>
+    <%= csp_meta_tag %>
+
+    <%= stylesheet_link_tag :app, "data-turbo-track": "reload" %>
+    <%= javascript_importmap_tags %>
+
+    <meta name="color-scheme" content="light dark">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@picocss/pico@2/css/pico.min.css">
+  </head>
+
+  <body>
+    <header data-theme="light" style="background-color: #2c3e50; border-bottom: 3px solid #E4B657;">
+      <nav class="container">
+        <ul>
+          <li>
+            <%= link_to admin_root_path, style: "display: flex; align-items: center; gap: 0.5rem; text-decoration: none; color: white; font-weight: bold;" do %>
+              🏪 Backstore
+            <% end %>
+          </li>
+        </ul>
+        <ul>
+          <li><%= link_to "Dashboard", admin_root_path, style: "color: white;" %></li>
+          <li><%= link_to "Discos", admin_disks_path, style: "color: white;" %></li>
+          <li><%= link_to "Ventas", admin_sales_path, style: "color: white;" %></li>
+          <li><%= link_to "Clientes", admin_clients_path, style: "color: white;" %></li>
+          <li><%= link_to "Géneros", admin_genres_path, style: "color: white;" %></li>
+          <% if current_user.admin? %>
+            <li><%= link_to "Usuarios", admin_users_path, style: "color: white;" %></li>
+          <% end %>
+        </ul>
+        <ul>
+          <li>
+            <details class="dropdown">
+              <summary style="color: white;"><%= current_user.full_name %></summary>
+              <ul>
+                <li><%= link_to "🏠 Ver Tienda", root_path %></li>
+                <li><%= button_to "🚪 Cerrar sesión", logout_path, method: :delete %></li>
+              </ul>
+            </details>
+          </li>
+        </ul>
+      </nav>
+    </header>
+
+    <main class="container" style="margin-top: 2rem;">
+      <%= yield %>
+    </main>
+
+    <footer class="container" style="margin-top: 3rem; padding: 2rem 0; border-top: 1px solid var(--pico-muted-border-color); text-align: center;">
+      <p><small>© <%= Time.current.year %> Ruby On Records - Panel de Administración</small></p>
+    </footer>
+  </body>
+</html>
