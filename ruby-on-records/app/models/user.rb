@@ -27,6 +27,14 @@ class User < ApplicationRecord
     role == "admin"
   end
 
+  def gerente?
+    role == "gerente"
+  end
+
+  def empleado
+    role == "empleado"
+  end
+
   def gerente_o_superior?
     admin? || gerente?
   end
