@@ -1,0 +1,75 @@
+<main class="container">
+  <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 2rem; align-items: start;">
+    <!-- Formulario de login -->
+    <article>
+      <header>
+        <h1>Iniciar Sesión</h1>
+      </header>
+
+      <%= form_with url: login_path, method: :post do |form| %>
+        <% if flash[:alert] %>
+          <div data-theme="light">
+            <ins><%= flash[:alert] %></ins>
+          </div>
+        <% end %>
+
+        <div>
+          <%= form.label :email, "Email" %>
+          <%= form.email_field :email, required: true, placeholder: "empleado@rubyonrecords.com", autofocus: true %>
+        </div>
+
+        <div>
+          <%= form.label :password, "Contraseña" %>
+          <%= form.password_field :password, required: true %>
+        </div>
+
+        <%= form.submit "Ingresar", class: "contrast" %>
+      <% end %>
+    </article>
+
+    <!-- Usuarios de demostración -->
+    <article style="background-color: var(--pico-card-background-color);">
+      <header>
+        <h2>👥 Usuarios de Demostración</h2>
+      </header>
+
+      <table>
+        <thead>
+          <tr>
+            <th>Rol</th>
+            <th>Email</th>
+            <th>Password</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><strong>👑 Admin</strong></td>
+            <td><code>admin@rubyonrecords.com</code></td>
+            <td><code>admin123</code></td>
+          </tr>
+          <tr>
+            <td><strong>👔 Gerente</strong></td>
+            <td><code>gerente@rubyonrecords.com</code></td>
+            <td><code>gerente123</code></td>
+          </tr>
+          <tr>
+            <td><strong>👷 Empleado</strong></td>
+            <td><code>empleado@rubyonrecords.com</code></td>
+            <td><code>empleado123</code></td>
+          </tr>
+        </tbody>
+      </table>
+
+      <footer>
+        <small style="color: var(--pico-muted-color);">
+          💡 <strong>Permisos:</strong>
+          <ul style="margin: 0.5rem 0 0 1.5rem; line-height: 1.8;">
+            <li><strong>Admin:</strong> Gestión completa de usuarios</li>
+            <li><strong>Gerente:</strong> Crear/editar productos y ventas</li>
+            <li><strong>Empleado:</strong> Ver productos y ventas</li>
+          </ul>
+        </small>
+      </footer>
+    </article>
+  </div>
+</main>

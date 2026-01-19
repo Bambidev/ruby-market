@@ -1,0 +1,12 @@
+<% content_for :title, "Editing disk" %>
+
+<h1>Editing disk</h1>
+
+<%= render "form", disk: @disk %>
+
+<br>
+
+<div>
+  <%= link_to "Show this disk", [:admin, @disk] %> |
+  <%= link_to "Back to disks", admin_disks_path %>
+</div>

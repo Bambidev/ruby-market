@@ -1,4 +1,5 @@
 class StorefrontController < ApplicationController
+  skip_before_action :require_login
 
   # GET /
   def index

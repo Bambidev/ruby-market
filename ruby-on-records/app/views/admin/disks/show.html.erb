@@ -1,0 +1,77 @@
+<% if notice %>
+  <div data-theme="light">
+    <ins><%= notice %></ins>
+  </div>
+<% end %>
+
+<article>
+  <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 2rem;">
+    <!-- Imagen del disco -->
+    <div>
+      <div style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); aspect-ratio: 1; border-radius: var(--pico-border-radius); display: flex; align-items: center; justify-content: center; color: white; font-size: 3rem;">
+        🎵
+      </div>
+      
+      <!-- Audio preview -->
+      <div style="margin-top: 1rem;">
+        <h4>Preview</h4>
+        <audio controls style="width: 100%;">
+          <source src="#" type="audio/mpeg">
+          Tu navegador no soporta el elemento de audio.
+        </audio>
+        <small style="color: var(--pico-muted-color);">
+          <em>Audio de demostración próximamente</em>
+        </small>
+      </div>
+    </div>
+
+    <!-- Información del producto -->
+    <div>
+      <hgroup>
+        <h1><%= @disk.title %></h1>
+        <p><%= @disk.artist %></p>
+      </hgroup>
+
+      <p><%= @disk.description %></p>
+
+      <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; margin: 1.5rem 0;">
+        <div>
+          <strong style="color: var(--pico-muted-color);">Año</strong>
+          <p><%= @disk.year %></p>
+        </div>
+        <div>
+          <strong style="color: var(--pico-muted-color);">Formato</strong>
+          <p><%= @disk.format %></p>
+        </div>
+        <div>
+          <strong style="color: var(--pico-muted-color);">Estado</strong>
+          <p><%= @disk.state %></p>
+        </div>
+        <div>
+          <strong style="color: var(--pico-muted-color);">Stock</strong>
+          <p><%= @disk.stock %> disponibles</p>
+        </div>
+      </div>
+
+      <hr>
+
+      <div style="display: flex; align-items: center; justify-content: space-between; margin: 1.5rem 0;">
+        <div>
+          <h2 style="margin: 0; color: var(--pico-primary);">
+            $<%= number_to_currency(@disk.price, unit: '', delimiter: '.', separator: ',') %>
+          </h2>
+        </div>
+      </div>
+
+      <% if logged_in? && current_user.gerente_o_superior? %>
+        <hr>
+        <div style="display: flex; gap: 0.5rem;">
+          <%= link_to "✏️ Editar", edit_admin_disk_path(@disk), role: "button", class: "secondary" %>
+          <%= button_to "🗑️ Eliminar", [:admin, @disk], method: :delete, form: { data: { turbo_confirm: "¿Estás seguro?" } }, class: "secondary" %>
+        </div>
+      <% end %>
+
+      <%= link_to "← Volver al catálogo", admin_disks_path, style: "display: block; margin-top: 1rem;" %>
+    </div>
+  </div>
+</article>

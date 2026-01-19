@@ -1,14 +1,24 @@
 Rails.application.routes.draw do
-  resources :items
-  resources :employees
-  resources :managers
-  resources :admins
-  resources :users
-  resources :clients
-  resources :sales
-  resources :genres
-  resources :used_disks
-  resources :disks
+  # === Autenticación === #
+  get "login", to: "sessions#new"
+  post "login", to: "sessions#create"
+  delete "logout", to: "sessions#destroy"
+
+  # === Backstore/Admin (requiere login) === #
+  namespace :admin do
+    root to: "dashboard#index"
+    resources :disks
+    resources :sales
+    resources :users
+    resources :clients
+    resources :genres
+    resources :items
+  end
+
+  # === Storefront (público) === #
+  root "storefront#index"
+  resources :disks, only: [:index, :show]
+  
   # Define your application routes per the DSL in https://guides.rubyonrails.org/routing.html
 
   # Reveal health status on /up that returns 200 if the app boots with no exceptions, otherwise 500.
@@ -18,7 +28,4 @@ Rails.application.routes.draw do
   # Render dynamic PWA files from app/views/pwa/* (remember to link manifest in application.html.erb)
   # get "manifest" => "rails/pwa#manifest", as: :pwa_manifest
   # get "service-worker" => "rails/pwa#service_worker", as: :pwa_service_worker
-
-  # Defines the root path route ("/")
-  root "storefront#index"
 end

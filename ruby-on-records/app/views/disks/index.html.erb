@@ -1,16 +1,21 @@
-<p style="color: green"><%= notice %></p>
+<% content_for :title, "Todos los Discos - Ruby on Records" %>
 
-<% content_for :title, "Disks" %>
+<div class="container" style="margin-top: 2rem;">
+  <hgroup>
+    <h1>Catálogo Completo</h1>
+    <p>Explorá toda nuestra colección de vinilos y CDs</p>
+  </hgroup>
 
-<h1>Disks</h1>
+  <div class="disk-grid" style="margin-top: 2rem;">
+    <% @disks.each do |disk| %>
+      <%= render 'shared/disk_card', disk: disk %>
+    <% end %>
+  </div>
 
-<div id="disks">
-  <% @disks.each do |disk| %>
-    <%= render disk %>
-    <p>
-      <%= link_to "Show this disk", disk %>
-    </p>
+  <% if @disks.empty? %>
+    <article style="text-align: center; margin-top: 3rem;">
+      <h3>No hay discos disponibles</h3>
+      <p>Volvé pronto para ver nuevos productos</p>
+    </article>
   <% end %>
 </div>
-
-<%= link_to "New disk", new_disk_path %>

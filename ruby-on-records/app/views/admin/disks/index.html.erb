@@ -1,0 +1,18 @@
+<% if notice %>
+  <div data-theme="light">
+    <ins><%= notice %></ins>
+  </div>
+<% end %>
+
+<% content_for :title, "Catálogo de Discos" %>
+
+<div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 2rem;">
+  <h1>Catálogo de Discos</h1>
+  <%= link_to "➕ Nuevo Disco", new_admin_disk_path, role: "button" %>
+</div>
+
+<div class="disk-grid">
+  <% @disks.each do |disk| %>
+    <%= render 'shared/disk_card', disk: disk %>
+  <% end %>
+</div>
