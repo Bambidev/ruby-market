@@ -1,4 +1,13 @@
 class Disk < ApplicationRecord
+  # === Scopes === #
+  scope :by_state, ->(filter) {
+    case filter
+    when "new" then where(state: "Nuevo")
+    when "used" then where(state: "Usado")
+    else all
+    end
+  }
+
   # === Relaciones === #
 
   # Un mismo Disco puede estar presente en varios Items de varias Ventas

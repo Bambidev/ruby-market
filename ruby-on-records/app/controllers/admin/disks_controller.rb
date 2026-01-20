@@ -4,13 +4,7 @@ class Admin::DisksController < Admin::BaseController
 
   # GET /admin/disks
   def index
-    @disks = if params[:filter] == "new"
-      Disk.where(state: "Nuevo")
-    elsif params[:filter] == "used"
-      Disk.where(state: "Usado")
-    else
-      Disk.all
-    end
+    @disks = Disk.by_state(params[:filter])
   end
 
   # GET /admin/disks/1
