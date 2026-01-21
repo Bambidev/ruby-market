@@ -1,4 +1,6 @@
 class Admin::DashboardController < Admin::BaseController
+  authorize_resource class: false
+
   def index
     @total_disks = Disk.count
     @total_sales = Sale.count

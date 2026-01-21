@@ -1,16 +1,50 @@
-<p style="color: green"><%= notice %></p>
+<% content_for :title, "Clientes - Backstore" %>
 
-<% content_for :title, "Clients" %>
-
-<h1>Clients</h1>
-
-<div id="clients">
-  <% @clients.each do |client| %>
-    <%= render client %>
-    <p>
-      <%= link_to "Show this client", [:admin, client] %>
-    </p>
-  <% end %>
+<div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 mb-8">
+  <div>
+    <h1 class="font-display text-4xl font-bold text-vinyl-black mb-2">Clientes</h1>
+    <p class="text-sepia">Gestiona los clientes de la tienda</p>
+  </div>
+  <%= link_to "Nuevo Cliente", new_admin_client_path, class: "btn-primary inline-flex items-center gap-2" %>
 </div>
 
-<%= link_to "New client", new_admin_client_path %>
+<% if @clients.any? %>
+  <div class="card-retro overflow-hidden">
+    <div class="overflow-x-auto">
+      <table class="table-retro">
+        <thead>
+          <tr>
+            <th>Nombre</th>
+            <th>Email</th>
+            <th>Telefono</th>
+            <th>Acciones</th>
+          </tr>
+        </thead>
+        <tbody>
+          <% @clients.each do |client| %>
+            <tr>
+              <td class="font-bold"><%= client.name %></td>
+              <td class="text-sepia"><%= client.email %></td>
+              <td class="text-sepia"><%= client.phone %></td>
+              <td>
+                <div class="flex items-center gap-3">
+                  <%= link_to "Ver", [:admin, client], class: "text-mustard-dark hover:text-mustard font-bold uppercase text-xs tracking-wider transition-colors" %>
+                  <%= link_to "Editar", edit_admin_client_path(client), class: "text-teal hover:text-teal-dark font-bold uppercase text-xs tracking-wider transition-colors" %>
+                </div>
+              </td>
+            </tr>
+          <% end %>
+        </tbody>
+      </table>
+    </div>
+  </div>
+<% else %>
+  <div class="card-retro p-12 text-center">
+    <svg class="w-16 h-16 mx-auto mb-4 text-sepia" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0z"></path>
+    </svg>
+    <h3 class="font-display text-2xl font-bold text-vinyl-black mb-2">No hay clientes</h3>
+    <p class="text-sepia mb-6">Agrega el primer cliente</p>
+    <%= link_to "Nuevo Cliente", new_admin_client_path, class: "btn-primary" %>
+  </div>
+<% end %>

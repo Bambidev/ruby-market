@@ -9,6 +9,11 @@ class ApplicationController < ActionController::Base
 
   helper_method :current_user, :logged_in?
 
+  # CanCanCan: manejo de acceso denegado
+  rescue_from CanCan::AccessDenied do |exception|
+    redirect_to root_path, alert: "No tienes permisos para acceder a esta seccion"
+  end
+
   private
 
   def current_user
@@ -21,19 +26,7 @@ class ApplicationController < ActionController::Base
 
   def require_login
     unless logged_in?
-      redirect_to login_path, alert: "Debes iniciar sesión"
-    end
-  end
-
-  def require_admin
-    unless current_user&.admin?
-      redirect_to root_path, alert: "No tienes permisos para acceder"
-    end
-  end
-
-  def require_gerente_o_superior
-    unless current_user&.gerente_o_superior?
-      redirect_to root_path, alert: "No tienes permisos para acceder"
+      redirect_to login_path, alert: "Debes iniciar sesion"
     end
   end
 end

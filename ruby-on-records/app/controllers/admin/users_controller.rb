@@ -1,10 +1,8 @@
 class Admin::UsersController < Admin::BaseController
-  before_action :set_user, only: %i[ show edit update destroy ]
-  before_action :require_admin
+  load_and_authorize_resource
 
   # GET /admin/users
   def index
-    @users = User.all
   end
 
   # GET /admin/users/1
@@ -26,8 +24,8 @@ class Admin::UsersController < Admin::BaseController
 
     respond_to do |format|
       if @user.save
-        format.html { redirect_to [:admin, @user], notice: "Usuario creado exitosamente." }
-        format.json { render :show, status: :created, location: [:admin, @user] }
+        format.html { redirect_to [ :admin, @user ], notice: "Usuario creado exitosamente." }
+        format.json { render :show, status: :created, location: [ :admin, @user ] }
       else
         format.html { render :new, status: :unprocessable_entity }
         format.json { render json: @user.errors, status: :unprocessable_entity }
@@ -39,8 +37,8 @@ class Admin::UsersController < Admin::BaseController
   def update
     respond_to do |format|
       if @user.update(user_params)
-        format.html { redirect_to [:admin, @user], notice: "Usuario actualizado exitosamente.", status: :see_other }
-        format.json { render :show, status: :ok, location: [:admin, @user] }
+        format.html { redirect_to [ :admin, @user ], notice: "Usuario actualizado exitosamente.", status: :see_other }
+        format.json { render :show, status: :ok, location: [ :admin, @user ] }
       else
         format.html { render :edit, status: :unprocessable_entity }
         format.json { render json: @user.errors, status: :unprocessable_entity }
@@ -59,11 +57,8 @@ class Admin::UsersController < Admin::BaseController
   end
 
   private
-    def set_user
-      @user = User.find(params.expect(:id))
-    end
 
-    def user_params
-      params.expect(user: [ :full_name, :email, :password, :password_confirmation, :role ])
-    end
+  def user_params
+    params.expect(user: [ :full_name, :email, :password, :password_confirmation, :role ])
+  end
 end

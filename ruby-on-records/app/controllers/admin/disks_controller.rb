@@ -1,9 +1,13 @@
 class Admin::DisksController < Admin::BaseController
-  before_action :set_disk, only: %i[ show edit update destroy ]
-  before_action :require_gerente_o_superior
+  load_and_authorize_resource
 
   # GET /admin/disks
   def index
+  end
+
+  private
+
+  def set_collection
     @disks = Disk.by_state(params[:filter])
   end
 
@@ -26,8 +30,8 @@ class Admin::DisksController < Admin::BaseController
 
     respond_to do |format|
       if @disk.save
-        format.html { redirect_to [:admin, @disk], notice: "Disco creado exitosamente." }
-        format.json { render :show, status: :created, location: [:admin, @disk] }
+        format.html { redirect_to [ :admin, @disk ], notice: "Disco creado exitosamente." }
+        format.json { render :show, status: :created, location: [ :admin, @disk ] }
       else
         format.html { render :new, status: :unprocessable_entity }
         format.json { render json: @disk.errors, status: :unprocessable_entity }
@@ -39,8 +43,8 @@ class Admin::DisksController < Admin::BaseController
   def update
     respond_to do |format|
       if @disk.update(disk_params)
-        format.html { redirect_to [:admin, @disk], notice: "Disco actualizado exitosamente.", status: :see_other }
-        format.json { render :show, status: :ok, location: [:admin, @disk] }
+        format.html { redirect_to [ :admin, @disk ], notice: "Disco actualizado exitosamente.", status: :see_other }
+        format.json { render :show, status: :ok, location: [ :admin, @disk ] }
       else
         format.html { render :edit, status: :unprocessable_entity }
         format.json { render json: @disk.errors, status: :unprocessable_entity }
@@ -59,11 +63,8 @@ class Admin::DisksController < Admin::BaseController
   end
 
   private
-    def set_disk
-      @disk = Disk.find(params.expect(:id))
-    end
 
-    def disk_params
-      params.expect(disk: [ :title, :artist, :year, :description, :price, :stock, :format, :state ])
-    end
+  def disk_params
+    params.expect(disk: [ :title, :artist, :year, :description, :price, :stock, :format, :state ])
+  end
 end

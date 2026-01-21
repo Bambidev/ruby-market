@@ -1,21 +1,32 @@
-<% content_for :title, "Todos los Discos - Ruby on Records" %>
+<% content_for :title, "Catalogo - Ruby On Records" %>
 
-<div class="container" style="margin-top: 2rem;">
-  <hgroup>
-    <h1>Catálogo Completo</h1>
-    <p>Explorá toda nuestra colección de vinilos y CDs</p>
-  </hgroup>
+<!-- Page Header -->
+<div class="mb-8">
+  <h1 class="font-display text-4xl sm:text-5xl font-bold text-vinyl-black mb-2">Catalogo Completo</h1>
+  <p class="text-sepia text-lg">Explora toda nuestra coleccion de vinilos y CDs</p>
+</div>
 
-  <div class="disk-grid" style="margin-top: 2rem;">
-    <% @disks.each do |disk| %>
-      <%= render 'shared/disk_card', disk: disk %>
-    <% end %>
-  </div>
+<!-- Filters (optional visual) -->
+<div class="flex flex-wrap gap-3 mb-8 pb-6 border-b-2 border-vinyl-groove">
+  <%= link_to "Todos", disks_path, class: "badge-retro #{params[:filter].blank? && params[:format].blank? ? 'bg-vinyl-black text-cream' : 'bg-cream text-vinyl-black hover:bg-cream-dark'} transition-colors" %>
+  <%= link_to "Nuevos", disks_path(filter: "new"), class: "badge-retro #{params[:filter] == 'new' ? 'bg-teal text-cream' : 'bg-cream text-vinyl-black hover:bg-cream-dark'} transition-colors" %>
+  <%= link_to "Usados", disks_path(filter: "used"), class: "badge-retro #{params[:filter] == 'used' ? 'bg-sepia text-cream' : 'bg-cream text-vinyl-black hover:bg-cream-dark'} transition-colors" %>
+  <%= link_to "Vinilos", disks_path(format: "Vinilo"), class: "badge-retro #{params[:format] == 'Vinilo' ? 'bg-vinyl-black text-cream' : 'bg-cream text-vinyl-black hover:bg-cream-dark'} transition-colors" %>
+  <%= link_to "CDs", disks_path(format: "CD"), class: "badge-retro #{params[:format] == 'CD' ? 'bg-vinyl-black text-cream' : 'bg-cream text-vinyl-black hover:bg-cream-dark'} transition-colors" %>
+</div>
 
-  <% if @disks.empty? %>
-    <article style="text-align: center; margin-top: 3rem;">
-      <h3>No hay discos disponibles</h3>
-      <p>Volvé pronto para ver nuevos productos</p>
-    </article>
+<!-- Disk Grid -->
+<div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
+  <% @disks.each do |disk| %>
+    <%= render 'shared/disk_card', disk: disk %>
   <% end %>
 </div>
+
+<% if @disks.empty? %>
+  <div class="card-retro p-12 text-center mt-8">
+    <div class="w-24 h-24 vinyl-record mx-auto mb-6 opacity-50"></div>
+    <h3 class="font-display text-2xl font-bold text-vinyl-black mb-2">No hay discos disponibles</h3>
+    <p class="text-sepia mb-6">No encontramos discos con esos filtros</p>
+    <%= link_to "Ver todo el catalogo", disks_path, class: "btn-primary" %>
+  </div>
+<% end %>

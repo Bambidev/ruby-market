@@ -1,16 +1,49 @@
-<p style="color: green"><%= notice %></p>
+<% content_for :title, "Ventas - Backstore" %>
 
-<% content_for :title, "Sales" %>
-
-<h1>Sales</h1>
-
-<div id="sales">
-  <% @sales.each do |sale| %>
-    <%= render sale %>
-    <p>
-      <%= link_to "Show this sale", [:admin, sale] %>
-    </p>
-  <% end %>
+<div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 mb-8">
+  <div>
+    <h1 class="font-display text-4xl font-bold text-vinyl-black mb-2">Ventas</h1>
+    <p class="text-sepia">Historial de ventas realizadas</p>
+  </div>
+  <%= link_to "Nueva Venta", new_admin_sale_path, class: "btn-primary inline-flex items-center gap-2" %>
 </div>
 
-<%= link_to "New sale", new_admin_sale_path %>
+<% if @sales.any? %>
+  <div class="card-retro overflow-hidden">
+    <div class="overflow-x-auto">
+      <table class="table-retro">
+        <thead>
+          <tr>
+            <th>ID</th>
+            <th>Fecha</th>
+            <th>Cliente</th>
+            <th>Total</th>
+            <th>Acciones</th>
+          </tr>
+        </thead>
+        <tbody>
+          <% @sales.each do |sale| %>
+            <tr>
+              <td class="font-bold">#<%= sale.id %></td>
+              <td class="text-sepia"><%= sale.created_at.strftime("%d/%m/%Y") %></td>
+              <td><%= sale.client&.name || 'Sin cliente' %></td>
+              <td class="font-display font-bold text-lg">$<%= number_to_currency(sale.total || 0, unit: '', delimiter: '.', precision: 0) %></td>
+              <td>
+                <%= link_to "Ver", [:admin, sale], class: "text-mustard-dark hover:text-mustard font-bold uppercase text-xs tracking-wider transition-colors" %>
+              </td>
+            </tr>
+          <% end %>
+        </tbody>
+      </table>
+    </div>
+  </div>
+<% else %>
+  <div class="card-retro p-12 text-center">
+    <svg class="w-16 h-16 mx-auto mb-4 text-sepia" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+    </svg>
+    <h3 class="font-display text-2xl font-bold text-vinyl-black mb-2">No hay ventas</h3>
+    <p class="text-sepia mb-6">Registra la primera venta</p>
+    <%= link_to "Nueva Venta", new_admin_sale_path, class: "btn-primary" %>
+  </div>
+<% end %>

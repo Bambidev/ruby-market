@@ -1,76 +1,112 @@
-<% if notice %>
-  <div data-theme="light">
-    <ins><%= notice %></ins>
-  </div>
-<% end %>
+<% content_for :title, "#{@disk.title} - #{@disk.artist} | Ruby On Records" %>
 
-<article>
-  <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 2rem;">
-    <!-- Imagen del disco -->
-    <div>
-      <div style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); aspect-ratio: 1; border-radius: var(--pico-border-radius); display: flex; align-items: center; justify-content: center; color: white; font-size: 3rem;">
-        🎵
+<article class="card-retro overflow-hidden">
+  <div class="grid grid-cols-1 lg:grid-cols-2">
+    <!-- Left Column - Vinyl Visual -->
+    <div class="bg-vinyl-black p-8 lg:p-12 flex flex-col items-center justify-center min-h-[400px] relative overflow-hidden">
+      <!-- Background grooves pattern -->
+      <div class="absolute inset-0 opacity-10" style="background-image: repeating-radial-gradient(circle at center, transparent 0, transparent 2px, rgba(255,255,255,.1) 2px, rgba(255,255,255,.1) 4px);"></div>
+      
+      <!-- Main Vinyl -->
+      <div class="relative z-10">
+        <div class="w-64 h-64 sm:w-80 sm:h-80 vinyl-record vinyl-spin-hover"></div>
+        
+        <!-- Album label simulation -->
+        <div class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-24 h-24 sm:w-28 sm:h-28 rounded-full bg-mustard flex flex-col items-center justify-center text-center p-2 border-4 border-vinyl-dark">
+          <span class="text-vinyl-black text-[8px] sm:text-[10px] font-bold uppercase tracking-wider leading-tight truncate w-full">
+            <%= @disk.artist.truncate(20) %>
+          </span>
+          <div class="w-4 h-4 rounded-full bg-vinyl-black my-1"></div>
+          <span class="text-vinyl-black text-[7px] sm:text-[8px] uppercase tracking-wider">
+            <%= @disk.year %>
+          </span>
+        </div>
       </div>
       
-      <!-- Audio preview -->
-      <div style="margin-top: 1rem;">
-        <h4>Preview</h4>
-        <audio controls style="width: 100%;">
-          <source src="#" type="audio/mpeg">
-          Tu navegador no soporta el elemento de audio.
-        </audio>
-        <small style="color: var(--pico-muted-color);">
-          <em>Audio de demostración próximamente</em>
-        </small>
+      <!-- Format & State Badges -->
+      <div class="absolute top-4 left-4 flex gap-2">
+        <span class="badge-retro bg-cream text-vinyl-black"><%= @disk.format %></span>
+        <span class="badge-retro bg-<%= @disk.state == 'Nuevo' ? 'teal' : 'sepia' %> text-cream"><%= @disk.state %></span>
       </div>
     </div>
 
-    <!-- Información del producto -->
-    <div>
-      <hgroup>
-        <h1><%= @disk.title %></h1>
-        <p><%= @disk.artist %></p>
-      </hgroup>
-
-      <p><%= @disk.description %></p>
-
-      <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; margin: 1.5rem 0;">
-        <div>
-          <strong style="color: var(--pico-muted-color);">Año</strong>
-          <p><%= @disk.year %></p>
-        </div>
-        <div>
-          <strong style="color: var(--pico-muted-color);">Formato</strong>
-          <p><%= @disk.format %></p>
-        </div>
-        <div>
-          <strong style="color: var(--pico-muted-color);">Estado</strong>
-          <p><%= @disk.state %></p>
-        </div>
-        <div>
-          <strong style="color: var(--pico-muted-color);">Stock</strong>
-          <p><%= @disk.stock %> disponibles</p>
-        </div>
+    <!-- Right Column - Info -->
+    <div class="p-8 lg:p-12 bg-paper">
+      <!-- Title & Artist -->
+      <div class="mb-8">
+        <h1 class="font-display text-3xl sm:text-4xl lg:text-5xl font-bold text-vinyl-black leading-tight mb-3">
+          <%= @disk.title %>
+        </h1>
+        <p class="text-xl sm:text-2xl text-sepia font-display">
+          <%= @disk.artist %>
+        </p>
       </div>
 
-      <hr>
-
-      <div style="display: flex; align-items: center; justify-content: space-between; margin: 1.5rem 0;">
-        <div>
-          <h2 style="margin: 0; color: var(--pico-primary);">
-            $<%= number_to_currency(@disk.price, unit: '', delimiter: '.', separator: ',') %>
-          </h2>
-        </div>
-      </div>
-
-      <% if logged_in? && current_user.gerente_o_superior? %>
-        <hr>
-        <div style="display: flex; gap: 0.5rem;">
-          <%= link_to "✏️ Editar en Admin", edit_admin_disk_path(@disk), role: "button", class: "secondary" %>
+      <!-- Description -->
+      <% if @disk.description.present? %>
+        <div class="mb-8">
+          <p class="text-vinyl-dark leading-relaxed">
+            <%= @disk.description %>
+          </p>
         </div>
       <% end %>
 
-      <%= link_to "← Volver al catálogo", root_path, style: "display: block; margin-top: 1rem;" %>
+      <!-- Details Grid -->
+      <div class="grid grid-cols-2 gap-4 mb-8">
+        <div class="bg-cream-dark p-4 border-2 border-vinyl-black">
+          <span class="label-retro">Ano</span>
+          <p class="font-display text-2xl font-bold text-vinyl-black"><%= @disk.year %></p>
+        </div>
+        <div class="bg-cream-dark p-4 border-2 border-vinyl-black">
+          <span class="label-retro">Formato</span>
+          <p class="font-display text-2xl font-bold text-vinyl-black"><%= @disk.format %></p>
+        </div>
+        <div class="bg-cream-dark p-4 border-2 border-vinyl-black">
+          <span class="label-retro">Estado</span>
+          <p class="font-display text-2xl font-bold text-vinyl-black"><%= @disk.state %></p>
+        </div>
+        <div class="bg-cream-dark p-4 border-2 border-vinyl-black">
+          <span class="label-retro">Stock</span>
+          <p class="font-display text-2xl font-bold <%= @disk.stock > 0 ? 'text-teal' : 'text-rust' %>">
+            <%= @disk.stock > 0 ? "#{@disk.stock} disp." : 'Agotado' %>
+          </p>
+        </div>
+      </div>
+
+      <!-- Price -->
+      <div class="bg-vinyl-black text-cream p-6 mb-8 border-4 border-mustard">
+        <div class="flex items-center justify-between">
+          <span class="text-mustard uppercase tracking-wider font-bold">Precio</span>
+          <span class="font-display text-4xl sm:text-5xl font-bold text-mustard">
+            $<%= number_to_currency(@disk.price, unit: '', delimiter: '.', separator: ',', precision: 0) %>
+          </span>
+        </div>
+      </div>
+
+      <!-- Audio Preview (placeholder) -->
+      <div class="mb-8 p-4 bg-cream-dark border-2 border-vinyl-groove">
+        <span class="label-retro mb-3 block">Preview</span>
+        <audio controls class="w-full">
+          <source src="#" type="audio/mpeg">
+          Tu navegador no soporta audio.
+        </audio>
+        <p class="text-sepia text-xs mt-2 italic">Audio de demostracion proximamente</p>
+      </div>
+
+      <!-- Admin Actions -->
+      <% if can? :update, @disk %>
+        <div class="flex flex-wrap gap-3 mb-8 pt-6 border-t-2 border-vinyl-groove">
+          <%= link_to "Editar en Admin", edit_admin_disk_path(@disk), class: "btn-secondary text-xs" %>
+        </div>
+      <% end %>
+
+      <!-- Back Link -->
+      <%= link_to root_path, class: "inline-flex items-center gap-2 text-mustard-dark hover:text-mustard font-bold uppercase text-sm tracking-wider transition-colors" do %>
+        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"></path>
+        </svg>
+        Volver al Catalogo
+      <% end %>
     </div>
   </div>
 </article>

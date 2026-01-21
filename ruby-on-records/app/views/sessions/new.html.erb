@@ -1,75 +1,95 @@
-<main class="container">
-  <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 2rem; align-items: start;">
-    <!-- Formulario de login -->
-    <article>
-      <header>
-        <h1>Iniciar Sesión</h1>
-      </header>
+<% content_for :title, "Iniciar Sesion - Ruby On Records" %>
 
-      <%= form_with url: login_path, method: :post do |form| %>
-        <% if flash[:alert] %>
-          <div data-theme="light">
-            <ins><%= flash[:alert] %></ins>
+<div class="min-h-[60vh] flex items-center justify-center py-12">
+  <div class="w-full max-w-4xl">
+    <div class="grid grid-cols-1 lg:grid-cols-2 gap-0 card-retro overflow-hidden">
+      <!-- Left Side - Decorative -->
+      <div class="bg-vinyl-black p-8 lg:p-12 flex flex-col items-center justify-center relative overflow-hidden hidden lg:flex">
+        <!-- Background Pattern -->
+        <div class="absolute inset-0 opacity-10" style="background-image: repeating-radial-gradient(circle at center, transparent 0, transparent 2px, rgba(255,255,255,.1) 2px, rgba(255,255,255,.1) 4px);"></div>
+        
+        <div class="relative z-10 text-center">
+          <div class="w-32 h-32 vinyl-record vinyl-spin mx-auto mb-8"></div>
+          <h2 class="font-display text-3xl font-bold text-mustard mb-4">Bienvenido</h2>
+          <p class="text-cream/70 text-sm max-w-xs">
+            Accede al panel de administracion para gestionar tu tienda de discos.
+          </p>
+        </div>
+        
+        <!-- Decorative elements -->
+        <div class="absolute bottom-4 left-4 text-cream/30 text-xs uppercase tracking-widest">
+          Est. 1985
+        </div>
+      </div>
+
+      <!-- Right Side - Login Form -->
+      <div class="bg-paper p-8 lg:p-12">
+        <div class="mb-8">
+          <h1 class="font-display text-3xl font-bold text-vinyl-black mb-2">Iniciar Sesion</h1>
+          <p class="text-sepia">Ingresa tus credenciales para continuar</p>
+        </div>
+
+        <%= form_with url: login_path, method: :post, class: "space-y-6" do |form| %>
+          <% if flash[:alert] %>
+            <div class="bg-rust/10 border-2 border-rust text-rust px-4 py-3 flex items-center gap-3">
+              <svg class="w-5 h-5 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20">
+                <path fill-rule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7 4a1 1 0 11-2 0 1 1 0 012 0zm-1-9a1 1 0 00-1 1v4a1 1 0 102 0V6a1 1 0 00-1-1z" clip-rule="evenodd"/>
+              </svg>
+              <span class="font-bold text-sm uppercase tracking-wider"><%= flash[:alert] %></span>
+            </div>
+          <% end %>
+
+          <div>
+            <%= form.label :email, "Email", class: "label-retro" %>
+            <%= form.email_field :email, required: true, placeholder: "tu@email.com", autofocus: true, class: "input-retro" %>
           </div>
+
+          <div>
+            <%= form.label :password, "Contrasena", class: "label-retro" %>
+            <%= form.password_field :password, required: true, placeholder: "********", class: "input-retro" %>
+          </div>
+
+          <%= form.submit "Ingresar", class: "btn-primary w-full cursor-pointer" %>
         <% end %>
 
-        <div>
-          <%= form.label :email, "Email" %>
-          <%= form.email_field :email, required: true, placeholder: "empleado@rubyonrecords.com", autofocus: true %>
+        <!-- Demo Users -->
+        <div class="mt-8 pt-8 border-t-2 border-vinyl-groove">
+          <h3 class="label-retro mb-4">Usuarios de Prueba</h3>
+          
+          <div class="space-y-3">
+            <div class="flex items-center justify-between p-3 bg-cream-dark border border-vinyl-groove text-sm">
+              <div>
+                <span class="font-bold text-vinyl-black">Admin</span>
+                <span class="text-sepia ml-2">admin@rubyonrecords.com</span>
+              </div>
+              <code class="text-xs bg-vinyl-black text-cream px-2 py-1">admin123</code>
+            </div>
+            
+            <div class="flex items-center justify-between p-3 bg-cream-dark border border-vinyl-groove text-sm">
+              <div>
+                <span class="font-bold text-vinyl-black">Gerente</span>
+                <span class="text-sepia ml-2">gerente@rubyonrecords.com</span>
+              </div>
+              <code class="text-xs bg-vinyl-black text-cream px-2 py-1">gerente123</code>
+            </div>
+            
+            <div class="flex items-center justify-between p-3 bg-cream-dark border border-vinyl-groove text-sm">
+              <div>
+                <span class="font-bold text-vinyl-black">Empleado</span>
+                <span class="text-sepia ml-2">empleado@rubyonrecords.com</span>
+              </div>
+              <code class="text-xs bg-vinyl-black text-cream px-2 py-1">empleado123</code>
+            </div>
+          </div>
+
+          <div class="mt-4 p-4 bg-mustard/10 border-2 border-mustard">
+            <p class="text-xs text-vinyl-dark">
+              <strong class="text-vinyl-black">Permisos:</strong> 
+              Admin gestiona usuarios | Gerente gestiona productos | Empleado solo visualiza
+            </p>
+          </div>
         </div>
-
-        <div>
-          <%= form.label :password, "Contraseña" %>
-          <%= form.password_field :password, required: true %>
-        </div>
-
-        <%= form.submit "Ingresar", class: "contrast" %>
-      <% end %>
-    </article>
-
-    <!-- Usuarios de demostración -->
-    <article style="background-color: var(--pico-card-background-color);">
-      <header>
-        <h2>👥 Usuarios de Demostración</h2>
-      </header>
-
-      <table>
-        <thead>
-          <tr>
-            <th>Rol</th>
-            <th>Email</th>
-            <th>Password</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr>
-            <td><strong>👑 Admin</strong></td>
-            <td><code>admin@rubyonrecords.com</code></td>
-            <td><code>admin123</code></td>
-          </tr>
-          <tr>
-            <td><strong>👔 Gerente</strong></td>
-            <td><code>gerente@rubyonrecords.com</code></td>
-            <td><code>gerente123</code></td>
-          </tr>
-          <tr>
-            <td><strong>👷 Empleado</strong></td>
-            <td><code>empleado@rubyonrecords.com</code></td>
-            <td><code>empleado123</code></td>
-          </tr>
-        </tbody>
-      </table>
-
-      <footer>
-        <small style="color: var(--pico-muted-color);">
-          💡 <strong>Permisos:</strong>
-          <ul style="margin: 0.5rem 0 0 1.5rem; line-height: 1.8;">
-            <li><strong>Admin:</strong> Gestión completa de usuarios</li>
-            <li><strong>Gerente:</strong> Crear/editar productos y ventas</li>
-            <li><strong>Empleado:</strong> Ver productos y ventas</li>
-          </ul>
-        </small>
-      </footer>
-    </article>
+      </div>
+    </div>
   </div>
-</main>
+</div>

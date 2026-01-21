@@ -1,58 +1,76 @@
-<%= form_with(model: [:admin, disk]) do |form| %>
+<%= form_with(model: [:admin, disk], class: "space-y-6") do |form| %>
   <% if disk.errors.any? %>
-    <article>
-      <header><strong><%= pluralize(disk.errors.count, "error") %></strong> impidieron guardar este disco:</header>
-      <ul>
+    <div class="bg-rust/10 border-2 border-rust p-4">
+      <div class="flex items-center gap-3 mb-3">
+        <svg class="w-5 h-5 text-rust" fill="currentColor" viewBox="0 0 20 20">
+          <path fill-rule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7 4a1 1 0 11-2 0 1 1 0 012 0zm-1-9a1 1 0 00-1 1v4a1 1 0 102 0V6a1 1 0 00-1-1z" clip-rule="evenodd"/>
+        </svg>
+        <span class="font-bold text-rust uppercase tracking-wider text-sm">
+          <%= pluralize(disk.errors.count, "error") %> impidieron guardar este disco
+        </span>
+      </div>
+      <ul class="list-disc list-inside text-rust text-sm space-y-1">
         <% disk.errors.each do |error| %>
           <li><%= error.full_message %></li>
         <% end %>
       </ul>
-    </article>
+    </div>
   <% end %>
 
-  <label>
-    Título
-    <%= form.text_field :title, placeholder: "Nombre del disco", required: true %>
-  </label>
+  <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+    <!-- Left Column -->
+    <div class="space-y-6">
+      <div>
+        <%= form.label :title, "Titulo", class: "label-retro" %>
+        <%= form.text_field :title, placeholder: "Nombre del disco", required: true, class: "input-retro" %>
+      </div>
 
-  <label>
-    Artista
-    <%= form.text_field :artist, placeholder: "Nombre del artista o banda", required: true %>
-  </label>
+      <div>
+        <%= form.label :artist, "Artista", class: "label-retro" %>
+        <%= form.text_field :artist, placeholder: "Nombre del artista o banda", required: true, class: "input-retro" %>
+      </div>
 
-  <div class="grid">
-    <label>
-      Año
-      <%= form.number_field :year, placeholder: "Año de lanzamiento", required: true %>
-    </label>
+      <div>
+        <%= form.label :description, "Descripcion", class: "label-retro" %>
+        <%= form.text_area :description, placeholder: "Descripcion del disco", rows: 5, required: true, class: "input-retro resize-none" %>
+      </div>
+    </div>
 
-    <label>
-      Precio
-      <%= form.number_field :price, step: 0.01, placeholder: "0.00", required: true %>
-    </label>
+    <!-- Right Column -->
+    <div class="space-y-6">
+      <div class="grid grid-cols-2 gap-4">
+        <div>
+          <%= form.label :year, "Ano", class: "label-retro" %>
+          <%= form.number_field :year, placeholder: "2024", required: true, class: "input-retro" %>
+        </div>
 
-    <label>
-      Stock
-      <%= form.number_field :stock, placeholder: "Cantidad disponible", required: true %>
-    </label>
+        <div>
+          <%= form.label :price, "Precio", class: "label-retro" %>
+          <%= form.number_field :price, step: 0.01, placeholder: "0.00", required: true, class: "input-retro" %>
+        </div>
+      </div>
+
+      <div>
+        <%= form.label :stock, "Stock", class: "label-retro" %>
+        <%= form.number_field :stock, placeholder: "Cantidad disponible", required: true, class: "input-retro" %>
+      </div>
+
+      <div class="grid grid-cols-2 gap-4">
+        <div>
+          <%= form.label :format, "Formato", class: "label-retro" %>
+          <%= form.select :format, ['CD', 'Vinilo'], { prompt: 'Seleccionar...' }, required: true, class: "select-retro" %>
+        </div>
+
+        <div>
+          <%= form.label :state, "Estado", class: "label-retro" %>
+          <%= form.select :state, ['Nuevo', 'Usado'], { prompt: 'Seleccionar...' }, required: true, class: "select-retro" %>
+        </div>
+      </div>
+    </div>
   </div>
 
-  <label>
-    Descripción
-    <%= form.text_area :description, placeholder: "Descripción del disco", rows: 4, required: true %>
-  </label>
-
-  <div class="grid">
-    <label>
-      Formato
-      <%= form.select :format, ['CD', 'Vinilo'], { prompt: 'Selecciona un formato' }, required: true %>
-    </label>
-
-    <label>
-      Estado
-      <%= form.select :state, ['Nuevo', 'Usado'], { prompt: 'Selecciona un estado' }, required: true %>
-    </label>
+  <div class="pt-6 border-t-2 border-vinyl-groove flex flex-col sm:flex-row gap-4">
+    <%= form.submit disk.new_record? ? "Crear Disco" : "Guardar Cambios", class: "btn-primary cursor-pointer" %>
+    <%= link_to "Cancelar", admin_disks_path, class: "btn-secondary text-center" %>
   </div>
-
-  <%= form.submit %>
 <% end %>

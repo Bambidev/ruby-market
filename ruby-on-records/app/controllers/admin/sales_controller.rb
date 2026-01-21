@@ -1,10 +1,8 @@
 class Admin::SalesController < Admin::BaseController
-  before_action :set_sale, only: %i[ show edit update destroy ]
-  before_action :require_gerente_o_superior
+  load_and_authorize_resource
 
   # GET /admin/sales
   def index
-    @sales = Sale.all
   end
 
   # GET /admin/sales/1
@@ -26,8 +24,8 @@ class Admin::SalesController < Admin::BaseController
 
     respond_to do |format|
       if @sale.save
-        format.html { redirect_to [:admin, @sale], notice: "Venta creada exitosamente." }
-        format.json { render :show, status: :created, location: [:admin, @sale] }
+        format.html { redirect_to [ :admin, @sale ], notice: "Venta creada exitosamente." }
+        format.json { render :show, status: :created, location: [ :admin, @sale ] }
       else
         format.html { render :new, status: :unprocessable_entity }
         format.json { render json: @sale.errors, status: :unprocessable_entity }
@@ -39,8 +37,8 @@ class Admin::SalesController < Admin::BaseController
   def update
     respond_to do |format|
       if @sale.update(sale_params)
-        format.html { redirect_to [:admin, @sale], notice: "Venta actualizada exitosamente.", status: :see_other }
-        format.json { render :show, status: :ok, location: [:admin, @sale] }
+        format.html { redirect_to [ :admin, @sale ], notice: "Venta actualizada exitosamente.", status: :see_other }
+        format.json { render :show, status: :ok, location: [ :admin, @sale ] }
       else
         format.html { render :edit, status: :unprocessable_entity }
         format.json { render json: @sale.errors, status: :unprocessable_entity }
@@ -59,11 +57,8 @@ class Admin::SalesController < Admin::BaseController
   end
 
   private
-    def set_sale
-      @sale = Sale.find(params.expect(:id))
-    end
 
-    def sale_params
-      params.expect(sale: [ :cancelled, :total ])
-    end
+  def sale_params
+    params.expect(sale: [ :cancelled, :total ])
+  end
 end

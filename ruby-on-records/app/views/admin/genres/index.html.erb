@@ -1,16 +1,32 @@
-<p style="color: green"><%= notice %></p>
+<% content_for :title, "Generos - Backstore" %>
 
-<% content_for :title, "Genres" %>
-
-<h1>Genres</h1>
-
-<div id="genres">
-  <% @genres.each do |genre| %>
-    <%= render genre %>
-    <p>
-      <%= link_to "Show this genre", [:admin, genre] %>
-    </p>
-  <% end %>
+<div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 mb-8">
+  <div>
+    <h1 class="font-display text-4xl font-bold text-vinyl-black mb-2">Generos</h1>
+    <p class="text-sepia">Categorias musicales disponibles</p>
+  </div>
+  <%= link_to "Nuevo Genero", new_admin_genre_path, class: "btn-primary inline-flex items-center gap-2" %>
 </div>
 
-<%= link_to "New genre", new_admin_genre_path %>
+<% if @genres.any? %>
+  <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4">
+    <% @genres.each do |genre| %>
+      <div class="card-retro p-6">
+        <h3 class="font-display text-xl font-bold text-vinyl-black mb-3"><%= genre.name %></h3>
+        <div class="flex items-center gap-3">
+          <%= link_to "Ver", [:admin, genre], class: "text-mustard-dark hover:text-mustard font-bold uppercase text-xs tracking-wider transition-colors" %>
+          <%= link_to "Editar", edit_admin_genre_path(genre), class: "text-teal hover:text-teal-dark font-bold uppercase text-xs tracking-wider transition-colors" %>
+        </div>
+      </div>
+    <% end %>
+  </div>
+<% else %>
+  <div class="card-retro p-12 text-center">
+    <svg class="w-16 h-16 mx-auto mb-4 text-sepia" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19V6l12-3v13M9 19c0 1.105-1.343 2-3 2s-3-.895-3-2 1.343-2 3-2 3 .895 3 2zm12-3c0 1.105-1.343 2-3 2s-3-.895-3-2 1.343-2 3-2 3 .895 3 2zM9 10l12-3"></path>
+    </svg>
+    <h3 class="font-display text-2xl font-bold text-vinyl-black mb-2">No hay generos</h3>
+    <p class="text-sepia mb-6">Crea el primer genero musical</p>
+    <%= link_to "Nuevo Genero", new_admin_genre_path, class: "btn-primary" %>
+  </div>
+<% end %>

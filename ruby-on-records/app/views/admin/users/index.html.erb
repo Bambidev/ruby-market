@@ -1,16 +1,59 @@
-<p style="color: green"><%= notice %></p>
+<% content_for :title, "Usuarios - Backstore" %>
 
-<% content_for :title, "Users" %>
-
-<h1>Users</h1>
-
-<div id="users">
-  <% @users.each do |user| %>
-    <%= render "admin/users/user", user: user %>
-    <p>
-      <%= link_to "Show this user", [:admin, user] %>
-    </p>
-  <% end %>
+<div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 mb-8">
+  <div>
+    <h1 class="font-display text-4xl font-bold text-vinyl-black mb-2">Usuarios</h1>
+    <p class="text-sepia">Gestiona los usuarios del sistema</p>
+  </div>
+  <%= link_to "Nuevo Usuario", new_admin_user_path, class: "btn-primary inline-flex items-center gap-2" %>
 </div>
 
-<%= link_to "New user", new_admin_user_path %>
+<% if @users.any? %>
+  <div class="card-retro overflow-hidden">
+    <div class="overflow-x-auto">
+      <table class="table-retro">
+        <thead>
+          <tr>
+            <th>Nombre</th>
+            <th>Email</th>
+            <th>Rol</th>
+            <th>Acciones</th>
+          </tr>
+        </thead>
+        <tbody>
+          <% @users.each do |user| %>
+            <tr>
+              <td class="font-bold"><%= user.full_name %></td>
+              <td class="text-sepia"><%= user.email %></td>
+              <td>
+                <span class="badge-retro 
+                  <%= case user.role 
+                      when 'admin' then 'bg-burgundy text-cream'
+                      when 'gerente' then 'bg-mustard text-vinyl-black'
+                      else 'bg-cream text-vinyl-black'
+                      end %>">
+                  <%= user.role.capitalize %>
+                </span>
+              </td>
+              <td>
+                <div class="flex items-center gap-3">
+                  <%= link_to "Ver", [:admin, user], class: "text-mustard-dark hover:text-mustard font-bold uppercase text-xs tracking-wider transition-colors" %>
+                  <%= link_to "Editar", edit_admin_user_path(user), class: "text-teal hover:text-teal-dark font-bold uppercase text-xs tracking-wider transition-colors" %>
+                </div>
+              </td>
+            </tr>
+          <% end %>
+        </tbody>
+      </table>
+    </div>
+  </div>
+<% else %>
+  <div class="card-retro p-12 text-center">
+    <svg class="w-16 h-16 mx-auto mb-4 text-sepia" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"></path>
+    </svg>
+    <h3 class="font-display text-2xl font-bold text-vinyl-black mb-2">No hay usuarios</h3>
+    <p class="text-sepia mb-6">Crea el primer usuario</p>
+    <%= link_to "Nuevo Usuario", new_admin_user_path, class: "btn-primary" %>
+  </div>
+<% end %>

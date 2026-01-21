@@ -1,18 +1,26 @@
-<% if notice %>
-  <div data-theme="light">
-    <ins><%= notice %></ins>
+<% content_for :title, "Catalogo de Discos - Backstore" %>
+
+<!-- Header -->
+<div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 mb-8">
+  <div>
+    <h1 class="font-display text-4xl font-bold text-vinyl-black mb-2">Catalogo de Discos</h1>
+    <p class="text-sepia">Gestiona todos los discos de la tienda</p>
   </div>
-<% end %>
-
-<% content_for :title, "Catálogo de Discos" %>
-
-<div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 2rem;">
-  <h1>Catálogo de Discos</h1>
-  <%= link_to "➕ Nuevo Disco", new_admin_disk_path, role: "button" %>
+  <%= link_to "Nuevo Disco", new_admin_disk_path, class: "btn-primary inline-flex items-center gap-2" %>
 </div>
 
-<div class="disk-grid">
+<!-- Disk Grid -->
+<div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
   <% @disks.each do |disk| %>
     <%= render 'shared/disk_card', disk: disk %>
   <% end %>
 </div>
+
+<% if @disks.empty? %>
+  <div class="card-retro p-12 text-center">
+    <div class="w-24 h-24 vinyl-record mx-auto mb-6 opacity-50"></div>
+    <h3 class="font-display text-2xl font-bold text-vinyl-black mb-2">No hay discos</h3>
+    <p class="text-sepia mb-6">Comienza agregando el primer disco al catalogo</p>
+    <%= link_to "Agregar Disco", new_admin_disk_path, class: "btn-primary" %>
+  </div>
+<% end %>

@@ -1,9 +1,8 @@
 class Admin::ClientsController < Admin::BaseController
-  before_action :set_client, only: %i[ show edit update destroy ]
+  load_and_authorize_resource
 
   # GET /admin/clients
   def index
-    @clients = Client.all
   end
 
   # GET /admin/clients/1
@@ -25,8 +24,8 @@ class Admin::ClientsController < Admin::BaseController
 
     respond_to do |format|
       if @client.save
-        format.html { redirect_to [:admin, @client], notice: "Cliente creado exitosamente." }
-        format.json { render :show, status: :created, location: [:admin, @client] }
+        format.html { redirect_to [ :admin, @client ], notice: "Cliente creado exitosamente." }
+        format.json { render :show, status: :created, location: [ :admin, @client ] }
       else
         format.html { render :new, status: :unprocessable_entity }
         format.json { render json: @client.errors, status: :unprocessable_entity }
@@ -38,8 +37,8 @@ class Admin::ClientsController < Admin::BaseController
   def update
     respond_to do |format|
       if @client.update(client_params)
-        format.html { redirect_to [:admin, @client], notice: "Cliente actualizado exitosamente.", status: :see_other }
-        format.json { render :show, status: :ok, location: [:admin, @client] }
+        format.html { redirect_to [ :admin, @client ], notice: "Cliente actualizado exitosamente.", status: :see_other }
+        format.json { render :show, status: :ok, location: [ :admin, @client ] }
       else
         format.html { render :edit, status: :unprocessable_entity }
         format.json { render json: @client.errors, status: :unprocessable_entity }
@@ -58,11 +57,8 @@ class Admin::ClientsController < Admin::BaseController
   end
 
   private
-    def set_client
-      @client = Client.find(params.expect(:id))
-    end
 
-    def client_params
-      params.expect(client: [ :name, :dni ])
-    end
+  def client_params
+    params.expect(client: [ :name, :dni ])
+  end
 end
