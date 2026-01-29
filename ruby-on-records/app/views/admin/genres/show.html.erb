@@ -1,10 +1,61 @@
-<p style="color: green"><%= notice %></p>
+<% content_for :title, "#{@genre.genre_name} - Géneros - Backstore" %>
 
-<%= render @genre %>
-
-<div>
-  <%= link_to "Edit this genre", edit_admin_genre_path(@genre) %> |
-  <%= link_to "Back to genres", admin_genres_path %>
-
-  <%= button_to "Destroy this genre", @genre, method: :delete %>
+<div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 mb-8">
+  <div>
+    <h1 class="font-display text-4xl font-bold text-vinyl-black mb-2"><%= @genre.genre_name %></h1>
+    <p class="text-sepia"><%= @genre.disks.count %> disco(s) en este género</p>
+  </div>
+  <div class="flex gap-3">
+    <%= link_to "Editar", edit_admin_genre_path(@genre), class: "btn-secondary" %>
+    <%= link_to "Volver", admin_genres_path, class: "text-sepia hover:text-vinyl-black underline" %>
+  </div>
 </div>
+
+<% if @disks.any? %>
+  <div class="card-retro overflow-hidden">
+    <div class="overflow-x-auto">
+      <table class="table-retro">
+        <thead>
+          <tr>
+            <th>Título</th>
+            <th>Artista</th>
+            <th>Formato</th>
+            <th>Precio</th>
+            <th>Stock</th>
+            <th>Acciones</th>
+          </tr>
+        </thead>
+        <tbody>
+          <% @disks.each do |disk| %>
+            <tr>
+              <td class="font-bold"><%= disk.title %></td>
+              <td class="text-sepia"><%= disk.artist %></td>
+              <td>
+                <span class="inline-block px-2 py-1 text-xs font-bold rounded <%= disk.format == 'Vinilo' ? 'bg-mustard text-vinyl-black' : 'bg-teal text-white' %>">
+                  <%= disk.format %>
+                </span>
+              </td>
+              <td class="font-mono">$<%= number_with_precision(disk.price, precision: 2) %></td>
+              <td>
+                <span class="<%= disk.stock > 0 ? 'text-teal' : 'text-rust' %> font-bold">
+                  <%= disk.stock %>
+                </span>
+              </td>
+              <td>
+                <%= link_to "Ver", [:admin, disk], class: "text-mustard-dark hover:text-mustard font-bold uppercase text-xs tracking-wider transition-colors" %>
+              </td>
+            </tr>
+          <% end %>
+        </tbody>
+      </table>
+    </div>
+  </div>
+  
+  <div class="mt-6">
+    <%= paginate @disks %>
+  </div>
+<% else %>
+  <div class="card-retro p-12 text-center">
+    <p class="text-sepia">No hay discos en este género</p>
+  </div>
+<% end %>

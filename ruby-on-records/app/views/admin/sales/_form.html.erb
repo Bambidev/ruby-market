@@ -1,27 +1,453 @@
-<%= form_with(model: [:admin, sale]) do |form| %>
-  <% if sale.errors.any? %>
-    <div style="color: red">
-      <h2><%= pluralize(sale.errors.count, "error") %> prohibited this sale from being saved:</h2>
-
-      <ul>
-        <% sale.errors.each do |error| %>
-          <li><%= error.full_message %></li>
-        <% end %>
-      </ul>
+<%= form_with(model: [:admin, @sale], local: true, id: "sale-form", class: "space-y-6", data: { turbo: false }) do |f| %>
+  
+  <% if @sale.errors.any? %>
+    <div class="bg-rust/20 border-l-4 border-rust p-4 mb-6">
+      <div class="flex">
+        <div class="flex-shrink-0">
+          <svg class="h-5 w-5 text-rust" viewBox="0 0 20 20" fill="currentColor">
+            <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zM8.707 7.293a1 1 0 00-1.414 1.414L8.586 10l-1.293 1.293a1 1 0 101.414 1.414L10 11.414l1.293 1.293a1 1 0 001.414-1.414L11.414 10l1.293-1.293a1 1 0 00-1.414-1.414L10 8.586 8.707 7.293z" clip-rule="evenodd"/>
+          </svg>
+        </div>
+        <div class="ml-3">
+          <h3 class="text-sm font-bold text-rust">Error al guardar la venta</h3>
+          <div class="mt-2 text-sm text-cream/70">
+            <ul class="list-disc pl-5 space-y-1">
+              <% @sale.errors.full_messages.each do |msg| %>
+                <li><%= msg %></li>
+              <% end %>
+            </ul>
+          </div>
+        </div>
+      </div>
     </div>
   <% end %>
 
-  <div>
-    <%= form.label :cancelled, style: "display: block" %>
-    <%= form.checkbox :cancelled %>
+  <!-- ========== SECCIÓN CLIENTE ========== -->
+  <div class="card-retro p-6">
+    <h3 class="text-xl font-display font-bold text-vinyl-black mb-4 border-b-2 border-vinyl-black pb-2">
+      👤 Cliente
+    </h3>
+    
+    <div class="space-y-4">
+      <!-- Búsqueda por DNI -->
+      <div>
+        <label for="client_dni_input" class="label-retro">DNI del Cliente</label>
+        <div class="flex gap-2">
+          <input type="text" 
+                 id="client_dni_input" 
+                 placeholder="Ingrese DNI del cliente"
+                 class="input-retro flex-1">
+          <button type="button" 
+                  onclick="searchClient()"
+                  class="btn-primary px-6">
+            🔍 Buscar
+          </button>
+        </div>
+        <p class="text-xs text-vinyl-dark/60 mt-1">Ingrese el DNI y presione buscar</p>
+      </div>
+
+      <!-- Error: no encontrado -->
+      <div id="client_not_found" class="hidden bg-mustard/10 border-2 border-mustard p-4 rounded">
+        <p class="text-sm font-bold text-vinyl-black mb-4">
+          ⚠️ Cliente no encontrado. Complete los datos para registrarlo:
+        </p>
+        
+        <input type="hidden" name="sale[client_attributes][dni]" id="new_client_dni">
+        
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+          <div class="md:col-span-3">
+            <label class="label-retro">Nombre Completo *</label>
+            <input type="text"
+                   name="sale[client_attributes][name]"
+                   id="new_client_name"
+                   placeholder="Ej: Juan Pérez"
+                   class="input-retro">
+          </div>
+          <div>
+            <label class="label-retro">Email (opcional)</label>
+            <input type="email"
+                   name="sale[client_attributes][email]"
+                   id="new_client_email"
+                   placeholder="Ej: juan@email.com"
+                   class="input-retro">
+          </div>
+          <div>
+            <label class="label-retro">Teléfono (opcional)</label>
+            <input type="tel"
+                   name="sale[client_attributes][phone]"
+                   id="new_client_phone"
+                   placeholder="Ej: +54 11 1234-5678"
+                   class="input-retro">
+          </div>
+        </div>
+      </div>
+
+      <!-- Cliente encontrado -->
+      <div id="client_found" class="hidden bg-green-50 border-2 border-green-500 p-4 rounded">
+        <input type="hidden" name="sale[client_id]" id="selected_client_id">
+        <div class="flex justify-between items-start">
+          <div>
+            <p class="text-sm font-bold text-green-700 mb-2">✅ Cliente encontrado</p>
+            <div class="grid grid-cols-2 gap-x-8 gap-y-1 text-sm">
+              <div><span class="text-vinyl-dark/60">Nombre:</span> <span id="client_name" class="font-bold"></span></div>
+              <div><span class="text-vinyl-dark/60">DNI:</span> <span id="client_dni" class="font-bold"></span></div>
+              <div><span class="text-vinyl-dark/60">Email:</span> <span id="client_email" class="font-bold"></span></div>
+              <div><span class="text-vinyl-dark/60">Teléfono:</span> <span id="client_phone" class="font-bold"></span></div>
+            </div>
+          </div>
+          <button type="button" onclick="clearClient()" class="text-rust hover:text-rust-dark text-sm underline">
+            Cambiar
+          </button>
+        </div>
+      </div>
+    </div>
   </div>
 
-  <div>
-    <%= form.label :total, style: "display: block" %>
-    <%= form.text_field :total %>
+  <!-- ========== SECCIÓN PRODUCTOS ========== -->
+  <div class="card-retro p-6">
+    <div class="flex items-center justify-between mb-4 border-b-2 border-vinyl-black pb-2">
+      <h3 class="text-xl font-display font-bold text-vinyl-black">🛒 Productos</h3>
+      <button type="button" onclick="addItem()" class="btn-secondary text-sm">
+        + Agregar Producto
+      </button>
+    </div>
+
+    <div id="items-container" class="space-y-4">
+      <!-- Los items se agregan dinámicamente -->
+    </div>
+    
+    <div id="no-items-message" class="text-center py-8 text-vinyl-dark/60">
+      <p>No hay productos agregados. Haga clic en "Agregar Producto" para comenzar.</p>
+    </div>
   </div>
 
-  <div>
-    <%= form.submit %>
+  <!-- ========== TOTAL ========== -->
+  <div class="bg-vinyl-black p-6 border-2 border-mustard text-cream shadow-lg">
+    <div class="flex justify-between items-center">
+      <div>
+        <p class="text-cream/50 text-sm">El total se actualiza automáticamente</p>
+      </div>
+      <div class="text-right">
+        <span class="block text-sm text-mustard uppercase tracking-widest">Total a Pagar</span>
+        <span id="sale-total" class="block text-4xl font-display font-bold text-white">$0.00</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- ========== BOTONES ========== -->
+  <div class="flex justify-end gap-4 mt-8">
+    <%= link_to "Cancelar", admin_sales_path, class: "px-6 py-3 text-vinyl-dark hover:text-rust transition-colors uppercase text-sm tracking-wider font-bold" %>
+    <%= f.submit "CONFIRMAR VENTA", class: "btn-primary text-lg px-8 py-4 shadow-xl transform hover:scale-105 transition-transform cursor-pointer" %>
   </div>
 <% end %>
+
+<!-- ========== TEMPLATE PARA ITEM ========== -->
+<template id="item-template">
+  <div class="item-row card-retro p-4" data-index="INDEX">
+    <!-- Búsqueda de disco -->
+    <div class="disk-search mb-4">
+      <label class="label-retro">🎵 Buscar Disco</label>
+      <div class="flex gap-2">
+        <input type="text" 
+               class="disk-query input-retro flex-1" 
+               placeholder="Buscar por título o artista...">
+        <button type="button" class="btn-primary px-4 search-disk-btn">
+          🔍 Buscar
+        </button>
+      </div>
+      <div class="disk-results mt-2"></div>
+    </div>
+    
+    <!-- Disco seleccionado (oculto inicialmente) -->
+    <div class="disk-selected hidden mb-4">
+      <div class="bg-green-50 border-2 border-green-500 p-3 rounded flex items-center justify-between">
+        <div>
+          <p class="font-bold text-vinyl-black disk-title"></p>
+          <p class="text-xs text-vinyl-dark/60">
+            <span class="disk-artist"></span> • 
+            Stock: <span class="disk-stock"></span> • 
+            <span class="disk-format"></span>
+          </p>
+        </div>
+        <button type="button" class="btn-secondary text-xs px-3 py-1 change-disk-btn">Cambiar</button>
+      </div>
+      <input type="hidden" class="disk-id-input" name="">
+    </div>
+    
+    <!-- Cantidad, Precio, Subtotal, Eliminar -->
+    <div class="grid grid-cols-4 gap-4 items-end">
+      <div>
+        <label class="label-retro">Cantidad</label>
+        <input type="number" 
+               class="quantity-input input-retro text-center font-bold w-full" 
+               min="1" 
+               value="1"
+               name="">
+      </div>
+      <div>
+        <label class="label-retro">Precio Unit.</label>
+        <input type="number" 
+               class="price-input input-retro text-right font-mono w-full" 
+               step="0.01"
+               readonly
+               name="">
+      </div>
+      <div>
+        <label class="label-retro">Subtotal</label>
+        <div class="bg-mustard/20 border-2 border-mustard px-4 py-2 rounded text-right">
+          <span class="subtotal-display text-xl font-display font-bold text-vinyl-black">$0.00</span>
+        </div>
+      </div>
+      <div>
+        <button type="button" class="remove-item-btn w-full bg-rust hover:bg-rust/80 text-white p-2 rounded flex items-center justify-center gap-2">
+          <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"></path>
+          </svg>
+          <span class="text-xs font-bold">Quitar</span>
+        </button>
+      </div>
+    </div>
+  </div>
+</template>
+
+<script>
+  // ========== VARIABLES GLOBALES ==========
+  let itemIndex = 0;
+  
+  // ========== BÚSQUEDA DE CLIENTE ==========
+  function searchClient() {
+    const dni = document.getElementById('client_dni_input').value.trim();
+    if (!dni) {
+      alert('Por favor ingrese un DNI');
+      return;
+    }
+    
+    fetch('<%= search_client_admin_sales_path %>?dni=' + encodeURIComponent(dni))
+      .then(response => response.json())
+      .then(data => {
+        if (data.found) {
+          // Mostrar cliente encontrado
+          document.getElementById('client_found').classList.remove('hidden');
+          document.getElementById('client_not_found').classList.add('hidden');
+          
+          document.getElementById('selected_client_id').value = data.id;
+          document.getElementById('client_name').textContent = data.name;
+          document.getElementById('client_dni').textContent = data.dni;
+          document.getElementById('client_email').textContent = data.email || '-';
+          document.getElementById('client_phone').textContent = data.phone || '-';
+        } else {
+          // Mostrar formulario para nuevo cliente
+          document.getElementById('client_found').classList.add('hidden');
+          document.getElementById('client_not_found').classList.remove('hidden');
+          document.getElementById('new_client_dni').value = data.dni;
+        }
+      })
+      .catch(error => {
+        console.error('Error:', error);
+        alert('Error al buscar cliente');
+      });
+  }
+  
+  function clearClient() {
+    document.getElementById('client_found').classList.add('hidden');
+    document.getElementById('client_not_found').classList.add('hidden');
+    document.getElementById('client_dni_input').value = '';
+    document.getElementById('selected_client_id').value = '';
+  }
+  
+  // ========== MANEJO DE ITEMS ==========
+  function addItem() {
+    const template = document.getElementById('item-template');
+    const container = document.getElementById('items-container');
+    const clone = template.content.cloneNode(true);
+    
+    // Actualizar índices en el template
+    const itemRow = clone.querySelector('.item-row');
+    itemRow.dataset.index = itemIndex;
+    
+    // Configurar names de los inputs
+    const diskIdInput = clone.querySelector('.disk-id-input');
+    diskIdInput.name = `sale[items_attributes][${itemIndex}][disk_id]`;
+    
+    const quantityInput = clone.querySelector('.quantity-input');
+    quantityInput.name = `sale[items_attributes][${itemIndex}][quantity]`;
+    
+    const priceInput = clone.querySelector('.price-input');
+    priceInput.name = `sale[items_attributes][${itemIndex}][price]`;
+    
+    // Event listeners
+    const searchBtn = clone.querySelector('.search-disk-btn');
+    const queryInput = clone.querySelector('.disk-query');
+    const changeBtn = clone.querySelector('.change-disk-btn');
+    const removeBtn = clone.querySelector('.remove-item-btn');
+    
+    searchBtn.addEventListener('click', () => searchDisk(itemRow));
+    queryInput.addEventListener('keypress', (e) => {
+      if (e.key === 'Enter') {
+        e.preventDefault();
+        searchDisk(itemRow);
+      }
+    });
+    changeBtn.addEventListener('click', () => changeDisk(itemRow));
+    removeBtn.addEventListener('click', () => removeItem(itemRow));
+    
+    quantityInput.addEventListener('input', () => updateSubtotal(itemRow));
+    
+    container.appendChild(clone);
+    itemIndex++;
+    
+    updateNoItemsMessage();
+    updateTotal();
+  }
+  
+  function removeItem(itemRow) {
+    if (confirm('¿Eliminar este producto?')) {
+      itemRow.remove();
+      updateNoItemsMessage();
+      updateTotal();
+    }
+  }
+  
+  function updateNoItemsMessage() {
+    const container = document.getElementById('items-container');
+    const message = document.getElementById('no-items-message');
+    message.classList.toggle('hidden', container.children.length > 0);
+  }
+  
+  // ========== BÚSQUEDA DE DISCOS ==========
+  function searchDisk(itemRow) {
+    const queryInput = itemRow.querySelector('.disk-query');
+    const query = queryInput.value.trim();
+    
+    if (!query) {
+      alert('Por favor ingrese un término de búsqueda');
+      return;
+    }
+    
+    const resultsDiv = itemRow.querySelector('.disk-results');
+    resultsDiv.innerHTML = '<p class="text-sm text-vinyl-dark/60">Buscando...</p>';
+    
+    fetch('<%= search_disks_admin_sales_path %>?query=' + encodeURIComponent(query))
+      .then(response => response.json())
+      .then(data => {
+        if (data.found && data.disks.length > 0) {
+          let html = '<div class="bg-paper border-2 border-vinyl-black rounded max-h-48 overflow-y-auto">';
+          html += '<div class="p-2 bg-mustard border-b-2 border-vinyl-black"><p class="text-xs font-bold uppercase">' + data.disks.length + ' resultado(s)</p></div>';
+          
+          data.disks.forEach(disk => {
+            html += `
+              <div class="flex justify-between items-center p-3 border-b border-vinyl-black/10 hover:bg-mustard/10 cursor-pointer disk-result-item"
+                   data-id="${disk.id}"
+                   data-title="${disk.title}"
+                   data-artist="${disk.artist}"
+                   data-format="${disk.format}"
+                   data-stock="${disk.stock}"
+                   data-price="${disk.price}">
+                <div>
+                  <p class="font-bold text-sm">${disk.title}</p>
+                  <p class="text-xs text-vinyl-dark/60">${disk.artist} • Stock: ${disk.stock} • ${disk.format}</p>
+                </div>
+                <div class="flex items-center gap-2">
+                  <span class="font-mono font-bold text-mustard-dark">$${disk.price.toFixed(2)}</span>
+                  <button type="button" class="btn-primary text-xs px-2 py-1 select-disk-btn">Seleccionar</button>
+                </div>
+              </div>
+            `;
+          });
+          
+          html += '</div>';
+          resultsDiv.innerHTML = html;
+          
+          // Agregar event listeners a los botones de selección
+          resultsDiv.querySelectorAll('.select-disk-btn').forEach(btn => {
+            btn.addEventListener('click', (e) => {
+              const diskItem = e.target.closest('.disk-result-item');
+              selectDisk(itemRow, diskItem.dataset);
+            });
+          });
+        } else {
+          resultsDiv.innerHTML = '<div class="bg-rust/10 border-2 border-rust rounded p-3 text-center"><p class="text-sm text-rust font-bold">No se encontraron discos</p></div>';
+        }
+      })
+      .catch(error => {
+        console.error('Error:', error);
+        resultsDiv.innerHTML = '<p class="text-sm text-rust">Error al buscar</p>';
+      });
+  }
+  
+  function selectDisk(itemRow, diskData) {
+    // Ocultar búsqueda, mostrar seleccionado
+    itemRow.querySelector('.disk-search').classList.add('hidden');
+    itemRow.querySelector('.disk-selected').classList.remove('hidden');
+    
+    // Llenar datos
+    itemRow.querySelector('.disk-title').textContent = diskData.title;
+    itemRow.querySelector('.disk-artist').textContent = diskData.artist;
+    itemRow.querySelector('.disk-stock').textContent = diskData.stock;
+    itemRow.querySelector('.disk-format').textContent = diskData.format;
+    
+    // Inputs del form
+    itemRow.querySelector('.disk-id-input').value = diskData.id;
+    itemRow.querySelector('.price-input').value = parseFloat(diskData.price).toFixed(2);
+    
+    updateSubtotal(itemRow);
+    updateTotal();
+  }
+  
+  function changeDisk(itemRow) {
+    itemRow.querySelector('.disk-search').classList.remove('hidden');
+    itemRow.querySelector('.disk-selected').classList.add('hidden');
+    itemRow.querySelector('.disk-id-input').value = '';
+    itemRow.querySelector('.price-input').value = '';
+    itemRow.querySelector('.disk-query').value = '';
+    itemRow.querySelector('.disk-results').innerHTML = '';
+    
+    updateSubtotal(itemRow);
+    updateTotal();
+  }
+  
+  // ========== CÁLCULOS ==========
+  function updateSubtotal(itemRow) {
+    const quantity = parseInt(itemRow.querySelector('.quantity-input').value) || 0;
+    const price = parseFloat(itemRow.querySelector('.price-input').value) || 0;
+    const subtotal = quantity * price;
+    
+    itemRow.querySelector('.subtotal-display').textContent = '$' + subtotal.toFixed(2);
+    updateTotal();
+  }
+  
+  function updateTotal() {
+    let total = 0;
+    document.querySelectorAll('.item-row').forEach(row => {
+      const quantity = parseInt(row.querySelector('.quantity-input').value) || 0;
+      const price = parseFloat(row.querySelector('.price-input').value) || 0;
+      total += quantity * price;
+    });
+    
+    document.getElementById('sale-total').textContent = '$' + total.toFixed(2);
+  }
+  
+  // ========== INICIALIZACIÓN ==========
+  document.addEventListener('DOMContentLoaded', function() {
+    // Permitir búsqueda de cliente con Enter
+    document.getElementById('client_dni_input').addEventListener('keypress', function(e) {
+      if (e.key === 'Enter') {
+        e.preventDefault();
+        searchClient();
+      }
+    });
+    
+    // Agregar primer item automáticamente
+    addItem();
+    
+    // Debug: verificar submit del formulario
+    document.getElementById('sale-form').addEventListener('submit', function(e) {
+      console.log('Formulario enviándose...');
+      const formData = new FormData(this);
+      console.log('Datos del formulario:');
+      for (let [key, value] of formData.entries()) {
+        console.log(key + ': ' + value);
+      }
+    });
+  });
+</script>

@@ -1,30 +1,35 @@
 class Sale < ApplicationRecord
   # === Relaciones === #
-
-  # Una Venta es ejecutada por un Usuario Vendedor
   belongs_to :user
-  # Una Venta es comprada por un Cliente
   belongs_to :client
-
-  # The belongs_to association says that this model's table contains a column which represents a reference to another table.
-  # This can be used to set up one-to-one or one-to-many relations, depending on the setup.
-  # When used alone, belongs_to produces a one-directional one-to-one relationship.
-  # Therefore each book in the above example "knows" its author, but the authors don't know about their books.
-  # https://guides.rubyonrails.org/association_basics.html#belongs-to
-
-  # Una Venta contiene varios Items
-  has_many :items
-
-  # A has_many association (...) indicates a one-to-many relationship with another model.
-  # You'll often find this association on the "other side" of a belongs_to association.
-  # This association indicates that each instance of the model has zero or more instances of another model.
-  # https://guides.rubyonrails.org/association_basics.html#has-many
+  has_many :items, dependent: :destroy
+  
+  accepts_nested_attributes_for :items, allow_destroy: true, reject_if: :all_blank
+  accepts_nested_attributes_for :client, reject_if: :all_blank
 
   # === Validadores === #
-
-  # :cancelled ::= Venta cancelada (True) o no (False)
-  validates :cancelled, presence: true
-
-  # :total ::= Total a pagar de una Venta
   validates :total, presence: true, numericality: { greater_than_or_equal_to: 0 }
+  validates :client, presence: true
+  validates :user, presence: true
+
+  # === Scopes === #
+  scope :active, -> { where(cancelled: false) }
+  scope :cancelled, -> { where(cancelled: true) }
+  scope :recent, -> { order(created_at: :desc) }
+
+  # === Métodos de Instancia === #
+  
+  # Cancela la venta usando el Service Object
+  # @return [Boolean] true si se canceló exitosamente
+  def cancel!
+    result = Sales::Canceller.new(self).call
+    result.success?
+  end
+
+  # Calcula el total de la venta
+  # @return [Float] total calculado
+  def calculated_total
+    items.sum { |item| item.price * item.quantity }
+  end
 end
+

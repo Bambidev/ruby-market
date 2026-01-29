@@ -1,14 +1,47 @@
 class Admin::DisksController < Admin::BaseController
-  load_and_authorize_resource
+  before_action :set_disk, only: %i[show edit update destroy]
+  before_action :load_genres, only: %i[new edit create update]
 
   # GET /admin/disks
   def index
-  end
-
-  private
-
-  def set_collection
-    @disks = Disk.by_state(params[:filter])
+    @disks = Disk.includes(:genres).order(created_at: :desc)
+    
+    # Filtro por búsqueda de texto
+    if params[:q].present?
+      @disks = @disks.search(params[:q])
+    end
+    
+    # Filtro por género
+    if params[:genre_id].present?
+      @disks = @disks.joins(:genres).where(genres: { id: params[:genre_id] })
+    end
+    
+    # Filtro por formato
+    if params[:format_filter].present?
+      @disks = @disks.where(format: params[:format_filter])
+    end
+    
+    # Filtro por estado
+    if params[:state].present?
+      @disks = @disks.where(state: params[:state])
+    end
+    
+    # Filtro por stock
+    case params[:stock]
+    when "in_stock"
+      @disks = @disks.in_stock
+    when "out_of_stock"
+      @disks = @disks.out_of_stock
+    end
+    
+    # Filtro por año
+    if params[:year].present?
+      @disks = @disks.where(year: params[:year])
+    end
+    
+    @disks = @disks.page(params[:page])
+    @genres = Genre.order(:genre_name)
+    @years = Disk.distinct.order(year: :desc).pluck(:year)
   end
 
   # GET /admin/disks/1
@@ -28,43 +61,44 @@ class Admin::DisksController < Admin::BaseController
   def create
     @disk = Disk.new(disk_params)
 
-    respond_to do |format|
-      if @disk.save
-        format.html { redirect_to [ :admin, @disk ], notice: "Disco creado exitosamente." }
-        format.json { render :show, status: :created, location: [ :admin, @disk ] }
-      else
-        format.html { render :new, status: :unprocessable_entity }
-        format.json { render json: @disk.errors, status: :unprocessable_entity }
-      end
+    if @disk.save
+      redirect_to [:admin, @disk], notice: "Disco creado exitosamente."
+    else
+      render :new, status: :unprocessable_entity
     end
   end
 
   # PATCH/PUT /admin/disks/1
   def update
-    respond_to do |format|
-      if @disk.update(disk_params)
-        format.html { redirect_to [ :admin, @disk ], notice: "Disco actualizado exitosamente.", status: :see_other }
-        format.json { render :show, status: :ok, location: [ :admin, @disk ] }
-      else
-        format.html { render :edit, status: :unprocessable_entity }
-        format.json { render json: @disk.errors, status: :unprocessable_entity }
-      end
+    if @disk.update(disk_params)
+      redirect_to [:admin, @disk], notice: "Disco actualizado exitosamente."
+    else
+      render :edit, status: :unprocessable_entity
     end
   end
 
   # DELETE /admin/disks/1
   def destroy
     @disk.destroy!
-
-    respond_to do |format|
-      format.html { redirect_to admin_disks_path, notice: "Disco eliminado exitosamente.", status: :see_other }
-      format.json { head :no_content }
-    end
+    redirect_to admin_disks_path, notice: "Disco eliminado exitosamente."
   end
 
   private
 
+  def set_disk
+    @disk = Disk.find(params[:id])
+  end
+
+  def load_genres
+    @genres = Genre.order(:genre_name)
+  end
+
   def disk_params
-    params.expect(disk: [ :title, :artist, :year, :description, :price, :stock, :format, :state ])
+    params.require(:disk).permit(
+      :title, :artist, :year, :description, :price, :stock, :format, :state,
+      :cover, :preview,
+      photos: [],
+      genre_ids: []
+    )
   end
 end

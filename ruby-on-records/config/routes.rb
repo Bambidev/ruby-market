@@ -8,11 +8,23 @@ Rails.application.routes.draw do
   namespace :admin do
     root to: "dashboard#index"
     resources :disks
-    resources :sales
+    resources :sales do
+      collection do
+        get :search_client
+        get :search_disks
+      end
+      member do
+        post :cancel
+      end
+    end
     resources :users
-    resources :clients
+    resources :clients do
+      collection do
+        get :search
+        post :quick_create
+      end
+    end
     resources :genres
-    resources :items
   end
 
   # === Storefront (público) === #

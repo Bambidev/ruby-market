@@ -1,81 +1,244 @@
-# Ruby On Records
-_______________
-  /                 \
- /    ___________    \
-|   /   RUBY ON  \   |
-|  |    RECORDS   |  |
-|   \      *     /   |
- \    -----------   /
-  \                /
-    ---------------
-**Tu tienda de vinilos y CDs desde 1985** Ruby On Records es un sistema de gestion para una disqueria, desarrollado con Ruby on Rails. Permite administrar el inventario de discos, gestionar ventas y clientes, con un sistema de roles y permisos para diferentes tipos de usuarios. --- ## Capturas de Pantalla ### Storefront (Tienda)
-+------------------------------------------------------------------+
-|  [*] Ruby On Records     INICIO  CATALOGO  NUEVOS  USADOS        |
-+==================================================================+
-|                                                                  |
-|     "Spin Your Story"              _______________               |
-|                                  /                 \             |
-|     Descubri nuestra            /    ___________    \            |
-|     coleccion de vinilos       |   /             \   |           |
-|     y CDs...                   |  |    LABEL      |  |           |
-|                                |   \      *      /   |           |
-|     [EXPLORAR CATALOGO]         \    -----------   /             |
-|     [NUEVOS INGRESOS]            \                /              |
-|                                    ---------------               |
-+------------------------------------------------------------------+
-|                                                                  |
-|     Nuevos Ingresos                                              |
-|     +--------+  +--------+  +--------+  +--------+               |
-|     | Album  |  | Album  |  | Album  |  | Album  |               |
-|     | Cover  |  | Cover  |  | Cover  |  | Cover  |               |
-|     +--------+  +--------+  +--------+  +--------+               |
-|     Artist      Artist      Artist      Artist                   |
-|     $20,000     $15,000     $70,000     $20,000                  |
-|                                                                  |
-+------------------------------------------------------------------+
-### Backstore (Administracion)
-+------------------------------------------------------------------+
-|  [*] Backstore     DASHBOARD  DISCOS  VENTAS  CLIENTES  GENEROS  |
-+==================================================================+
-|                                                                  |
-|     Dashboard                                                    |
-|                                                                  |
-|     +------------+  +------------+  +------------+               |
-|     | DISCOS     |  | VENTAS     |  | CLIENTES   |               |
-|     |    125     |  |     48     |  |     32     |               |
-|     +------------+  +------------+  +------------+               |
-|                                                                  |
-|     Ultimos Discos Agregados                                     |
-|     +------+------------------+----------+--------+              |
-|     | ID   | Titulo           | Artista  | Precio |              |
-|     +------+------------------+----------+--------+              |
-|     | 5    | Alma de Diamante | Spinetta | $150k  |              |
-|     | 4    | Jessico          | Babas... | $20k   |              |
-|     +------+------------------+----------+--------+              |
-|                                                                  |
-+------------------------------------------------------------------+
---- ## Caracteristicas Principales - **Catalogo Publico** - Los visitantes pueden explorar el catalogo de discos sin necesidad de registrarse - **Sistema de Roles** - Tres niveles de acceso: Empleado, Gerente y Administrador - **Gestion de Inventario** - CRUD completo de discos (vinilos y CDs) - **Gestion de Ventas** - Registro de ventas con detalle de items - **Gestion de Clientes** - Base de datos de clientes - **Generos Musicales** - Clasificacion de discos por genero - **Diseno Retro** - Interfaz visual inspirada en disquerias de los 70s/80s --- ## Tecnologias | Categoria | Tecnologia | |-----------|------------| | Backend | Ruby on Rails 8.1 | | Frontend | Tailwind CSS v4 | | Base de Datos | SQLite3 | | Autenticacion | has_secure_password (bcrypt) | | Autorizacion | CanCanCan | | JavaScript | Hotwire (Turbo + Stimulus) | | Assets | Propshaft | --- ## Inicio Rapido
-Para una guia completa de instalacion, ver [docs/SETUP.md](docs/SETUP.md). ### Usuarios de Prueba | Rol | Email | Password | |-----|-------|----------| | Admin | admin@rubyonrecords.com | admin123 | | Gerente | gerente@rubyonrecords.com | gerente123 | | Empleado | empleado@rubyonrecords.com | empleado123 | --- ## Documentacion | Documento | Descripcion | |-----------|-------------| | [SETUP.md](docs/SETUP.md) | Guia completa de instalacion y comandos utiles | | [FEATURES.md](docs/FEATURES.md) | Lista de funcionalidades | | [ARCHITECTURE.md](docs/ARCHITECTURE.md) | Arquitectura tecnica | | [DATA_MODEL.md](docs/DATA_MODEL.md) | Modelo de datos y permisos | | [DESIGN_SYSTEM.md](docs/DESIGN_SYSTEM.md) | Sistema de diseno visual | --- ## Estructura del Proyecto
+# 🎵 Ruby On Records
+
+<div align="center">
+
+![Ruby](https://img.shields.io/badge/Ruby-3.4-CC342D?style=for-the-badge&logo=ruby&logoColor=white)
+![Rails](https://img.shields.io/badge/Rails-8.0-CC0000?style=for-the-badge&logo=rubyonrails&logoColor=white)
+![Tailwind](https://img.shields.io/badge/Tailwind-4.0-38B2AC?style=for-the-badge&logo=tailwind-css&logoColor=white)
+![SQLite](https://img.shields.io/badge/SQLite-3-003B57?style=for-the-badge&logo=sqlite&logoColor=white)
+
+**Sistema de gestión para disquerías con estética retro de los 70s/80s**
+
+<img src="https://media.giphy.com/media/tqfS3mgQU28ko/giphy.gif" width="300" alt="Vinyl spinning">
+
+[✨ Demo](#-demo) •
+[🚀 Instalación](#-instalación) •
+[📖 Documentación](#-documentación) •
+[🎨 Screenshots](#-screenshots)
+
+</div>
+
+---
+
+## ✨ ¿Qué es Ruby On Records?
+
+Ruby On Records es un **sistema de gestión completo** para tiendas de discos de vinilo y CDs. Combina funcionalidad moderna con una **estética retro nostálgica** que transporta a los usuarios a la época dorada de las disquerías.
+
+<div align="center">
+<img src="https://media.giphy.com/media/l0HlvtIPzPdt2usKs/giphy.gif" width="400" alt="Music vibes">
+</div>
+
+### 🎯 Características Principales
+
+| Característica | Descripción |
+|----------------|-------------|
+| 🛒 **Catálogo Público** | Explora discos con filtros avanzados (género, año, formato, estado) |
+| 💼 **Panel Admin** | Gestión completa de inventario, ventas, clientes y usuarios |
+| 👥 **Sistema de Roles** | Empleado, Gerente y Administrador con permisos diferenciados |
+| 🧾 **Facturación PDF** | Genera facturas profesionales para cada venta |
+| 📊 **Control de Stock** | Actualización automática al registrar ventas o cancelaciones |
+| 🎨 **Diseño Retro** | Interfaz inspirada en disquerías vintage con animaciones sutiles |
+
+---
+
+## 🚀 Instalación
+
+### Prerrequisitos
+
+- Ruby 3.4+
+- Node.js 18+ (para Tailwind)
+- SQLite3
+
+### Pasos
+
+```bash
+# 1. Clonar el repositorio
+git clone https://github.com/tu-usuario/ruby-on-records.git
+cd ruby-on-records
+
+# 2. Instalar dependencias
+bundle install
+
+# 3. Configurar base de datos
+rails db:setup
+
+# 4. Iniciar el servidor
+bin/dev
+```
+
+### 🔑 Usuarios de prueba
+
+| Rol | Email | Contraseña |
+|-----|-------|------------|
+| 👑 Admin | `admin@rubyonrecords.com` | `admin123` |
+| 📊 Gerente | `gerente@rubyonrecords.com` | `gerente123` |
+| 👤 Empleado | `empleado@rubyonrecords.com` | `empleado123` |
+
+---
+
+## 🎨 Screenshots
+
+### 🏠 Storefront (Público)
+
+<table>
+<tr>
+<td width="50%">
+
+**Home**
+> Página de inicio con destacados y categorías
+
+</td>
+<td width="50%">
+
+**Catálogo**
+> Navegación con filtros por género, año y formato
+
+</td>
+</tr>
+</table>
+
+### 🔐 Backstore (Admin)
+
+<table>
+<tr>
+<td width="33%">
+
+**Dashboard**
+> Estadísticas y accesos rápidos
+
+</td>
+<td width="33%">
+
+**Gestión de Ventas**
+> Registro con búsqueda de cliente y discos
+
+</td>
+<td width="33%">
+
+**Inventario**
+> CRUD completo con filtros avanzados
+
+</td>
+</tr>
+</table>
+
+---
+
+## 📖 Documentación
+
+| Documento | Descripción |
+|-----------|-------------|
+| [📐 Arquitectura](docs/ARCHITECTURE.md) | Estructura técnica y decisiones de diseño |
+| [🗃️ Modelo de Datos](docs/DATA_MODEL.md) | Entidades, relaciones y validaciones |
+| [🎨 Sistema de Diseño](docs/DESIGN_SYSTEM.md) | Paleta de colores, tipografía y componentes |
+| [⚙️ Setup](docs/SETUP.md) | Guía detallada de instalación |
+| [📋 Features](docs/FEATURES.md) | Listado completo de funcionalidades |
+
+---
+
+## 🏗️ Stack Tecnológico
+
+<div align="center">
+
+| Backend | Frontend | Base de Datos |
+|:-------:|:--------:|:-------------:|
+| ![Ruby](https://img.shields.io/badge/-Ruby_3.4-CC342D?style=flat-square&logo=ruby&logoColor=white) | ![Tailwind](https://img.shields.io/badge/-Tailwind_4-38B2AC?style=flat-square&logo=tailwind-css&logoColor=white) | ![SQLite](https://img.shields.io/badge/-SQLite-003B57?style=flat-square&logo=sqlite&logoColor=white) |
+| ![Rails](https://img.shields.io/badge/-Rails_8.0-CC0000?style=flat-square&logo=rubyonrails&logoColor=white) | ![Hotwire](https://img.shields.io/badge/-Hotwire-FF6B6B?style=flat-square) | |
+| ![Puma](https://img.shields.io/badge/-Puma-000000?style=flat-square) | ![JavaScript](https://img.shields.io/badge/-JavaScript-F7DF1E?style=flat-square&logo=javascript&logoColor=black) | |
+
+</div>
+
+### 🔒 Seguridad
+
+- **Autenticación**: `bcrypt` + `has_secure_password`
+- **Autorización**: `CanCanCan` con roles (Empleado, Gerente, Admin)
+- **CSRF Protection**: Rails nativo
+
+---
+
+## 🎵 Flujo de Trabajo
+
+```
+┌─────────────────┐     ┌─────────────────┐     ┌─────────────────┐
+│   📀 STOREFRONT  │     │   🔐 LOGIN      │     │   💼 BACKSTORE  │
+│   (Público)     │ ──▶ │   Empleados     │ ──▶ │   (Admin)       │
+└─────────────────┘     └─────────────────┘     └─────────────────┘
+│                                               │
+│  - Ver catálogo                               │  - Gestionar discos
+│  - Filtrar discos                             │  - Registrar ventas
+│  - Ver detalles                               │  - Admin clientes
+                                                │  - Generar facturas
+                                                │  - Control de stock
+```
+
+---
+
+## 🛠️ Comandos Útiles
+
+```bash
+# Desarrollo
+bin/dev                    # Inicia servidor + Tailwind watch
+rails console              # Consola interactiva
+rails db:seed              # Cargar datos de prueba
+
+# Testing
+rails test                 # Ejecutar tests
+rails test:system          # Tests de sistema
+
+# Base de datos
+rails db:reset             # Resetear y re-seedear
+rails db:migrate:status    # Ver estado de migraciones
+```
+
+---
+
+## 📁 Estructura del Proyecto
+
+```
 ruby-on-records/
 ├── app/
-│   ├── assets/tailwind/     # Estilos CSS custom
-│   ├── controllers/         # Logica de controladores
-│   │   └── admin/           # Controladores del backstore
-│   ├── models/              # Modelos y logica de negocio
-│   └── views/               # Vistas y templates
-├── config/                  # Configuracion de Rails
-├── db/                      # Migraciones y seeds
-├── docs/                    # Documentacion del proyecto
-└── public/                  # Archivos estaticos
---- ## Modelo de Datos
-User ----< Sale >---- Client
-             |
-             |
-           Item
-             |
-             v
-Disk >----< Genre
-     (N:M)
-- **User**: Empleados del sistema con roles (empleado/gerente/admin) - **Disk**: Productos (vinilos y CDs) - **Genre**: Generos musicales - **Client**: Clientes de la tienda - **Sale**: Ventas realizadas - **Item**: Lineas de detalle de cada venta --- ## Roles y Permisos | Rol | Dashboard | Discos | Ventas | Clientes | Generos | Usuarios | |-----|-----------|--------|--------|----------|---------|----------| | Empleado | Ver | Ver | Ver | Ver | Ver | - | | Gerente | Ver | CRUD | CRUD | CRUD | CRUD | - | | Admin | Ver | CRUD | CRUD | CRUD | CRUD | CRUD | --- ## Equipo Desarrollado como proyecto academico. --- ## Licencia Este proyecto es de uso academico. --- <div align="center"> **Ruby On Records** - *Musica para el alma, calidad para los oidos*
-♪ ♫ ♪ ♫ ♪ ♫ ♪ ♫ ♪ ♫
-</div>  --- ## Indice 1. [Vision General](#1-vision-general) 2. [Stack Tecnologico](#2-stack-tecnologico) 3. [Arquitectura MVC](#3-arquitectura-mvc) 4. [Estructura de Directorios](#4-estructura-de-directorios) 5. [Capa de Modelos](#5-capa-de-modelos) 6. [Capa de Controladores](#6-capa-de-controladores) 7. [Capa de Vistas](#7-capa-de-vistas) 8. [Sistema de Autenticacion](#8-sistema-de-autenticacion) 9. [Sistema de Autorizacion](#9-sistema-de-autorizacion) 10. [Frontend y Estilos](#10-frontend-y-estilos) 11. [Base de Datos](#11-base-de-datos) 12. [Decisiones de Diseno](#12-decisiones-de-diseno) --- ## 1. Vision General Ruby On Records sigue una arquitectura **monolitica** basada en el patron **MVC (Model-View-Controller)** de Ruby on Rails. La aplicacion se divide en dos areas principales:
+│   ├── controllers/
+│   │   ├── admin/          # 💼 Controllers del backstore
+│   │   └── ...             # 🌐 Controllers públicos
+│   ├── models/             # 🗃️ Modelos y lógica de negocio
+│   ├── views/
+│   │   ├── admin/          # 💼 Vistas del backstore
+│   │   ├── layouts/        # 🎨 Layouts (público y admin)
+│   │   └── shared/         # 🔧 Partials compartidos
+│   ├── services/           # ⚙️ Service Objects (Sales::Creator)
+│   └── helpers/            # 🛠️ View helpers
+├── config/
+│   └── routes.rb           # 🛤️ Definición de rutas
+├── db/
+│   ├── migrate/            # 📦 Migraciones
+│   └── seeds.rb            # 🌱 Datos iniciales
+└── docs/                   # 📖 Documentación técnica
+```
+
+---
+
+## 🤝 Contribuir
+
+1. Fork el proyecto
+2. Crea tu branch (`git checkout -b feature/nueva-funcionalidad`)
+3. Commit tus cambios (`git commit -m 'Agregar nueva funcionalidad'`)
+4. Push al branch (`git push origin feature/nueva-funcionalidad`)
+5. Abre un Pull Request
+
+---
+
+## 📝 Licencia
+
+Este proyecto está bajo la Licencia MIT. Ver [LICENSE](LICENSE) para más detalles.
+
+---
+
+<div align="center">
+
+**Hecho con ❤️ y 🎵**
+
+<img src="https://media.giphy.com/media/YnZPEeeC7q6pQTlAs8/giphy.gif" width="100" alt="Music notes">
+
+*Ruby On Records © 2024*
+
+</div>

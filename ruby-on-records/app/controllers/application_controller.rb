@@ -11,7 +11,7 @@ class ApplicationController < ActionController::Base
 
   # CanCanCan: manejo de acceso denegado
   rescue_from CanCan::AccessDenied do |exception|
-    redirect_to root_path, alert: "No tienes permisos para acceder a esta seccion"
+    redirect_to root_path, alert: "No tienes permisos para acceder a esta sección"
   end
 
   private
@@ -26,7 +26,7 @@ class ApplicationController < ActionController::Base
 
   def require_login
     unless logged_in?
-      redirect_to login_path, alert: "Debes iniciar sesion"
+      redirect_to login_path, alert: "Debes iniciar sesión"
     end
   end
 end

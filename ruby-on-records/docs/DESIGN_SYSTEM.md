@@ -1,419 +1,536 @@
-# Ruby On Records - Sistema de Diseno Visual
+# 🎨 Sistema de Diseño - Ruby On Records
 
-## Concepto General
+<div align="center">
 
-**Ruby On Records** es una tienda de vinilos y CDs con una estetica **retro/vintage** inspirada en las disquerias de los anos 70s y 80s. El diseno combina la nostalgia del vinilo con una interfaz moderna y funcional.
+*Guía visual y de componentes para mantener consistencia en toda la aplicación*
 
-### Palabras Clave del Estilo
+<img src="https://media.giphy.com/media/3o7TKSjRrfIPjeiVyM/giphy.gif" width="200" alt="Design">
 
-- Retro
-- Vintage
-- Nostalgico
-- Calido
-- Autentico
-- Groovy
-- Analogico
+</div>
 
 ---
 
-## Paleta de Colores
+## 📑 Índice
+
+1. [Filosofía de Diseño](#-filosofía-de-diseño)
+2. [Paleta de Colores](#-paleta-de-colores)
+3. [Tipografía](#-tipografía)
+4. [Componentes](#-componentes)
+5. [Iconografía](#-iconografía)
+6. [Animaciones](#-animaciones)
+7. [Layouts](#-layouts)
+
+---
+
+## 🎯 Filosofía de Diseño
+
+### Inspiración
+
+Ruby On Records se inspira en la **estética de las disquerías de los años 70s y 80s**:
+
+| Elemento | Inspiración |
+|----------|-------------|
+| 🎨 Colores | Tonos cálidos, mostaza, óxido, crema |
+| 📝 Tipografía | Display serif + Monospace |
+| 🔲 Bordes | Gruesos, sólidos, sin redondear |
+| 💫 Sombras | Duras, offset, estilo "drop shadow" |
+| 💿 Elementos | Vinilos, casetes, portadas de discos |
+
+### Principios
+
+1. **Nostalgia funcional** - Retro pero usable
+2. **Contraste claro** - Fácil lectura
+3. **Consistencia** - Mismos patrones en toda la app
+4. **Responsive** - Mobile-first design
+
+---
+
+## 🎨 Paleta de Colores
 
 ### Colores Principales
 
-| Nombre | HEX | Uso |
-|--------|-----|-----|
-| **Vinyl Black** | #1a1a1a | Fondos principales, header, footer, bordes |
-| **Vinyl Dark** | #2d2d2d | Fondos secundarios oscuros |
-| **Vinyl Groove** | #3d3d3d | Bordes sutiles, separadores |
-| **Cream** | #f5f0e6 | Fondo principal claro, textos sobre oscuro |
-| **Cream Dark** | #e8e0d0 | Hover sobre cream, fondos alternos |
-| **Paper** | #faf8f3 | Fondo de cards y formularios |
+<table>
+<tr>
+<td align="center">
 
-### Colores de Acento
+**Vinyl Black**
+<br>
+`#1a1a1a`
+<br>
+<img src="https://via.placeholder.com/80/1a1a1a/1a1a1a" width="80" height="40">
+<br>
+*Fondos, headers, texto*
 
-| Nombre | HEX | Uso |
-|--------|-----|-----|
-| **Mustard** | #d4a039 | Color primario de accion, CTAs, destacados |
-| **Mustard Dark** | #b8872e | Hover del mustard |
-| **Rust** | #c45c3e | Alertas, eliminar, errores |
-| **Rust Dark** | #a34830 | Hover del rust |
-| **Teal** | #2a9d8f | Exito, confirmaciones |
-| **Teal Dark** | #21867a | Hover del teal |
-| **Burgundy** | #7d2e4a | Header admin, acentos premium |
-| **Burgundy Dark** | #5e2238 | Hover del burgundy |
-| **Olive** | #6b7b3a | Badges, etiquetas secundarias |
-| **Sepia** | #8b7355 | Texto secundario, placeholders |
+</td>
+<td align="center">
 
-### Esquema Visual
+**Cream**
+<br>
+`#f5f0e6`
+<br>
+<img src="https://via.placeholder.com/80/f5f0e6/f5f0e6" width="80" height="40">
+<br>
+*Fondos claros*
 
-```
-+--------------------------------------------------+
-|  HEADER: Vinyl Black + Mustard border            |
-|  Logo: Mustard | Links: Cream -> Mustard hover   |
-+--------------------------------------------------+
-|                                                  |
-|  BODY: Cream background                          |
-|                                                  |
-|  +------------+  +------------+  +------------+  |
-|  |   CARD     |  |   CARD     |  |   CARD     |  |
-|  |   Paper    |  |   Paper    |  |   Paper    |  |
-|  |   bg       |  |   bg       |  |   bg       |  |
-|  +------------+  +------------+  +------------+  |
-|                                                  |
-|  [BTN PRIMARY]  [BTN SECONDARY]  [BTN DANGER]   |
-|    Mustard         Cream           Rust          |
-|                                                  |
-+--------------------------------------------------+
-|  FOOTER: Vinyl Black + Mustard border            |
-+--------------------------------------------------+
+</td>
+<td align="center">
+
+**Mustard**
+<br>
+`#d4a039`
+<br>
+<img src="https://via.placeholder.com/80/d4a039/d4a039" width="80" height="40">
+<br>
+*Acentos, CTAs*
+
+</td>
+</tr>
+</table>
+
+### Colores Secundarios
+
+<table>
+<tr>
+<td align="center">
+
+**Rust**
+<br>
+`#a65d57`
+<br>
+<img src="https://via.placeholder.com/60/a65d57/a65d57" width="60" height="30">
+<br>
+*Errores, alertas*
+
+</td>
+<td align="center">
+
+**Teal**
+<br>
+`#4a8f8f`
+<br>
+<img src="https://via.placeholder.com/60/4a8f8f/4a8f8f" width="60" height="30">
+<br>
+*Éxito, "Nuevo"*
+
+</td>
+<td align="center">
+
+**Sepia**
+<br>
+`#8b7355`
+<br>
+<img src="https://via.placeholder.com/60/8b7355/8b7355" width="60" height="30">
+<br>
+*Texto secundario*
+
+</td>
+<td align="center">
+
+**Burgundy**
+<br>
+`#722f37`
+<br>
+<img src="https://via.placeholder.com/60/722f37/722f37" width="60" height="30">
+<br>
+*Header admin*
+
+</td>
+</tr>
+</table>
+
+### Variables CSS
+
+```css
+@theme {
+  /* Primarios */
+  --color-vinyl-black: #1a1a1a;
+  --color-vinyl-dark: #2d2d2d;
+  --color-vinyl-groove: #404040;
+  --color-cream: #f5f0e6;
+  --color-cream-dark: #e8e0d0;
+  --color-paper: #faf8f3;
+  
+  /* Acentos */
+  --color-mustard: #d4a039;
+  --color-mustard-dark: #b8862d;
+  --color-rust: #a65d57;
+  --color-teal: #4a8f8f;
+  --color-teal-dark: #3d7575;
+  
+  /* UI */
+  --color-sepia: #8b7355;
+  --color-burgundy: #722f37;
+}
 ```
 
 ---
 
-## Tipografia
+## 📝 Tipografía
 
 ### Fuentes
 
-| Tipo | Fuente | Peso | Uso |
-|------|--------|------|-----|
-| **Display** | Playfair Display | 400, 700, 900 | Titulos, headings, logo |
-| **Body** | Space Mono | 400, 700 | Texto general, navegacion, botones |
+| Fuente | Uso | Peso |
+|:------:|-----|------|
+| **Playfair Display** | Títulos, headings | 400, 700, 900 |
+| **Space Mono** | UI, etiquetas, código | 400, 700 |
 
-### Jerarquia Tipografica
+### Import
 
-```css
-/* Titulos principales */
-h1: Playfair Display, 4xl-6xl, bold
-
-/* Subtitulos */
-h2: Playfair Display, 3xl-4xl, bold
-
-/* Titulos de seccion */
-h3: Playfair Display, 2xl, bold
-
-/* Labels y navegacion */
-labels: Space Mono, xs-sm, uppercase, tracking-wider, bold
-
-/* Texto de cuerpo */
-body: Space Mono, base, regular
+```html
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700;900&family=Space+Mono:wght@400;700" rel="stylesheet">
 ```
 
-### Caracteristicas del Texto
+### Clases
 
-- **Navegacion**: MAYUSCULAS, letter-spacing amplio (tracking-wider)
-- **Botones**: MAYUSCULAS, bold, letter-spacing
-- **Labels**: MAYUSCULAS, tamano pequeno, bold
-- **Titulos**: Serif elegante, tamanos grandes
+```css
+.font-display { font-family: 'Playfair Display', serif; }
+.font-mono { font-family: 'Space Mono', monospace; }
+```
+
+### Escala
+
+| Clase | Tamaño | Uso |
+|-------|--------|-----|
+| `text-5xl` | 3rem | Hero titles |
+| `text-4xl` | 2.25rem | Page titles |
+| `text-2xl` | 1.5rem | Section titles |
+| `text-xl` | 1.25rem | Card titles |
+| `text-base` | 1rem | Body text |
+| `text-sm` | 0.875rem | Labels, captions |
+| `text-xs` | 0.75rem | Badges, small labels |
 
 ---
 
-## Componentes
+## 🧩 Componentes
 
 ### Botones
 
-#### Estilo Base
-
-Todos los botones comparten:
-
-- Padding: 0.75rem 1.5rem
-- Borde: 2px solid #1a1a1a
-- Sombra: 3px 3px 0 0 #1a1a1a
-- Tipografia: uppercase, bold, tracking-wider
-- Hover: Sombra reduce a 1px 1px, translate 2px, 2px
-- Active: Sin sombra, translate 3px, 3px
-
+#### Primary Button
+```html
+<button class="btn-primary">Guardar</button>
 ```
-Normal:          Hover:           Active:
-+--------+       +--------+       +--------+
-| BUTTON |###    | BUTTON |#      | BUTTON |
-+--------+###    +--------+#      +--------+
-  #######          ##
+```css
+.btn-primary {
+  @apply px-6 py-3 bg-mustard text-vinyl-black font-bold 
+         uppercase tracking-wider border-2 border-vinyl-black 
+         shadow-retro hover:shadow-retro-lg hover:-translate-y-0.5 
+         transition-all cursor-pointer;
+}
 ```
 
-#### Variantes
+#### Secondary Button
+```html
+<button class="btn-secondary">Cancelar</button>
+```
+```css
+.btn-secondary {
+  @apply px-6 py-3 bg-cream text-vinyl-black font-bold 
+         uppercase tracking-wider border-2 border-vinyl-black 
+         hover:bg-cream-dark transition-colors;
+}
+```
 
-| Variante | Fondo | Texto | Uso |
-|----------|-------|-------|-----|
-| Primary | Mustard | Vinyl Black | Acciones principales |
-| Secondary | Cream | Vinyl Black | Acciones secundarias |
-| Danger | Rust | White | Eliminar, cancelar |
+#### Danger Button
+```html
+<button class="btn-danger">Eliminar</button>
+```
+```css
+.btn-danger {
+  @apply px-6 py-3 bg-rust text-cream font-bold 
+         uppercase tracking-wider border-2 border-vinyl-black 
+         hover:bg-rust/80 transition-colors;
+}
+```
+
+---
 
 ### Cards
 
+#### Card Retro
+```html
+<div class="card-retro p-6">
+  <h3>Título</h3>
+  <p>Contenido</p>
+</div>
 ```
-+---------------------------+
-|                           |  <- Paper background
-|      [Imagen/Vinilo]      |
-|                           |
-|  Titulo del Album         |  <- Playfair Display, bold
-|  Artista                  |  <- Space Mono, sepia
-|                           |
-|  $1,500                   |  <- Mustard, bold
-|  [AGREGAR]                |  <- btn-primary
-+---------------------------+
-    ######################     <- Sombra offset
+```css
+.card-retro {
+  @apply bg-paper border-2 border-vinyl-black shadow-retro;
+}
 ```
 
-- Fondo: Paper (#faf8f3)
-- Borde: 2px solid #1a1a1a
-- Sombra: 4px 4px 0 0 #1a1a1a
-- Hover: Sombra aumenta, card se eleva
-
-### Inputs y Formularios
-
+#### Disk Card
+```erb
+<%= render 'shared/disk_card', disk: @disk %>
 ```
-ETIQUETA                      <- uppercase, xs, bold, vinyl-dark
-+---------------------------+
-| Placeholder...            |  <- sepia/50 opacity
-+---------------------------+
-     2px solid vinyl-black
+- Portada con efecto hover
+- Badge de formato (CD/Vinilo)
+- Badge de estado (Nuevo/Usado)
+- Título y artista truncados
+- Precio
 
-Focus:
-+---------------------------+
-| Texto ingresado           |
-+===========================+
-     2px solid mustard
-     + sombra 2px 2px mustard
+---
+
+### Formularios
+
+#### Input
+```html
+<input type="text" class="input-retro" placeholder="Buscar...">
 ```
+```css
+.input-retro {
+  @apply w-full px-4 py-3 bg-cream border-2 border-vinyl-black 
+         font-mono focus:outline-none focus:border-mustard 
+         focus:ring-2 focus:ring-mustard/20;
+}
+```
+
+#### Select
+```html
+<select class="select-retro">
+  <option>Opción 1</option>
+</select>
+```
+```css
+.select-retro {
+  @apply w-full px-4 py-3 bg-cream border-2 border-vinyl-black 
+         font-mono focus:outline-none focus:border-mustard 
+         appearance-none cursor-pointer;
+}
+```
+
+#### Label
+```html
+<label class="label-retro">Nombre</label>
+```
+```css
+.label-retro {
+  @apply block font-mono text-xs uppercase tracking-wider 
+         text-sepia mb-2;
+}
+```
+
+---
 
 ### Tablas
 
+```html
+<table class="table-retro">
+  <thead>
+    <tr>
+      <th>Columna</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>Dato</td>
+    </tr>
+  </tbody>
+</table>
 ```
-+-------+----------+--------+
-| HEAD  |   HEAD   |  HEAD  |  <- Vinyl Black bg, Cream text
-+-------+----------+--------+
-| data  |   data   |  data  |  <- Paper bg
-+-------+----------+--------+
-| data  |   data   |  data  |  <- Hover: Cream Dark bg
-+-------+----------+--------+
+```css
+.table-retro {
+  @apply w-full;
+}
+.table-retro th {
+  @apply bg-vinyl-black text-cream text-left px-4 py-3 
+         font-mono text-xs uppercase tracking-wider;
+}
+.table-retro td {
+  @apply px-4 py-3 border-b border-vinyl-groove/20;
+}
+.table-retro tr:hover {
+  @apply bg-cream-dark/50;
+}
 ```
+
+---
 
 ### Badges
 
+#### Badge Retro
+```html
+<span class="badge-retro bg-mustard text-vinyl-black">Vinilo</span>
+<span class="badge-retro bg-teal text-cream">Nuevo</span>
+<span class="badge-retro bg-sepia text-cream">Usado</span>
 ```
-+----------+
-| ETIQUETA |  <- 2px border, uppercase, xs, bold
-+----------+
+```css
+.badge-retro {
+  @apply inline-block px-3 py-1 text-xs font-bold 
+         uppercase tracking-wider border border-current;
+}
 ```
 
-Colores segun contexto:
-
-- Disponible: Teal
-- Agotado: Rust
-- Nuevo: Mustard
-- Usado: Olive
+#### Genre Bubble
+```html
+<span class="genre-bubble">Rock</span>
+```
+```css
+.genre-bubble {
+  @apply inline-block px-3 py-1 text-xs font-medium rounded-full 
+         bg-vinyl-groove/20 text-vinyl-dark 
+         hover:bg-mustard/30 hover:text-vinyl-black 
+         transition-colors cursor-pointer;
+}
+```
 
 ---
 
-## Elemento Iconico: El Vinilo
+### Sombras
 
-### Estructura Visual
-
-```
-_______________
-      /                 \
-    /    ___________     \
-   |   /             \    |
-   |  |    LABEL      |   |   <- Circulo mustard (33% del total)
-   |  |    (mustard)  |   |
-   |   \      O      /    |   <- Centro negro (8% del total)
-    \    -----------     /
-      \                 /
-        ---------------
-            ^ Disco negro con surcos sutiles
+```css
+--shadow-retro: 4px 4px 0 var(--color-vinyl-black);
+--shadow-retro-lg: 6px 6px 0 var(--color-vinyl-black);
 ```
 
-### CSS del Vinilo
+| Clase | Uso |
+|-------|-----|
+| `shadow-retro` | Cards, botones |
+| `shadow-retro-lg` | Hover states |
+
+---
+
+## 🎵 Iconografía
+
+### Vinyl Record
 
 ```css
 .vinyl-record {
-  border-radius: 9999px;
-  background-color: #1a1a1a;
-  background-image: repeating-radial-gradient(
-    circle at center,
-    transparent 0, transparent 2px,
-    rgba(255,255,255,0.03) 2px,
-    rgba(255,255,255,0.03) 4px
-  );
-}
-
-/* Label central */
-.vinyl-record::before {
-  width: 33%;
-  height: 33%;
-  background-color: #d4a039; /* mustard */
-  border: 4px solid #2d2d2d;
-}
-
-/* Agujero central */
-.vinyl-record::after {
-  width: 8%;
-  height: 8%;
-  background-color: #1a1a1a;
+  @apply rounded-full;
+  background: 
+    radial-gradient(circle at center, 
+      var(--color-mustard) 15%, 
+      var(--color-vinyl-black) 15%, 
+      var(--color-vinyl-black) 30%, 
+      var(--color-vinyl-dark) 30%);
+  background-size: 100% 100%;
 }
 ```
 
-### Animaciones
+### CD Record
 
-- **vinyl-spin**: Rotacion continua 360deg en 3s (para hero)
-- **vinyl-spin-hover**: Rotacion solo en hover, 2s
-
----
-
-## Layout
-
-### Header (Storefront)
-
-```
-+------------------------------------------------------------------+
-|  [VINILO] Ruby On Records    INICIO  CATALOGO  NUEVOS  USADOS    |
-|                                            [Buscar] [INGRESAR]   |
-+==================================================================+
-   ^ Vinyl Black bg            ^ Cream text        ^ Mustard accents
-   ^ 4px mustard bottom border
-```
-
-### Header (Admin/Backstore)
-
-```
-+------------------------------------------------------------------+
-|  [VINILO] Backstore    DASHBOARD  DISCOS  VENTAS  CLIENTES  ...  |
-|                                                    [Usuario v]   |
-+==================================================================+
-   ^ Burgundy bg (diferencia del storefront)
-```
-
-### Footer
-
-```
-+------------------------------------------------------------------+
-|  [VINILO] Ruby On Records     ENLACES          CONTACTO          |
-|                               - Catalogo       Av. Corrientes... |
-|  Descripcion de la           - Nuevos          Tel: ...          |
-|  tienda...                   - Usados          Email: ...        |
-|------------------------------------------------------------------|
-|          (c) 2026 Ruby On Records - Hecho con Ruby on Rails      |
-+------------------------------------------------------------------+
-   ^ Vinyl Black bg, Mustard accents, 4px mustard top border
+```css
+.cd-record {
+  @apply rounded-full;
+  background: 
+    radial-gradient(circle at center, 
+      transparent 15%, 
+      #c0c0c0 15%, 
+      #e8e8e8 50%, 
+      #c0c0c0 100%);
+}
 ```
 
 ---
 
-## Paginas Principales
+## 💫 Animaciones
 
-### Home (Storefront)
+### Spin (Vinyl)
 
-1. **Hero Section**
-   - Fondo: Vinyl Black con patron diagonal sutil
-   - Titulo grande con "Spin" en Mustard
-   - Vinilo animado girando
-   - Dos CTAs: Primary y Secondary
-   - Wave divider hacia cream
+```css
+@keyframes spin {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
+}
 
-2. **Nuevos Ingresos**
-   - Grid de 4 columnas (responsive)
-   - Cards de productos
-
-3. **Categorias**
-   - Divider con texto "VINYL"
-   - 3 cards: Vinilos, CDs, Usados
-   - Iconos animados en hover
-
-4. **Newsletter CTA**
-   - Fondo Vinyl Black
-   - Borde Mustard grueso
-   - Input + boton
-
-### Catalogo
-
-- Filtros laterales en cards
-- Grid de productos
-- Paginacion estilo retro
-
-### Detalle de Producto
-
-- Vinilo grande animado
-- Info del album
-- Precio destacado en Mustard
-- Boton agregar prominente
-
-### Login
-
-```
-+----------------------------------+----------------------------------+
-|                                  |                                  |
-|       Panel decorativo           |         Formulario               |
-|       con vinilo y               |                                  |
-|       branding                   |         Email: [________]        |
-|                                  |         Pass:  [________]        |
-|       "Bienvenido                |                                  |
-|        de vuelta"                |         [INGRESAR]               |
-|                                  |                                  |
-+----------------------------------+----------------------------------+
-        ^ Vinyl Black                      ^ Paper/Cream
+.vinyl-spin-hover:hover {
+  animation: spin 2s linear infinite;
+}
 ```
 
-### Dashboard Admin
+### Transition Classes
 
-- Cards con estadisticas
-- Iconos en colores de acento
-- Tabla de ultimos items
+```css
+.transition-all {
+  transition: all 0.2s ease;
+}
+
+.transition-colors {
+  transition: color, background-color 0.2s ease;
+}
+
+.hover:-translate-y-0.5:hover {
+  transform: translateY(-2px);
+}
+```
 
 ---
 
-## Prompt para Generar Mockups con IA
+## 📐 Layouts
 
-### Prompt General
+### Storefront Layout
 
-Create a mockup for a vintage vinyl record store web application called "Ruby On Records".
+```
+┌─────────────────────────────────────────────┐
+│  HEADER (bg-vinyl-black)                    │
+│  Logo | Nav Links | Login                   │
+├─────────────────────────────────────────────┤
+│                                             │
+│  MAIN (bg-cream, max-w-7xl, mx-auto, px-4)  │
+│                                             │
+│  <%= yield %>                               │
+│                                             │
+├─────────────────────────────────────────────┤
+│  FOOTER (bg-vinyl-black)                    │
+│  © Ruby On Records                          │
+└─────────────────────────────────────────────┘
+```
 
-Style guidelines:
-- Retro/vintage aesthetic inspired by 1970s-80s record shops
-- Color palette: Black (#1a1a1a), Cream (#f5f0e6), Mustard/Gold (#d4a039), Rust (#c45c3e), Teal (#2a9d8f)
-- Typography: Elegant serif for headings (like Playfair Display), monospace for body text (like Space Mono)
-- UI elements have hard shadows offset to bottom-right (no blur), 2px solid black borders
-- Buttons are uppercase with letter-spacing
-- Include vinyl record illustrations with grooves pattern and colored label in center
-- Warm, nostalgic feeling but with modern usability
+### Admin Layout
 
-The interface should feel like walking into a cozy record store with wooden shelves and handwritten price tags, but translated into a digital experience.
+```
+┌─────────────────────────────────────────────┐
+│  HEADER (bg-burgundy)                       │
+│  🎵 Backstore | Nav | User Menu             │
+├─────────────────────────────────────────────┤
+│                                             │
+│  MAIN (bg-cream-dark, max-w-7xl, p-8)       │
+│                                             │
+│  Flash Messages                             │
+│  <%= yield %>                               │
+│                                             │
+└─────────────────────────────────────────────┘
+```
 
-### Prompt para Home Page
+### Grid System
 
-Design a homepage for "Ruby On Records" vinyl store website.
+```html
+<!-- 4 columns on desktop, 2 on tablet, 1 on mobile -->
+<div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
+  <!-- Cards -->
+</div>
+```
 
-Include:
-1. Header: Black background, gold "Ruby On Records" logo with spinning vinyl icon, navigation links in cream color
-2. Hero section: Large heading "Spin Your Story" with "Spin" in gold, animated vinyl record, two CTA buttons (gold primary, cream secondary), diagonal stripe pattern in background
-3. Product grid: 4 cards showing album covers with vinyl peek effect, artist name, price in gold
-4. Category section: 3 cards for "Vinilos", "CDs", "Usados" with vinyl/CD icons
-5. Newsletter: Black section with gold border, email input field
-6. Footer: Black with gold accents, three columns
+---
 
-Style: Retro vintage with hard shadow buttons, serif headings, monospace body text. Colors: black, cream, gold/mustard accents.
+## 📱 Responsive Breakpoints
 
-### Prompt para Pagina de Producto
+| Breakpoint | Tamaño | Uso |
+|:----------:|:------:|-----|
+| `sm` | 640px | Tablet pequeña |
+| `md` | 768px | Tablet |
+| `lg` | 1024px | Desktop |
+| `xl` | 1280px | Desktop grande |
 
-Design a product detail page for a vinyl record on "Ruby On Records" website.
+---
 
-Include:
-1. Large vinyl record image (black disc with gold center label, visible grooves)
-2. Album cover partially visible behind the vinyl
-3. Product info: Album title (large serif font), Artist name, Year, Genre badge
-4. Price prominently displayed in gold/mustard color
-5. "Add to cart" button with hard shadow effect
-6. Track listing in a cream-colored card
-7. Related products section at bottom
+<div align="center">
 
-Style: Vintage record store aesthetic, warm cream background, black and gold accents, retro typography with serif headings and monospace details.
+## 🎨 Quick Reference
 
-### Prompt para Dashboard Admin
+| Elemento | Clase |
+|----------|-------|
+| Botón principal | `btn-primary` |
+| Botón secundario | `btn-secondary` |
+| Card | `card-retro p-6` |
+| Input | `input-retro` |
+| Select | `select-retro` |
+| Badge | `badge-retro` |
+| Tabla | `table-retro` |
+| Label | `label-retro` |
 
-Design an admin dashboard for "Ruby On Records" vinyl store management system.
+---
 
-Include:
-1. Header: Burgundy/wine color background with store logo
-2. Sidebar or top navigation: Dashboard, Disks, Sales, Clients, Genres, Users
-3. Stats cards: Total disks, Total sales, Total clients, Total users - each with an icon and number
-4. Recent activity table with vintage styling (black header, cream rows)
-5. Quick action buttons with hard shadows
+*Sistema de diseño v1.0 - Ruby On Records*
+
+</div>

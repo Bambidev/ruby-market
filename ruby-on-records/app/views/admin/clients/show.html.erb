@@ -1,10 +1,154 @@
-<p style="color: green"><%= notice %></p>
+<% content_for :title, "#{@client.name} - Backstore" %>
 
-<%= render @client %>
-
-<div>
-  <%= link_to "Edit this client", edit_admin_client_path(@client) %> |
-  <%= link_to "Back to clients", admin_clients_path %>
-
-  <%= button_to "Destroy this client", @client, method: :delete %>
+<div class="mb-8">
+  <div class="flex items-center justify-between">
+    <div>
+      <h1 class="font-display text-4xl font-bold text-vinyl-black mb-2"><%= @client.name %></h1>
+      <p class="text-sepia">Información detallada del cliente</p>
+    </div>
+    <div class="flex gap-3">
+      <%= link_to "Editar", edit_admin_client_path(@client), class: "btn-secondary" %>
+      <%= link_to "Volver", admin_clients_path, class: "text-vinyl-dark hover:text-rust transition-colors font-bold" %>
+    </div>
+  </div>
 </div>
+
+<div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+  <!-- Información del Cliente -->
+  <div class="lg:col-span-2">
+    <div class="card-retro p-6">
+      <h2 class="text-xl font-display font-bold text-vinyl-black mb-4 pb-2 border-b-2 border-vinyl-black">
+        📋 Datos Personales
+      </h2>
+      
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+        <div>
+          <label class="label-retro">Nombre Completo</label>
+          <p class="text-lg font-bold text-vinyl-black"><%= @client.name %></p>
+        </div>
+
+        <div>
+          <label class="label-retro">DNI</label>
+          <p class="text-lg font-mono font-bold text-vinyl-black"><%= @client.dni %></p>
+        </div>
+
+        <div>
+          <label class="label-retro">Email</label>
+          <% if @client.email.present? %>
+            <p class="text-lg text-vinyl-dark">
+              <a href="mailto:<%= @client.email %>" class="text-mustard-dark hover:text-mustard transition-colors">
+                <%= @client.email %>
+              </a>
+            </p>
+          <% else %>
+            <p class="text-sepia italic">No especificado</p>
+          <% end %>
+        </div>
+
+        <div>
+          <label class="label-retro">Teléfono</label>
+          <% if @client.phone.present? %>
+            <p class="text-lg text-vinyl-dark">
+              <a href="tel:<%= @client.phone %>" class="text-mustard-dark hover:text-mustard transition-colors">
+                <%= @client.phone %>
+              </a>
+            </p>
+          <% else %>
+            <p class="text-sepia italic">No especificado</p>
+          <% end %>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Estadísticas y Acciones -->
+  <div class="space-y-6">
+    <!-- Estadísticas -->
+    <div class="card-retro p-6">
+      <h2 class="text-xl font-display font-bold text-vinyl-black mb-4 pb-2 border-b-2 border-vinyl-black">
+        📊 Estadísticas
+      </h2>
+      
+      <div class="space-y-4">
+        <div class="bg-mustard/10 p-4 border-2 border-mustard/30 rounded">
+          <p class="text-xs text-vinyl-dark/60 uppercase tracking-wider mb-1">Total de Ventas</p>
+          <p class="text-3xl font-display font-bold text-vinyl-black">
+            <%= @client.sales.count %>
+          </p>
+        </div>
+
+        <div class="bg-teal/10 p-4 border-2 border-teal/30 rounded">
+          <p class="text-xs text-vinyl-dark/60 uppercase tracking-wider mb-1">Monto Total Gastado</p>
+          <p class="text-3xl font-display font-bold text-vinyl-black">
+            $<%= @client.sales.sum(:total).round(2) %>
+          </p>
+        </div>
+      </div>
+    </div>
+
+    <!-- Acciones Peligrosas -->
+    <div class="card-retro p-6 border-rust">
+      <h2 class="text-xl font-display font-bold text-rust mb-4 pb-2 border-b-2 border-rust">
+        ⚠️ Zona Peligrosa
+      </h2>
+      
+      <p class="text-sm text-vinyl-dark mb-4">
+        Eliminar este cliente es permanente y no se puede deshacer.
+      </p>
+
+      <%= button_to "Eliminar Cliente", 
+          admin_client_path(@client), 
+          method: :delete,
+          data: { turbo_confirm: "¿Estás seguro? Esta acción no se puede deshacer." },
+          class: "w-full bg-rust hover:bg-rust-dark text-white font-bold py-3 px-4 border-2 border-vinyl-black shadow-retro transition-all hover:shadow-none cursor-pointer" %>
+    </div>
+  </div>
+</div>
+
+<!-- Historial de Ventas -->
+<% if @client.sales.any? %>
+  <div class="mt-8">
+    <div class="card-retro p-6">
+      <h2 class="text-xl font-display font-bold text-vinyl-black mb-4 pb-2 border-b-2 border-vinyl-black">
+        🛒 Historial de Compras
+      </h2>
+      
+      <div class="overflow-x-auto">
+        <table class="table-retro">
+          <thead>
+            <tr>
+              <th>Fecha</th>
+              <th>Items</th>
+              <th>Total</th>
+              <th>Estado</th>
+              <th>Acciones</th>
+            </tr>
+          </thead>
+          <tbody>
+            <% @client.sales.order(created_at: :desc).each do |sale| %>
+              <tr>
+                <td class="font-mono"><%= sale.created_at.strftime("%d/%m/%Y %H:%M") %></td>
+                <td><%= sale.items.count %> producto(s)</td>
+                <td class="font-bold">$<%= sale.total %></td>
+                <td>
+                  <% if sale.cancelled? %>
+                    <span class="inline-flex items-center px-3 py-1 rounded-full text-xs font-bold bg-rust/20 text-rust border border-rust">
+                      Cancelada
+                    </span>
+                  <% else %>
+                    <span class="inline-flex items-center px-3 py-1 rounded-full text-xs font-bold bg-green-100 text-green-700 border border-green-500">
+                      Completada
+                    </span>
+                  <% end %>
+                </td>
+                <td>
+                  <%= link_to "Ver", admin_sale_path(sale), class: "text-mustard-dark hover:text-mustard font-bold uppercase text-xs tracking-wider transition-colors" %>
+                </td>
+              </tr>
+            <% end %>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+<% end %>

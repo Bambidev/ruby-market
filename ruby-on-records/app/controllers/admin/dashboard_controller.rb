@@ -1,5 +1,6 @@
 class Admin::DashboardController < Admin::BaseController
   authorize_resource class: false
+  skip_before_action :set_collection
 
   def index
     @total_disks = Disk.count

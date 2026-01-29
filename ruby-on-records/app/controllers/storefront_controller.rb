@@ -3,7 +3,8 @@ class StorefrontController < ApplicationController
 
   # GET /
   def index
-    @disks = Disk.all
-    # Y alguna otra cosa
+    @disks = Disk.search(params[:q])
+                  .by_state(params[:filter])
+                  .by_format(params[:format])
   end
 end

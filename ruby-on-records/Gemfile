@@ -65,3 +65,11 @@ group :test do
   gem "capybara"
   gem "selenium-webdriver"
 end
+# Paginationgem "kaminari"# PDF Generationgem "prawn"gem "prawn-table"
+
+# Pagination
+gem "kaminari"
+
+# PDF Generation
+gem "prawn"
+gem "prawn-table"

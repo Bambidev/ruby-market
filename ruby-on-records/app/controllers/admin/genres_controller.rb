@@ -1,12 +1,14 @@
 class Admin::GenresController < Admin::BaseController
-  load_and_authorize_resource
+  before_action :set_genre, only: %i[show edit update destroy]
 
   # GET /admin/genres
   def index
+    @genres = Genre.order(:genre_name)
   end
 
   # GET /admin/genres/1
   def show
+    @disks = @genre.disks.order(:title).page(params[:page])
   end
 
   # GET /admin/genres/new
@@ -22,43 +24,39 @@ class Admin::GenresController < Admin::BaseController
   def create
     @genre = Genre.new(genre_params)
 
-    respond_to do |format|
-      if @genre.save
-        format.html { redirect_to [ :admin, @genre ], notice: "Genero creado exitosamente." }
-        format.json { render :show, status: :created, location: [ :admin, @genre ] }
-      else
-        format.html { render :new, status: :unprocessable_entity }
-        format.json { render json: @genre.errors, status: :unprocessable_entity }
-      end
+    if @genre.save
+      redirect_to admin_genres_path, notice: "Género creado exitosamente."
+    else
+      render :new, status: :unprocessable_entity
     end
   end
 
   # PATCH/PUT /admin/genres/1
   def update
-    respond_to do |format|
-      if @genre.update(genre_params)
-        format.html { redirect_to [ :admin, @genre ], notice: "Genero actualizado exitosamente.", status: :see_other }
-        format.json { render :show, status: :ok, location: [ :admin, @genre ] }
-      else
-        format.html { render :edit, status: :unprocessable_entity }
-        format.json { render json: @genre.errors, status: :unprocessable_entity }
-      end
+    if @genre.update(genre_params)
+      redirect_to admin_genres_path, notice: "Género actualizado exitosamente."
+    else
+      render :edit, status: :unprocessable_entity
     end
   end
 
   # DELETE /admin/genres/1
   def destroy
-    @genre.destroy!
-
-    respond_to do |format|
-      format.html { redirect_to admin_genres_path, notice: "Genero eliminado exitosamente.", status: :see_other }
-      format.json { head :no_content }
+    if @genre.disks.any?
+      redirect_to admin_genres_path, alert: "No se puede eliminar un género con discos asociados."
+    else
+      @genre.destroy!
+      redirect_to admin_genres_path, notice: "Género eliminado exitosamente."
     end
   end
 
   private
 
+  def set_genre
+    @genre = Genre.find(params[:id])
+  end
+
   def genre_params
-    params.expect(genre: [ :genre_name ])
+    params.require(:genre).permit(:genre_name)
   end
 end

@@ -1,12 +1,10 @@
-<% content_for :title, "Editing genre" %>
+<% content_for :title, "Editar Género - Backstore" %>
 
-<h1>Editing genre</h1>
+<div class="max-w-2xl mx-auto">
+  <div class="flex items-center justify-between mb-8">
+    <h1 class="font-display text-3xl font-bold text-vinyl-black">Editar Género</h1>
+    <%= link_to "Volver", admin_genres_path, class: "text-sepia hover:text-vinyl-black underline" %>
+  </div>
 
-<%= render "form", genre: @genre %>
-
-<br>
-
-<div>
-  <%= link_to "Show this genre", [:admin, @genre] %> |
-  <%= link_to "Back to genres", admin_genres_path %>
+  <%= render "form", genre: @genre %>
 </div>

@@ -1,9 +1,15 @@
-<%= form_with(model: [:admin, genre]) do |form| %>
+<%= form_with(model: [:admin, genre], class: "space-y-6", data: { turbo: false }) do |form| %>
   <% if genre.errors.any? %>
-    <div style="color: red">
-      <h2><%= pluralize(genre.errors.count, "error") %> prohibited this genre from being saved:</h2>
-
-      <ul>
+    <div class="bg-rust/10 border-2 border-rust p-4 rounded">
+      <div class="flex items-center gap-3 mb-3">
+        <svg class="w-5 h-5 text-rust" fill="currentColor" viewBox="0 0 20 20">
+          <path fill-rule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7 4a1 1 0 11-2 0 1 1 0 012 0zm-1-9a1 1 0 00-1 1v4a1 1 0 102 0V6a1 1 0 00-1-1z" clip-rule="evenodd"/>
+        </svg>
+        <span class="font-bold text-rust uppercase tracking-wider text-sm">
+          Error al guardar
+        </span>
+      </div>
+      <ul class="list-disc list-inside text-rust text-sm space-y-1">
         <% genre.errors.each do |error| %>
           <li><%= error.full_message %></li>
         <% end %>
@@ -11,12 +17,20 @@
     </div>
   <% end %>
 
-  <div>
-    <%= form.label :genre_name, style: "display: block" %>
-    <%= form.text_field :genre_name %>
+  <div class="card-retro p-6">
+    <div class="max-w-md">
+      <%= form.label :genre_name, "Nombre del Género", class: "label-retro" %>
+      <%= form.text_field :genre_name, 
+          placeholder: "Ej: Rock, Jazz, Electrónica...",
+          class: "input-retro",
+          autofocus: true %>
+      <p class="text-xs text-sepia mt-1">El nombre debe ser único</p>
+    </div>
   </div>
 
-  <div>
-    <%= form.submit %>
+  <div class="flex flex-col sm:flex-row gap-4">
+    <%= form.submit genre.new_record? ? "Crear Género" : "Guardar Cambios", 
+        class: "btn-primary cursor-pointer" %>
+    <%= link_to "Cancelar", admin_genres_path, class: "btn-secondary text-center" %>
   </div>
 <% end %>

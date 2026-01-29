@@ -56,9 +56,56 @@ class Admin::ClientsController < Admin::BaseController
     end
   end
 
+  # GET /admin/clients/search?q=query
+  # Endpoint para autocompletado AJAX
+  def search
+    @clients = if params[:q].present?
+      Client.search(params[:q]).recent.limit(10)
+    else
+      Client.recent.limit(10)
+    end
+
+    render json: @clients.map { |client| 
+      {
+        id: client.id,
+        text: client.display_name,
+        name: client.name,
+        dni: client.dni,
+        email: client.email,
+        phone: client.phone
+      }
+    }
+  end
+
+  # POST /admin/clients/quick_create
+  # Creación rápida desde modal (usado en formulario de ventas)
+  def quick_create
+    @client = Client.new(client_params)
+
+    if @client.save
+      render json: {
+        success: true,
+        client: {
+          id: @client.id,
+          text: @client.display_name,
+          name: @client.name,
+          dni: @client.dni,
+          email: @client.email,
+          phone: @client.phone
+        },
+        message: "Cliente creado exitosamente"
+      }, status: :created
+    else
+      render json: {
+        success: false,
+        errors: @client.errors.full_messages
+      }, status: :unprocessable_entity
+    end
+  end
+
   private
 
   def client_params
-    params.expect(client: [ :name, :dni ])
+    params.expect(client: [ :name, :dni, :email, :phone ])
   end
 end

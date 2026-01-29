@@ -1,15 +1,19 @@
-<%= link_to disk, class: "block group" do %>
+<%= link_to (local_assigns[:show_path] || disk_path(disk)), class: "block group" do %>
   <article class="card-retro overflow-hidden">
     <!-- Disk Cover / Vinyl Visual -->
     <div class="relative aspect-square overflow-hidden bg-vinyl-dark">
-      <% if disk.respond_to?(:cover_image) && disk.cover_image.attached? %>
-        <%= image_tag disk.cover_image, alt: disk.title, class: "w-full h-full object-cover group-hover:scale-105 transition-transform duration-300" %>
-      <% else %>
-        <!-- Default Vinyl Visual -->
-        <div class="w-full h-full flex items-center justify-center bg-gradient-to-br from-vinyl-black via-vinyl-dark to-vinyl-groove">
-          <div class="w-3/4 h-3/4 vinyl-record group-hover:vinyl-spin"></div>
-        </div>
-      <% end %>
+       <% if disk.cover.attached? %>
+         <%= image_tag disk.cover, alt: disk.title, class: "w-full h-full object-cover group-hover:scale-105 transition-transform duration-300" %>
+       <% else %>
+         <!-- Default Visual based on format -->
+         <div class="w-full h-full flex items-center justify-center bg-gradient-to-br from-vinyl-black via-vinyl-dark to-vinyl-groove">
+           <% if disk.format == 'CD' %>
+             <div class="w-3/4 h-3/4 cd-record group-hover:vinyl-spin"></div>
+           <% else %>
+             <div class="w-3/4 h-3/4 vinyl-record group-hover:vinyl-spin"></div>
+           <% end %>
+         </div>
+       <% end %>
       
       <!-- Format Badge -->
       <div class="absolute top-3 left-3">

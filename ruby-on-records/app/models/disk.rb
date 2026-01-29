@@ -1,4 +1,6 @@
 class Disk < ApplicationRecord
+  include Searchable
+
   # === Scopes === #
   scope :by_state, ->(filter) {
     case filter
@@ -8,6 +10,18 @@ class Disk < ApplicationRecord
     end
   }
 
+  scope :by_format, ->(format) {
+    where(format: format) if format.present?
+  }
+
+  scope :search, ->(query) {
+    search_in_fields(query, %w[title artist description])
+  }
+
+  scope :in_stock, -> { where("stock > 0") }
+  scope :out_of_stock, -> { where(stock: 0) }
+
+
   # === Relaciones === #
 
   # Un mismo Disco puede estar presente en varios Items de varias Ventas
@@ -16,12 +30,10 @@ class Disk < ApplicationRecord
   # Un Disco puede pertenecer a varios Géneros
   has_and_belongs_to_many :genres
 
-  # A has_and_belongs_to_many association creates a direct many-to-many relationship with another model, with no intervening model.
-  # This association indicates that each instance of the declaring model refers to zero or more instances of another model.
-  # You'd use has_and_belongs_to_many when:
-  # * The association is simple and does not require additional attributes or behaviors on the join table.
-  # * You do not need validations, callbacks, or extra methods on the join table.
-  # https://guides.rubyonrails.org/association_basics.html#has-and-belongs-to-many
+  # Un Disco puede tener varias fotos y una portada
+  has_many_attached :photos
+  has_one_attached :cover
+  has_one_attached :preview
 
   # === Validadores === #
 

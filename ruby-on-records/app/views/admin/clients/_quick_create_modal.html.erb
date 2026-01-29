@@ -1,0 +1,100 @@
+<!-- Modal de Creación Rápida de Cliente -->
+<div data-controller="client-modal"
+     data-client-modal-url-value="<%= quick_create_admin_clients_path %>"
+     data-client-modal-target="modal"
+     data-action="click->client-modal#closeOnBackdrop"
+     class="hidden fixed inset-0 z-50 items-center justify-center bg-vinyl-black/80 backdrop-blur-sm">
+  
+  <div class="bg-paper border-4 border-vinyl-black shadow-2xl max-w-2xl w-full mx-4 transform transition-all"
+       style="box-shadow: 8px 8px 0 rgba(0,0,0,0.3);">
+    
+    <!-- Header -->
+    <div class="bg-mustard border-b-4 border-vinyl-black p-6 flex justify-between items-center">
+      <h2 class="text-2xl font-display font-bold text-vinyl-black uppercase tracking-wider">
+        🆕 Nuevo Cliente
+      </h2>
+      <button type="button"
+              data-action="click->client-modal#close"
+              class="text-vinyl-black hover:text-rust transition-colors text-3xl leading-none font-bold">
+        ×
+      </button>
+    </div>
+
+    <!-- Errors Container -->
+    <div data-client-modal-target="errors" class="hidden"></div>
+
+    <!-- Form -->
+    <form data-client-modal-target="form"
+          data-action="submit->client-modal#submit"
+          class="p-6 space-y-6">
+      
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+        <!-- Nombre -->
+        <div class="md:col-span-2">
+          <label class="label-retro" for="quick-client-name">
+            Nombre Completo <span class="text-rust">*</span>
+          </label>
+          <input type="text"
+                 id="quick-client-name"
+                 data-client-modal-target="nameInput"
+                 required
+                 class="input-retro"
+                 placeholder="Ej: Juan Pérez">
+        </div>
+
+        <!-- DNI -->
+        <div>
+          <label class="label-retro" for="quick-client-dni">
+            DNI <span class="text-rust">*</span>
+          </label>
+          <input type="text"
+                 id="quick-client-dni"
+                 data-client-modal-target="dniInput"
+                 required
+                 pattern="[0-9]+"
+                 class="input-retro"
+                 placeholder="Ej: 12345678">
+          <p class="text-xs text-vinyl-dark/60 mt-1">Solo números, sin puntos ni guiones</p>
+        </div>
+
+        <!-- Email -->
+        <div>
+          <label class="label-retro" for="quick-client-email">
+            Email
+          </label>
+          <input type="email"
+                 id="quick-client-email"
+                 data-client-modal-target="emailInput"
+                 class="input-retro"
+                 placeholder="Ej: juan@email.com">
+        </div>
+
+        <!-- Teléfono -->
+        <div class="md:col-span-2">
+          <label class="label-retro" for="quick-client-phone">
+            Teléfono
+          </label>
+          <input type="tel"
+                 id="quick-client-phone"
+                 data-client-modal-target="phoneInput"
+                 class="input-retro"
+                 placeholder="Ej: +54 11 1234-5678">
+        </div>
+      </div>
+
+      <!-- Actions -->
+      <div class="flex justify-end gap-4 pt-4 border-t-2 border-vinyl-black/10">
+        <button type="button"
+                data-action="click->client-modal#close"
+                class="px-6 py-3 text-vinyl-dark hover:text-rust transition-colors uppercase text-sm tracking-wider font-bold">
+          Cancelar
+        </button>
+        <button type="submit"
+                data-client-modal-target="submitButton"
+                class="btn-primary">
+          Crear Cliente
+        </button>
+      </div>
+    </form>
+  </div>
+</div>

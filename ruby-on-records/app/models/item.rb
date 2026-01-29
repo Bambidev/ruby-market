@@ -1,16 +1,14 @@
 class Item < ApplicationRecord
   # === Relaciones === #
-
-  # Un Item pertenece a una Venta
   belongs_to :sale
-  # Un Item es un Disco
   belongs_to :disk
 
-  # === Validadores === #
+  attr_accessor :item_query
 
-  # :amount ::= Cantidad de un mismo producto comprado en una Venta
-  validates :amount, presence: true, numericality: {
-    only_integer: true,
-    greater_than_or_equal_to: 0
-  }
+  # === Validadores === #
+  validates :quantity, presence: true, numericality: { greater_than: 0, only_integer: true }
+  validates :price, presence: true, numericality: { greater_than_or_equal_to: 0 }
+  
+  # Delegate useful methods
+  delegate :title, to: :disk, prefix: true
 end

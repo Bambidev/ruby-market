@@ -15,8 +15,9 @@
         <thead>
           <tr>
             <th>Nombre</th>
+            <th>DNI</th>
             <th>Email</th>
-            <th>Telefono</th>
+            <th>Teléfono</th>
             <th>Acciones</th>
           </tr>
         </thead>
@@ -24,8 +25,9 @@
           <% @clients.each do |client| %>
             <tr>
               <td class="font-bold"><%= client.name %></td>
-              <td class="text-sepia"><%= client.email %></td>
-              <td class="text-sepia"><%= client.phone %></td>
+              <td class="text-vinyl-dark font-mono"><%= client.dni %></td>
+              <td class="text-sepia"><%= client.email.presence || "-" %></td>
+              <td class="text-sepia"><%= client.phone.presence || "-" %></td>
               <td>
                 <div class="flex items-center gap-3">
                   <%= link_to "Ver", [:admin, client], class: "text-mustard-dark hover:text-mustard font-bold uppercase text-xs tracking-wider transition-colors" %>

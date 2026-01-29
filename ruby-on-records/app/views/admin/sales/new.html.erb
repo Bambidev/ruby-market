@@ -1,11 +1,8 @@
-<% content_for :title, "New sale" %>
+<div class="max-w-4xl mx-auto">
+  <div class="flex items-center justify-between mb-8">
+    <h1 class="text-3xl font-display font-bold text-mustard">Nueva Venta</h1>
+    <%= link_to "Volver", admin_sales_path, class: "text-cream hover:text-mustard underline" %>
+  </div>
 
-<h1>New sale</h1>
-
-<%= render "form", sale: @sale %>
-
-<br>
-
-<div>
-  <%= link_to "Back to sales", admin_sales_path %>
+  <%= render "form", sale: @sale %>
 </div>

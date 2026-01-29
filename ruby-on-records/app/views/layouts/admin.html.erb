@@ -26,13 +26,13 @@
     <!-- Admin Header -->
     <header class="bg-burgundy text-cream border-b-4 border-mustard">
       <nav class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div class="flex items-center justify-between h-16">
+        <div class="flex items-center justify-between h-20">
           <!-- Logo -->
           <div class="flex-shrink-0">
             <%= link_to admin_root_path, class: "flex items-center gap-3 group" do %>
-              <div class="w-8 h-8 vinyl-record"></div>
+              <div class="w-12 h-12 vinyl-record"></div>
               <div class="hidden sm:block">
-                <span class="text-lg font-display font-bold text-mustard">Backstore</span>
+                <span class="text-2xl font-display font-bold text-mustard">Backstore</span>
                 <span class="text-xs text-cream/60 block -mt-1">Panel de Admin</span>
               </div>
             <% end %>
@@ -40,30 +40,30 @@
 
           <!-- Navigation Links - Desktop -->
           <div class="hidden lg:flex items-center space-x-1">
-            <%= link_to "Dashboard", admin_root_path, class: "px-3 py-2 text-cream hover:text-mustard hover:bg-burgundy-dark transition-colors uppercase text-xs tracking-wider font-bold" %>
-            <%= link_to "Discos", admin_disks_path, class: "px-3 py-2 text-cream hover:text-mustard hover:bg-burgundy-dark transition-colors uppercase text-xs tracking-wider font-bold" %>
-            <%= link_to "Ventas", admin_sales_path, class: "px-3 py-2 text-cream hover:text-mustard hover:bg-burgundy-dark transition-colors uppercase text-xs tracking-wider font-bold" %>
-            <%= link_to "Clientes", admin_clients_path, class: "px-3 py-2 text-cream hover:text-mustard hover:bg-burgundy-dark transition-colors uppercase text-xs tracking-wider font-bold" %>
-            <%= link_to "Generos", admin_genres_path, class: "px-3 py-2 text-cream hover:text-mustard hover:bg-burgundy-dark transition-colors uppercase text-xs tracking-wider font-bold" %>
+            <%= link_to "Dashboard", admin_root_path, class: "px-4 py-2 text-cream hover:text-mustard hover:bg-burgundy-dark transition-colors uppercase text-sm tracking-wider font-bold" %>
+            <%= link_to "Discos", admin_disks_path, class: "px-4 py-2 text-cream hover:text-mustard hover:bg-burgundy-dark transition-colors uppercase text-sm tracking-wider font-bold" %>
+            <%= link_to "Ventas", admin_sales_path, class: "px-4 py-2 text-cream hover:text-mustard hover:bg-burgundy-dark transition-colors uppercase text-sm tracking-wider font-bold" %>
+            <%= link_to "Clientes", admin_clients_path, class: "px-4 py-2 text-cream hover:text-mustard hover:bg-burgundy-dark transition-colors uppercase text-sm tracking-wider font-bold" %>
+            <%= link_to "Generos", admin_genres_path, class: "px-4 py-2 text-cream hover:text-mustard hover:bg-burgundy-dark transition-colors uppercase text-sm tracking-wider font-bold" %>
             <% if can? :manage, User %>
-              <%= link_to "Usuarios", admin_users_path, class: "px-3 py-2 text-cream hover:text-mustard hover:bg-burgundy-dark transition-colors uppercase text-xs tracking-wider font-bold" %>
+              <%= link_to "Usuarios", admin_users_path, class: "px-4 py-2 text-cream hover:text-mustard hover:bg-burgundy-dark transition-colors uppercase text-sm tracking-wider font-bold" %>
             <% end %>
           </div>
 
           <!-- User Menu -->
           <div class="flex items-center gap-4">
             <div class="relative group">
-              <button class="flex items-center gap-2 px-3 py-2 text-cream hover:text-mustard uppercase text-xs tracking-wider font-bold">
+              <button class="flex items-center gap-2 px-4 py-2 text-cream hover:text-mustard uppercase text-sm tracking-wider font-bold">
                 <%= current_user.full_name %>
                 <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path>
                 </svg>
               </button>
               <div class="absolute right-0 mt-0 w-48 bg-burgundy-dark border-2 border-mustard hidden group-hover:block z-50">
-                <%= link_to root_path, class: "block px-4 py-3 text-cream hover:bg-mustard hover:text-vinyl-black transition-colors uppercase text-xs tracking-wider" do %>
+                <%= link_to root_path, class: "block px-4 py-3 text-cream hover:bg-mustard hover:text-vinyl-black transition-colors uppercase text-sm tracking-wider" do %>
                   Ver Tienda
                 <% end %>
-                <%= button_to "Cerrar Sesion", logout_path, method: :delete, class: "w-full text-left px-4 py-3 text-cream hover:bg-rust hover:text-white transition-colors uppercase text-xs tracking-wider" %>
+                <%= button_to "Cerrar Sesion", logout_path, method: :delete, class: "w-full text-left px-4 py-3 text-cream hover:bg-rust hover:text-white transition-colors uppercase text-sm tracking-wider" %>
               </div>
             </div>
 
@@ -79,13 +79,13 @@
         <!-- Mobile Menu -->
         <div id="admin-mobile-menu" class="hidden lg:hidden pb-4 border-t border-burgundy-dark">
           <div class="flex flex-col space-y-1 pt-4">
-            <%= link_to "Dashboard", admin_root_path, class: "px-4 py-3 text-cream hover:text-mustard hover:bg-burgundy-dark transition-colors uppercase text-xs tracking-wider font-bold" %>
-            <%= link_to "Discos", admin_disks_path, class: "px-4 py-3 text-cream hover:text-mustard hover:bg-burgundy-dark transition-colors uppercase text-xs tracking-wider font-bold" %>
-            <%= link_to "Ventas", admin_sales_path, class: "px-4 py-3 text-cream hover:text-mustard hover:bg-burgundy-dark transition-colors uppercase text-xs tracking-wider font-bold" %>
-            <%= link_to "Clientes", admin_clients_path, class: "px-4 py-3 text-cream hover:text-mustard hover:bg-burgundy-dark transition-colors uppercase text-xs tracking-wider font-bold" %>
-            <%= link_to "Generos", admin_genres_path, class: "px-4 py-3 text-cream hover:text-mustard hover:bg-burgundy-dark transition-colors uppercase text-xs tracking-wider font-bold" %>
+            <%= link_to "Dashboard", admin_root_path, class: "px-4 py-3 text-cream hover:text-mustard hover:bg-burgundy-dark transition-colors uppercase text-sm tracking-wider font-bold" %>
+            <%= link_to "Discos", admin_disks_path, class: "px-4 py-3 text-cream hover:text-mustard hover:bg-burgundy-dark transition-colors uppercase text-sm tracking-wider font-bold" %>
+            <%= link_to "Ventas", admin_sales_path, class: "px-4 py-3 text-cream hover:text-mustard hover:bg-burgundy-dark transition-colors uppercase text-sm tracking-wider font-bold" %>
+            <%= link_to "Clientes", admin_clients_path, class: "px-4 py-3 text-cream hover:text-mustard hover:bg-burgundy-dark transition-colors uppercase text-sm tracking-wider font-bold" %>
+            <%= link_to "Generos", admin_genres_path, class: "px-4 py-3 text-cream hover:text-mustard hover:bg-burgundy-dark transition-colors uppercase text-sm tracking-wider font-bold" %>
             <% if can? :manage, User %>
-              <%= link_to "Usuarios", admin_users_path, class: "px-4 py-3 text-cream hover:text-mustard hover:bg-burgundy-dark transition-colors uppercase text-xs tracking-wider font-bold" %>
+              <%= link_to "Usuarios", admin_users_path, class: "px-4 py-3 text-cream hover:text-mustard hover:bg-burgundy-dark transition-colors uppercase text-sm tracking-wider font-bold" %>
             <% end %>
           </div>
         </div>
@@ -136,5 +136,7 @@
         </div>
       </div>
     </footer>
+
+
   </body>
 </html>
