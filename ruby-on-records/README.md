@@ -85,13 +85,15 @@ bin/dev
 <td width="50%">
 
 **Home**
-> Página de inicio con destacados y categorías
+> Página de inicio
+<img width="850" height="648" alt="image" src="https://github.com/user-attachments/assets/6311b85a-fcaa-43d4-b301-733c07f0d9cf" />
 
 </td>
 <td width="50%">
 
 **Catálogo**
 > Navegación con filtros por género, año y formato
+<img width="833" height="644" alt="image" src="https://github.com/user-attachments/assets/977ba62f-b5eb-469b-b761-380919ae3fcd" />
 
 </td>
 </tr>
@@ -105,18 +107,21 @@ bin/dev
 
 **Dashboard**
 > Estadísticas y accesos rápidos
+<img width="845" height="645" alt="image" src="https://github.com/user-attachments/assets/ea45f3bc-9ac0-458d-85dc-1f1e2f0684a5" />
 
 </td>
 <td width="33%">
 
 **Gestión de Ventas**
 > Registro con búsqueda de cliente y discos
+<img width="859" height="596" alt="image" src="https://github.com/user-attachments/assets/4b5e4846-c025-4c60-9d3c-78608e60ebaa" />
 
 </td>
 <td width="33%">
 
 **Inventario**
 > CRUD completo con filtros avanzados
+<img width="861" height="647" alt="image" src="https://github.com/user-attachments/assets/c3c6dd0a-2ef7-4c64-8ac0-9630f761d90b" />
 
 </td>
 </tr>
@@ -159,16 +164,16 @@ bin/dev
 ## 🎵 Flujo de Trabajo
 
 ```
-┌─────────────────┐     ┌─────────────────┐     ┌─────────────────┐
-│   📀 STOREFRONT  │     │   🔐 LOGIN      │     │   💼 BACKSTORE  │
+┌─────────────────┐      ┌─────────────────┐     ┌─────────────────┐
+│ 📀 STOREFRONT   │     │   🔐 LOGIN      │     │   💼 BACKSTORE  │
 │   (Público)     │ ──▶ │   Empleados     │ ──▶ │   (Admin)       │
-└─────────────────┘     └─────────────────┘     └─────────────────┘
-│                                               │
-│  - Ver catálogo                               │  - Gestionar discos
-│  - Filtrar discos                             │  - Registrar ventas
-│  - Ver detalles                               │  - Admin clientes
-                                                │  - Generar facturas
-                                                │  - Control de stock
+└─────────────────┘     └─────────────────┘      └─────────────────┘
+│                                                │
+│  - Ver catálogo                                │  - Gestionar discos
+│  - Filtrar discos                              │  - Registrar ventas
+│  - Ver detalles                                │  - Admin clientes
+                                                 │  - Generar facturas
+                                                 │  - Control de stock
 ```
 
 ---
@@ -180,10 +185,6 @@ bin/dev
 bin/dev                    # Inicia servidor + Tailwind watch
 rails console              # Consola interactiva
 rails db:seed              # Cargar datos de prueba
-
-# Testing
-rails test                 # Ejecutar tests
-rails test:system          # Tests de sistema
 
 # Base de datos
 rails db:reset             # Resetear y re-seedear
@@ -227,18 +228,10 @@ ruby-on-records/
 
 ---
 
-## 📝 Licencia
-
-Este proyecto está bajo la Licencia MIT. Ver [LICENSE](LICENSE) para más detalles.
-
----
-
 <div align="center">
 
 **Hecho con ❤️ y 🎵**
 
-<img src="https://media.giphy.com/media/YnZPEeeC7q6pQTlAs8/giphy.gif" width="100" alt="Music notes">
-
-*Ruby On Records © 2024*
+*Ruby On Records © 2026*
 
 </div>
