@@ -1,0 +1,382 @@
+@import "tailwindcss";
+
+/* Retro Vinyl Theme - Custom CSS Variables */
+@theme {
+  /* Retro Color Palette */
+  --color-vinyl-black: #1a1a1a;
+  --color-vinyl-dark: #2d2d2d;
+  --color-vinyl-groove: #3d3d3d;
+  --color-cream: #f5f0e6;
+  --color-cream-dark: #e8e0d0;
+  --color-mustard: #d4a039;
+  --color-mustard-dark: #b8872e;
+  --color-rust: #c45c3e;
+  --color-rust-dark: #a34830;
+  --color-teal: #2a9d8f;
+  --color-teal-dark: #21867a;
+  --color-burgundy: #7d2e4a;
+  --color-burgundy-dark: #5e2238;
+  --color-olive: #6b7b3a;
+  --color-paper: #faf8f3;
+  --color-sepia: #8b7355;
+}
+
+/* Vinyl Record Spinner Animation */
+@keyframes spin-slow {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
+}
+
+.vinyl-spin {
+  animation: spin-slow 3s linear infinite;
+}
+
+.vinyl-spin-hover:hover {
+  animation: spin-slow 2s linear infinite;
+}
+
+/* Retro Button Styles */
+.btn-retro {
+  display: inline-block;
+  padding: 0.75rem 1.5rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  font-size: 0.875rem;
+  transition: all 0.2s;
+  border: 2px solid #1a1a1a;
+  box-shadow: 3px 3px 0 0 #1a1a1a;
+}
+
+.btn-retro:hover {
+  box-shadow: 1px 1px 0 0 #1a1a1a;
+  transform: translate(2px, 2px);
+}
+
+.btn-retro:active {
+  box-shadow: none;
+  transform: translate(3px, 3px);
+}
+
+.btn-primary {
+  display: inline-block;
+  padding: 0.75rem 1.5rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  font-size: 0.875rem;
+  transition: all 0.2s;
+  border: 2px solid #1a1a1a;
+  box-shadow: 3px 3px 0 0 #1a1a1a;
+  background-color: #d4a039;
+  color: #1a1a1a;
+}
+
+.btn-primary:hover {
+  background-color: #b8872e;
+  box-shadow: 1px 1px 0 0 #1a1a1a;
+  transform: translate(2px, 2px);
+}
+
+.btn-secondary {
+  display: inline-block;
+  padding: 0.75rem 1.5rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  font-size: 0.875rem;
+  transition: all 0.2s;
+  border: 2px solid #1a1a1a;
+  box-shadow: 3px 3px 0 0 #1a1a1a;
+  background-color: #f5f0e6;
+  color: #1a1a1a;
+}
+
+.btn-secondary:hover {
+  background-color: #e8e0d0;
+  box-shadow: 1px 1px 0 0 #1a1a1a;
+  transform: translate(2px, 2px);
+}
+
+.btn-danger {
+  display: inline-block;
+  padding: 0.75rem 1.5rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  font-size: 0.875rem;
+  transition: all 0.2s;
+  border: 2px solid #1a1a1a;
+  box-shadow: 3px 3px 0 0 #1a1a1a;
+  background-color: #c45c3e;
+  color: white;
+}
+
+.btn-danger:hover {
+  background-color: #a34830;
+  box-shadow: 1px 1px 0 0 #1a1a1a;
+  transform: translate(2px, 2px);
+}
+
+/* Retro Card Style */
+.card-retro {
+  background-color: #faf8f3;
+  border: 2px solid #1a1a1a;
+  box-shadow: 4px 4px 0 0 #1a1a1a;
+  transition: all 0.2s;
+}
+
+.card-retro:hover {
+  box-shadow: 6px 6px 0 0 #1a1a1a;
+  transform: translate(-2px, -2px);
+}
+
+/* Vinyl Record Visual */
+.vinyl-record {
+  position: relative;
+  border-radius: 9999px;
+  background-color: #1a1a1a;
+  background-image:
+    repeating-radial-gradient(
+      circle at center,
+      transparent 0,
+      transparent 2px,
+      rgba(255,255,255,0.03) 2px,
+      rgba(255,255,255,0.03) 4px
+    );
+}
+
+.vinyl-record::before {
+  content: '';
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 33%;
+  height: 33%;
+  border-radius: 9999px;
+  background-color: #d4a039;
+  border: 4px solid #2d2d2d;
+}
+
+.vinyl-record::after {
+  content: '';
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 8%;
+  height: 8%;
+  border-radius: 9999px;
+  background-color: #1a1a1a;
+}
+
+/* CD Record Visual */
+.cd-record {
+  position: relative;
+  border-radius: 9999px;
+  background: linear-gradient(135deg,
+    #e8e8e8 0%,
+    #f0f0f0 25%,
+    #e8e8e8 50%,
+    #d8d8d8 75%,
+    #e8e8e8 100%);
+  border: 2px solid #c0c0c0;
+  box-shadow:
+    inset 0 0 20px rgba(255,255,255,0.8),
+    0 0 10px rgba(0,0,0,0.1);
+}
+
+.cd-record::before {
+  content: '';
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 35%;
+  height: 35%;
+  border-radius: 9999px;
+  background: radial-gradient(circle,
+    #ffffff 0%,
+    #f8f8f8 30%,
+    #e0e0e0 70%,
+    #c8c8c8 100%);
+  border: 2px solid #a0a0a0;
+  box-shadow:
+    inset 0 0 10px rgba(255,255,255,0.9),
+    0 0 5px rgba(0,0,0,0.2);
+}
+
+.cd-record::after {
+  content: '';
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 12%;
+  height: 12%;
+  border-radius: 9999px;
+  background: linear-gradient(135deg,
+    #404040 0%,
+    #606060 50%,
+    #404040 100%);
+  border: 1px solid #202020;
+}
+
+/* Input Retro Style */
+.input-retro {
+  width: 100%;
+  padding: 0.75rem 1rem;
+  background-color: #faf8f3;
+  border: 2px solid #1a1a1a;
+  transition: all 0.2s;
+}
+
+.input-retro:focus {
+  outline: none;
+  border-color: #d4a039;
+  box-shadow: 2px 2px 0 0 #d4a039;
+}
+
+.input-retro::placeholder {
+  color: rgba(139, 115, 85, 0.5);
+}
+
+.select-retro {
+  width: 100%;
+  padding: 0.75rem 1rem;
+  padding-right: 3rem;
+  background-color: #faf8f3;
+  border: 2px solid #1a1a1a;
+  appearance: none;
+  cursor: pointer;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 24 24' stroke='%231a1a1a'%3E%3Cpath stroke-linecap='round' stroke-linejoin='round' stroke-width='2' d='M19 9l-7 7-7-7'%3E%3C/path%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: right 12px center;
+  background-size: 20px;
+}
+
+.select-retro:focus {
+  outline: none;
+  border-color: #d4a039;
+  box-shadow: 2px 2px 0 0 #d4a039;
+}
+
+/* Label Style */
+.label-retro {
+  display: block;
+  font-size: 0.75rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  color: #2d2d2d;
+  margin-bottom: 0.5rem;
+}
+
+/* Retro Table */
+.table-retro {
+  width: 100%;
+  border: 2px solid #1a1a1a;
+}
+
+.table-retro thead {
+  background-color: #1a1a1a;
+  color: #f5f0e6;
+}
+
+.table-retro th {
+  padding: 0.75rem 1rem;
+  text-align: left;
+  font-size: 0.75rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+.table-retro td {
+  padding: 0.75rem 1rem;
+  border-bottom: 1px solid rgba(61, 61, 61, 0.2);
+}
+
+.table-retro tbody tr:hover {
+  background-color: #e8e0d0;
+}
+
+/* Retro Badge */
+.badge-retro {
+  display: inline-block;
+  padding: 0.25rem 0.75rem;
+  font-size: 0.75rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  border: 2px solid #1a1a1a;
+}
+
+/* Groovy Divider */
+.divider-groovy {
+  position: relative;
+  margin: 2rem 0;
+  border: 0;
+  height: 2px;
+  background-color: #1a1a1a;
+}
+
+.divider-groovy::before {
+  content: 'VINYL';
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
+  background-color: #f5f0e6;
+  padding: 0 1rem;
+  font-size: 0.75rem;
+  font-weight: 700;
+  letter-spacing: 0.3em;
+  color: #8b7355;
+}
+
+/* Font Display class */
+.font-display {
+  font-family: 'Playfair Display', Georgia, serif;
+}
+
+/* File Input Retro Style */
+.file-input-retro {
+  width: 100%;
+  padding: 0.5rem 0.75rem;
+  background-color: #faf8f3;
+  border: 2px solid #1a1a1a;
+  transition: all 0.2s;
+  cursor: pointer;
+  font-size: 0.875rem;
+}
+
+.file-input-retro:focus {
+  outline: none;
+  border-color: #d4a039;
+  box-shadow: 2px 2px 0 0 #d4a039;
+}
+
+.file-input-retro::file-selector-button {
+  display: inline-block;
+  padding: 0.35rem 0.75rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  font-size: 0.7rem;
+  transition: all 0.2s;
+  border: 2px solid #1a1a1a;
+  box-shadow: 2px 2px 0 0 #1a1a1a;
+  background-color: #2a9d8f;
+  color: white;
+  margin-right: 0.75rem;
+  margin-bottom: 0;
+  cursor: pointer;
+}
+
+.file-input-retro::file-selector-button:hover {
+  background-color: #21867a;
+  box-shadow: 1px 1px 0 0 #1a1a1a;
+  transform: translate(1px, 1px);
+}

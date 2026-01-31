@@ -1,0 +1,54 @@
+<% content_for :title, "Detalle Usuario | Admin" %>
+
+<div class="max-w-2xl mx-auto py-12 px-4">
+  <div class="mb-8 text-center">
+    <h1 class="font-display text-3xl sm:text-4xl font-bold text-vinyl-black mb-2">Detalles del Usuario</h1>
+    <p class="text-sepia">Información y permisos del usuario.</p>
+  </div>
+
+  <div class="card-retro p-8 bg-paper mb-8 flex flex-col gap-6">
+    <div class="flex items-center gap-4 border-b-2 border-vinyl-groove pb-6 mb-2">
+      <div class="w-16 h-16 rounded-full bg-vinyl-black flex items-center justify-center text-white font-bold text-2xl border-4 border-mustard">
+        <%= @user.full_name.first.upcase %>
+      </div>
+      <div>
+        <h2 class="font-display text-2xl font-bold text-vinyl-black"><%= @user.full_name %></h2>
+        <span class="text-sepia text-sm"><%= @user.email %></span>
+      </div>
+      <div class="ml-auto">
+        <span class="badge-retro bg-vinyl-black text-cream"><%= @user.role.humanize %></span>
+      </div>
+    </div>
+
+    <!-- Stats or Info Layout -->
+    <dl class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+      <div>
+        <dt class="label-retro text-[10px] mb-1">ID Usuario</dt>
+        <dd class="font-mono text-vinyl-dark font-bold">#<%= @user.id %></dd>
+      </div>
+      <div>
+        <dt class="label-retro text-[10px] mb-1">Fecha de Registro</dt>
+        <dd class="font-mono text-vinyl-dark"><%= @user.created_at.strftime("%d/%m/%Y") %></dd>
+      </div>
+    </dl>
+  </div>
+
+  <div class="flex items-center justify-between gap-4">
+    <div class="flex gap-4">
+      <%= link_to "Editar", edit_admin_user_path(@user), class: "btn-secondary" %>
+      
+      <% unless @user == current_user %>
+        <%= button_to "Eliminar", [:admin, @user], method: :delete, 
+            data: { turbo_confirm: "¿Seguro que deseas eliminar este usuario? Esta acción es irreversible." },
+            class: "btn-danger" %>
+      <% end %>
+    </div>
+
+    <%= link_to admin_users_path, class: "flex items-center gap-2 text-sepia hover:text-vinyl-black font-bold uppercase text-xs tracking-wider transition-colors" do %>
+      <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18" />
+      </svg>
+      Volver al Listado
+    <% end %>
+  </div>
+</div>

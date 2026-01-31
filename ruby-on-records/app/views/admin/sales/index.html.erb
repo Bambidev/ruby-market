@@ -1,0 +1,100 @@
+<% content_for :title, "Ventas - Backstore" %>
+
+<div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 mb-8">
+  <div>
+    <h1 class="font-display text-4xl font-bold text-vinyl-black mb-2">Ventas</h1>
+    <p class="text-sepia">Historial de ventas realizadas</p>
+  </div>
+  <%= link_to "Nueva Venta", new_admin_sale_path, class: "btn-primary inline-flex items-center gap-2" %>
+</div>
+
+<% if @sales.any? %>
+  <div class="card-retro overflow-hidden">
+    <div class="overflow-x-auto">
+      <table class="table-retro">
+        <thead>
+          <tr>
+            <th>ID</th>
+            <th>Fecha</th>
+            <th>Cliente</th>
+            <th>Vendedor</th>
+            <th>Productos</th>
+            <th class="text-right">Total</th>
+            <th>Estado</th>
+            <th>Acciones</th>
+          </tr>
+        </thead>
+        <tbody>
+          <% @sales.each do |sale| %>
+            <tr class="<%= 'opacity-50' if sale.cancelled? %>">
+              <td class="font-mono text-vinyl-dark">#<%= sale.id %></td>
+              <td>
+                <span class="font-bold"><%= sale.created_at.strftime("%d/%m/%Y") %></span>
+                <span class="text-sepia text-xs block"><%= sale.created_at.strftime("%H:%M") %> hs</span>
+              </td>
+              <td class="font-bold"><%= sale.client.name %></td>
+              <td class="text-sepia"><%= sale.user.full_name %></td>
+              <td>
+                <ul class="text-sm text-sepia space-y-1">
+                  <% sale.items.limit(3).each do |item| %>
+                    <li><%= item.quantity %>x <%= item.disk.title %></li>
+                  <% end %>
+                  <% if sale.items.size > 3 %>
+                    <li class="text-xs italic">+<%= sale.items.size - 3 %> más...</li>
+                  <% end %>
+                </ul>
+              </td>
+              <td class="text-right font-mono font-bold text-lg text-vinyl-black">
+                $<%= number_with_precision(sale.total, precision: 2) %>
+              </td>
+              <td>
+                <% if sale.cancelled? %>
+                  <span class="inline-block px-3 py-1 text-xs font-bold rounded-full bg-rust text-white">
+                    Cancelada
+                  </span>
+                <% else %>
+                  <span class="inline-block px-3 py-1 text-xs font-bold rounded-full bg-teal text-white">
+                    Activa
+                  </span>
+                <% end %>
+              </td>
+              <td>
+                <div class="flex items-center gap-3">
+                  <%= link_to admin_sale_path(sale, format: :pdf), 
+                      target: "_blank", 
+                      class: "text-mustard-dark hover:text-mustard font-bold uppercase text-xs tracking-wider transition-colors",
+                      title: "Descargar PDF" do %>
+                    📄 PDF
+                  <% end %>
+            
+                  
+                  <% unless sale.cancelled? %>
+                    <%= button_to cancel_admin_sale_path(sale), 
+                        method: :post, 
+                        form: { data: { turbo_confirm: "¿Cancelar esta venta? El stock será devuelto." } },
+                        class: "text-rust hover:text-rust/70 font-bold uppercase text-xs tracking-wider transition-colors" do %>
+                      Cancelar
+                    <% end %>
+                  <% end %>
+                </div>
+              </td>
+            </tr>
+          <% end %>
+        </tbody>
+      </table>
+    </div>
+  </div>
+  
+  <div class="mt-6">
+    <%= paginate @sales %>
+  </div>
+<% else %>
+  <div class="card-retro p-12 text-center">
+    <svg class="w-16 h-16 mx-auto mb-4 text-sepia" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-3 7h3m-3 4h3m-6-4h.01M9 16h.01"></path>
+    </svg>
+    <h3 class="font-display text-2xl font-bold text-vinyl-black mb-2">No hay ventas</h3>
+    <p class="text-sepia mb-6">Registra la primera venta</p>
+    <%= link_to "Nueva Venta", new_admin_sale_path, class: "btn-primary" %>
+  </div>
+<% end %>

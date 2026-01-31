@@ -1,0 +1,110 @@
+<% content_for :title, "Catálogo de Discos - Backstore" %>
+
+<!-- Header -->
+<div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 mb-8">
+  <div>
+    <h1 class="font-display text-4xl font-bold text-vinyl-black mb-2">Catálogo de Discos</h1>
+    <p class="text-sepia">Gestiona todos los discos de la tienda</p>
+  </div>
+  <%= link_to "Nuevo Disco", new_admin_disk_path, class: "btn-primary inline-flex items-center gap-2" %>
+</div>
+
+<!-- Filtros -->
+<div class="card-retro p-4 mb-6">
+  <%= form_with url: admin_disks_path, method: :get, local: true, class: "space-y-4" do |form| %>
+    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-6 gap-4">
+      <!-- Búsqueda de texto -->
+      <div class="lg:col-span-2">
+        <%= form.text_field :q, 
+            value: params[:q], 
+            placeholder: "Buscar por título o artista...", 
+            class: "input-retro w-full" %>
+      </div>
+      
+      <!-- Filtro por género -->
+      <div>
+        <%= form.select :genre_id, 
+            @genres.map { |g| [g.genre_name, g.id] },
+            { prompt: "Género", selected: params[:genre_id] },
+            class: "select-retro w-full" %>
+      </div>
+      
+      <!-- Filtro por formato -->
+      <div>
+        <%= form.select :format_filter,
+            [['CD', 'CD'], ['Vinilo', 'Vinilo']],
+            { prompt: "Formato", selected: params[:format_filter] },
+            class: "select-retro w-full" %>
+      </div>
+      
+      <!-- Filtro por estado -->
+      <div>
+        <%= form.select :state,
+            [['Nuevo', 'Nuevo'], ['Usado', 'Usado']],
+            { prompt: "Estado", selected: params[:state] },
+            class: "select-retro w-full" %>
+      </div>
+      
+      <!-- Filtro por año -->
+      <div>
+        <%= form.select :year,
+            @years.map { |y| [y, y] },
+            { prompt: "Año", selected: params[:year] },
+            class: "select-retro w-full" %>
+      </div>
+    </div>
+    
+    <div class="flex flex-wrap items-center gap-4">
+      <!-- Filtro por stock -->
+      <div class="flex items-center gap-4">
+        <label class="flex items-center gap-2 cursor-pointer">
+          <%= form.radio_button :stock, "", checked: params[:stock].blank?, class: "accent-mustard" %>
+          <span class="text-sm">Todo</span>
+        </label>
+        <label class="flex items-center gap-2 cursor-pointer">
+          <%= form.radio_button :stock, "in_stock", checked: params[:stock] == "in_stock", class: "accent-mustard" %>
+          <span class="text-sm text-teal font-medium">En stock</span>
+        </label>
+        <label class="flex items-center gap-2 cursor-pointer">
+          <%= form.radio_button :stock, "out_of_stock", checked: params[:stock] == "out_of_stock", class: "accent-mustard" %>
+          <span class="text-sm text-rust font-medium">Sin stock</span>
+        </label>
+      </div>
+      
+      <div class="flex gap-2 ml-auto">
+        <%= form.submit "🔍 Filtrar", class: "btn-primary cursor-pointer" %>
+        <% if params[:q].present? || params[:genre_id].present? || params[:format_filter].present? || params[:state].present? || params[:stock].present? || params[:year].present? %>
+          <%= link_to "Limpiar", admin_disks_path, class: "btn-secondary" %>
+        <% end %>
+      </div>
+    </div>
+  <% end %>
+</div>
+
+<!-- Resultados -->
+<% if @disks.any? %>
+  <p class="text-sepia text-sm mb-4"><%= @disks.total_count %> disco(s) encontrado(s)</p>
+  
+  <!-- Disk Grid -->
+  <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
+    <% @disks.each do |disk| %>
+      <%= render 'shared/disk_card', disk: disk, show_path: admin_disk_path(disk) %>
+    <% end %>
+  </div>
+  
+  <div class="mt-6">
+    <%= paginate @disks %>
+  </div>
+<% else %>
+  <div class="card-retro p-12 text-center">
+    <div class="w-24 h-24 vinyl-record mx-auto mb-6 opacity-50"></div>
+    <h3 class="font-display text-2xl font-bold text-vinyl-black mb-2">No hay discos</h3>
+    <% if params[:q].present? || params[:genre_id].present? || params[:format_filter].present? %>
+      <p class="text-sepia mb-6">No se encontraron discos con los filtros aplicados</p>
+      <%= link_to "Limpiar filtros", admin_disks_path, class: "btn-secondary" %>
+    <% else %>
+      <p class="text-sepia mb-6">Comienza agregando el primer disco al catálogo</p>
+      <%= link_to "Agregar Disco", new_admin_disk_path, class: "btn-primary" %>
+    <% end %>
+  </div>
+<% end %>

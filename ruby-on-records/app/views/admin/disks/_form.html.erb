@@ -1,0 +1,132 @@
+<%= form_with(model: [:admin, disk], class: "space-y-6", data: { turbo: false }) do |form| %>
+  <% if disk.errors.any? %>
+    <div class="bg-rust/10 border-2 border-rust p-4">
+      <div class="flex items-center gap-3 mb-3">
+        <svg class="w-5 h-5 text-rust" fill="currentColor" viewBox="0 0 20 20">
+          <path fill-rule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7 4a1 1 0 11-2 0 1 1 0 012 0zm-1-9a1 1 0 00-1 1v4a1 1 0 102 0V6a1 1 0 00-1-1z" clip-rule="evenodd"/>
+        </svg>
+        <span class="font-bold text-rust uppercase tracking-wider text-sm">
+          <%= pluralize(disk.errors.count, "error") %> impidieron guardar este disco
+        </span>
+      </div>
+      <ul class="list-disc list-inside text-rust text-sm space-y-1">
+        <% disk.errors.each do |error| %>
+          <li><%= error.full_message %></li>
+        <% end %>
+      </ul>
+    </div>
+  <% end %>
+
+  <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+    <!-- Left Column -->
+    <div class="space-y-6">
+      <div>
+        <%= form.label :cover, "Portada", class: "label-retro" %>
+        <%= form.file_field :cover, class: "file-input-retro", onchange: "previewPhotos(event, 'cover-preview')" %>
+        <div id="cover-preview" class="mt-3">
+          <% if disk.cover.attached? %>
+            <div class="w-32 h-32 border-2 border-vinyl-groove relative">
+              <%= image_tag disk.cover, class: "w-full h-full object-cover" %>
+              <button type="button" onclick="this.parentElement.remove(); document.querySelector('input[id$=cover]').value=''" class="absolute -top-2 -right-2 w-6 h-6 bg-rust text-white rounded-full flex items-center justify-center text-sm font-bold hover:bg-rust-dark">&times;</button>
+            </div>
+          <% end %>
+        </div>
+      </div>
+
+      <div>
+        <%= form.label :title, "Título", class: "label-retro" %>
+        <%= form.text_field :title, placeholder: "Nombre del disco", required: true, class: "input-retro" %>
+      </div>
+
+      <div>
+        <%= form.label :artist, "Artista", class: "label-retro" %>
+        <%= form.text_field :artist, placeholder: "Nombre del artista o banda", required: true, class: "input-retro" %>
+      </div>
+
+      <div>
+        <%= form.label :description, "Descripción", class: "label-retro" %>
+        <%= form.text_area :description, placeholder: "Descripción del disco", rows: 5, required: true, class: "input-retro resize-none" %>
+      </div>
+      
+      <!-- Géneros -->
+      <div>
+        <%= form.label :genre_ids, "Géneros", class: "label-retro" %>
+        <% if @genres.any? %>
+          <div class="grid grid-cols-2 sm:grid-cols-3 gap-2 mt-2">
+            <% @genres.each do |genre| %>
+              <label class="flex items-center gap-2 p-2 border-2 border-vinyl-groove rounded cursor-pointer hover:bg-mustard/10 transition-colors has-[:checked]:bg-mustard/20 has-[:checked]:border-mustard">
+                <%= form.check_box :genre_ids, 
+                    { multiple: true, class: "w-4 h-4 accent-mustard" }, 
+                    genre.id, 
+                    nil %>
+                <span class="text-sm font-medium"><%= genre.genre_name %></span>
+              </label>
+            <% end %>
+          </div>
+        <% else %>
+          <p class="text-sepia text-sm">
+            No hay géneros creados. 
+            <%= link_to "Crear género", new_admin_genre_path, class: "text-mustard-dark hover:underline" %>
+          </p>
+        <% end %>
+      </div>
+    </div>
+
+    <!-- Right Column -->
+    <div class="space-y-6">
+      <div>
+        <%= form.label :photos, "Fotos", class: "label-retro" %>
+        <%= form.file_field :photos, multiple: true, class: "file-input-retro", onchange: "previewPhotos(event, 'photos-preview')" %>
+        <div id="photos-preview" class="grid grid-cols-3 gap-2 mt-3">
+          <% if disk.photos.attached? %>
+            <% disk.photos.each do |photo| %>
+              <div class="w-20 h-20 border-2 border-vinyl-groove relative group">
+                <%= image_tag photo, class: "w-full h-full object-cover" %>
+                <button type="button" onclick="this.parentElement.remove()" class="absolute -top-1 -right-1 w-5 h-5 bg-rust text-white rounded-full flex items-center justify-center text-xs font-bold hover:bg-rust-dark opacity-0 group-hover:opacity-100 transition-opacity">&times;</button>
+              </div>
+            <% end %>
+          <% end %>
+        </div>
+      </div>
+
+      <div>
+        <%= form.label :preview, "Preview de audio", class: "label-retro" %>
+        <%= form.file_field :preview, class: "file-input-retro" %>
+      </div>
+
+      <div class="grid grid-cols-2 gap-4">
+        <div>
+          <%= form.label :year, "Año", class: "label-retro" %>
+          <%= form.number_field :year, placeholder: "2024", required: true, class: "input-retro" %>
+        </div>
+
+        <div>
+          <%= form.label :price, "Precio", class: "label-retro" %>
+          <%= form.number_field :price, step: 0.01, placeholder: "0.00", required: true, class: "input-retro" %>
+        </div>
+      </div>
+
+      <div>
+        <%= form.label :stock, "Stock", class: "label-retro" %>
+        <%= form.number_field :stock, placeholder: "Cantidad disponible", required: true, class: "input-retro" %>
+      </div>
+
+      <div class="grid grid-cols-2 gap-4">
+        <div>
+          <%= form.label :format, "Formato", class: "label-retro" %>
+          <%= form.select :format, ['CD', 'Vinilo'], { prompt: 'Seleccionar...' }, required: true, class: "select-retro" %>
+        </div>
+
+        <div>
+          <%= form.label :state, "Estado", class: "label-retro" %>
+          <%= form.select :state, ['Nuevo', 'Usado'], { prompt: 'Seleccionar...' }, required: true, class: "select-retro" %>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="pt-6 border-t-2 border-vinyl-groove flex flex-col sm:flex-row gap-4">
+    <%= form.submit disk.new_record? ? "Crear Disco" : "Guardar Cambios", class: "btn-primary cursor-pointer" %>
+    <%= link_to "Cancelar", admin_disks_path, class: "btn-secondary text-center" %>
+  </div>
+<% end %>

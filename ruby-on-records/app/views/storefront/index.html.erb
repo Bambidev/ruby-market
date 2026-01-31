@@ -1,0 +1,129 @@
+<% content_for :title, "Ruby On Records - Tu Tienda de Vinilos" %>
+
+<!-- Hero Section -->
+<section class="relative -mx-4 sm:-mx-6 lg:-mx-8 -mt-8 mb-12">
+  <div class="relative overflow-hidden bg-vinyl-black">
+    <!-- Background Pattern -->
+    <div class="absolute inset-0 opacity-10">
+      <div class="absolute inset-0" style="background-image: repeating-linear-gradient(45deg, transparent, transparent 35px, rgba(255,255,255,.1) 35px, rgba(255,255,255,.1) 70px);"></div>
+    </div>
+    
+    <div class="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16 sm:py-24">
+      <div class="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
+        <!-- Text Content -->
+        <div class="text-center lg:text-left">
+          <h1 class="font-display text-4xl sm:text-5xl lg:text-6xl font-bold text-cream leading-tight mb-6">
+            <span class="text-mustard">Spin</span> Your Story
+          </h1>
+          <p class="text-cream/80 text-lg sm:text-xl mb-8 max-w-xl mx-auto lg:mx-0">
+            Descubri nuestra coleccion de vinilos y CDs. Musica clasica, rock, jazz y mucho mas te esperan.
+          </p>
+          <div class="flex flex-col sm:flex-row gap-4 justify-center lg:justify-start">
+            <%= link_to "Explorar Catalogo", disks_path, class: "btn-primary text-center" %>
+            <%= link_to "Nuevos Ingresos", disks_path(filter: "new"), class: "btn-secondary text-center" %>
+          </div>
+        </div>
+
+        <!-- Hero Image / Vinyl Animation -->
+        <div class="flex justify-center lg:justify-end">
+          <div class="relative">
+            <!-- Vinyl Record -->
+            <div class="w-64 h-64 sm:w-80 sm:h-80 vinyl-record vinyl-spin"></div>
+            <!-- Floating elements -->
+            <div class="absolute -top-4 -right-4 bg-mustard text-vinyl-black px-4 py-2 font-bold uppercase text-sm tracking-wider border-2 border-vinyl-black shadow-[3px_3px_0_0_theme(colors.vinyl-black)] rotate-12">
+              Desde 1985
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Wave Divider -->
+    <div class="absolute bottom-0 left-0 right-0">
+      <svg viewBox="0 0 1440 60" fill="none" xmlns="http://www.w3.org/2000/svg" class="w-full h-auto">
+        <path d="M0 60V30C240 10 480 50 720 30C960 10 1200 50 1440 30V60H0Z" fill="#f5f0e6"/>
+      </svg>
+    </div>
+  </div>
+</section>
+
+<!-- Featured Section -->
+<section class="mb-16">
+  <div class="flex flex-col sm:flex-row items-center justify-between gap-4 mb-8">
+    <div>
+      <h2 class="font-display text-3xl sm:text-4xl font-bold text-vinyl-black">Nuevos Ingresos</h2>
+      <p class="text-sepia mt-1">Lo ultimo que llego a la tienda</p>
+    </div>
+    <%= link_to "Ver Todo", disks_path, class: "text-mustard-dark hover:text-mustard font-bold uppercase text-sm tracking-wider border-b-2 border-mustard-dark hover:border-mustard transition-colors" %>
+  </div>
+  
+  <!-- Disk Grid -->
+  <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
+    <% @disks.first(8).each do |disk| %>
+      <%= render 'shared/disk_card', disk: disk %>
+    <% end %>
+  </div>
+
+  <% if @disks.empty? %>
+    <div class="card-retro p-12 text-center">
+      <div class="w-24 h-24 vinyl-record mx-auto mb-6"></div>
+      <h3 class="font-display text-2xl font-bold text-vinyl-black mb-2">No hay discos disponibles</h3>
+      <p class="text-sepia">Volve pronto para ver nuevos productos</p>
+    </div>
+  <% end %>
+</section>
+
+<!-- Categories Section -->
+<section class="mb-16">
+  <div class="divider-groovy"></div>
+  
+  <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mt-12">
+    <!-- Vinilos -->
+    <%= link_to disks_path(format: "Vinilo"), class: "group" do %>
+      <div class="card-retro p-8 text-center">
+        <div class="w-20 h-20 vinyl-record mx-auto mb-4 group-hover:vinyl-spin"></div>
+        <h3 class="font-display text-2xl font-bold text-vinyl-black mb-2">Vinilos</h3>
+        <p class="text-sepia text-sm">El sonido autentico del vinilo</p>
+      </div>
+    <% end %>
+
+    <!-- CDs -->
+    <%= link_to disks_path(format: "CD"), class: "group" do %>
+      <div class="card-retro p-8 text-center">
+        <div class="w-20 h-20 cd-record mx-auto mb-4 group-hover:vinyl-spin"></div>
+        <h3 class="font-display text-2xl font-bold text-vinyl-black mb-2">CDs</h3>
+        <p class="text-sepia text-sm">Calidad digital perfecta</p>
+      </div>
+    <% end %>
+
+    <!-- Usados -->
+    <%= link_to disks_path(filter: "used"), class: "group" do %>
+      <div class="card-retro p-8 text-center bg-cream-dark">
+        <div class="w-20 h-20 vinyl-record mx-auto mb-4 opacity-80 group-hover:vinyl-spin"></div>
+        <h3 class="font-display text-2xl font-bold text-vinyl-black mb-2">Usados</h3>
+        <p class="text-sepia text-sm">Tesoros con historia</p>
+      </div>
+    <% end %>
+  </div>
+</section>
+
+<!-- Newsletter / CTA Section -->
+<section class="mb-8">
+  <div class="bg-vinyl-black text-cream p-8 sm:p-12 border-4 border-mustard relative overflow-hidden">
+    <!-- Background Pattern -->
+    <div class="absolute inset-0 opacity-5">
+      <div class="absolute inset-0" style="background-image: repeating-radial-gradient(circle at 20px 20px, white 0, white 2px, transparent 2px, transparent 40px);"></div>
+    </div>
+    
+    <div class="relative text-center">
+      <h2 class="font-display text-3xl sm:text-4xl font-bold text-mustard mb-4">Unite a Nuestra Comunidad</h2>
+      <p class="text-cream/80 max-w-2xl mx-auto mb-8">
+        Recibe las ultimas novedades, ofertas exclusivas y contenido especial para amantes de la musica.
+      </p>
+      <div class="flex flex-col sm:flex-row gap-4 justify-center max-w-md mx-auto">
+        <input type="email" placeholder="Tu email..." class="flex-1 px-4 py-3 bg-vinyl-dark border-2 border-vinyl-groove text-cream placeholder:text-cream/50 focus:border-mustard focus:outline-none">
+        <button class="btn-primary whitespace-nowrap">Suscribirse</button>
+      </div>
+    </div>
+  </div>
+</section>

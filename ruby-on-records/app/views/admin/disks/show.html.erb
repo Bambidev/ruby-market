@@ -1,0 +1,162 @@
+<% content_for :title, "Admin · #{@disk.title} - #{@disk.artist}" %>
+
+<article class="card-retro overflow-hidden">
+  <div class="grid grid-cols-1 lg:grid-cols-2">
+    <!-- Left Column - Portada -->
+    <div class="bg-vinyl-black p-8 lg:p-12 flex flex-col items-center justify-center min-h-[400px] relative overflow-hidden">
+      <div class="absolute inset-0 opacity-10" style="background-image: repeating-radial-gradient(circle at center, transparent 0, transparent 2px, rgba(255,255,255,.1) 2px, rgba(255,255,255,.1) 4px);"></div>
+
+      <% if @disk.cover.attached? %>
+        <%= image_tag @disk.cover, class: "w-64 h-64 sm:w-80 sm:h-80 object-cover border-4 border-mustard" %>
+      <% else %>
+        <div class="relative z-10">
+          <% if @disk.format == 'CD' %>
+            <div class="w-64 h-64 sm:w-80 sm:h-80 cd-record vinyl-spin-hover"></div>
+          <% else %>
+            <div class="w-64 h-64 sm:w-80 sm:h-80 vinyl-record vinyl-spin-hover"></div>
+          <% end %>
+          <div class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-24 h-24 sm:w-28 sm:h-28 rounded-full bg-mustard flex flex-col items-center justify-center text-center p-2 border-4 border-vinyl-dark">
+            <span class="text-vinyl-black text-[8px] sm:text-[10px] font-bold uppercase tracking-wider leading-tight truncate w-full">
+              <%= @disk.artist.truncate(20) %>
+            </span>
+            <div class="w-4 h-4 rounded-full bg-vinyl-black my-1"></div>
+            <span class="text-vinyl-black text-[7px] sm:text-[8px] uppercase tracking-wider"><%= @disk.year %></span>
+          </div>
+        </div>
+      <% end %>
+
+      <% if @disk.persisted? && @disk.photos.attached? %>
+        <div class="mt-6 grid grid-cols-3 gap-2">
+          <% @disk.photos.limit(3).each do |photo| %>
+            <%= link_to image_tag(photo, class: "w-16 h-16 object-cover border-2 border-mustard cursor-pointer"), photo, data: { lightbox: "disk-images", title: "Foto adicional" } %>
+          <% end %>
+        </div>
+      <% end %>
+
+      <!-- BADGES: formato y estado -->
+      <div class="absolute top-4 left-4 flex gap-2">
+        <span class="badge-retro bg-cream text-vinyl-black"><%= @disk.format %></span>
+        <span class="badge-retro bg-<%= @disk.state == 'Nuevo' ? 'teal' : 'sepia' %> text-cream"><%= @disk.state %></span>
+      </div>
+    </div>
+
+    <!-- Right Column - Info -->
+    <div class="p-8 lg:p-12 bg-paper">
+      <!-- Title & Artist -->
+      <div class="mb-4">
+        <h1 class="font-display text-3xl sm:text-4xl lg:text-5xl font-bold text-vinyl-black leading-tight mb-1">
+          <%= @disk.title %>
+        </h1>
+        <p class="text-xl sm:text-2xl text-sepia font-display">
+          <%= @disk.artist %>
+        </p>
+      </div>
+      
+      <!-- Géneros (burbujas sutiles) -->
+      <% if @disk.genres.any? %>
+        <div class="flex flex-wrap gap-2 mb-4">
+          <% @disk.genres.each do |genre| %>
+            <%= link_to genre.genre_name, 
+                admin_disks_path(genre_id: genre.id),
+                class: "inline-block px-3 py-1 text-xs font-medium rounded-full bg-vinyl-groove/20 text-vinyl-dark hover:bg-mustard/30 hover:text-vinyl-black transition-colors" %>
+          <% end %>
+        </div>
+      <% end %>
+
+      <!-- Description -->
+      <% if @disk.description.present? %>
+        <div class="mb-6">
+          <p class="text-vinyl-dark leading-relaxed"><%= @disk.description %></p>
+        </div>
+      <% end %>
+
+      <!-- Details Grid -->
+      <div class="grid grid-cols-2 gap-4 mb-6">
+        <div class="bg-cream-dark p-4 border-2 border-vinyl-black">
+          <span class="label-retro">Ano</span>
+          <p class="font-display text-2xl font-bold text-vinyl-black"><%= @disk.year %></p>
+        </div>
+        <div class="bg-cream-dark p-4 border-2 border-vinyl-black">
+          <span class="label-retro">Formato</span>
+          <p class="font-display text-2xl font-bold text-vinyl-black"><%= @disk.format %></p>
+        </div>
+        <div class="bg-cream-dark p-4 border-2 border-vinyl-black">
+          <span class="label-retro">Estado</span>
+          <p class="font-display text-2xl font-bold text-vinyl-black"><%= @disk.state %></p>
+        </div>
+        <div class="bg-cream-dark p-4 border-2 border-vinyl-black">
+          <span class="label-retro">Stock</span>
+          <p class="font-display text-2xl font-bold <%= @disk.stock > 0 ? 'text-teal' : 'text-rust' %>">
+            <%= @disk.stock > 0 ? "#{@disk.stock} disp." : 'Agotado' %>
+          </p>
+        </div>
+      </div>
+
+      <!-- Price -->
+      <div class="bg-vinyl-black text-cream p-6 mb-6 border-4 border-mustard">
+        <div class="flex items-center justify-between">
+          <span class="text-mustard uppercase tracking-wider font-bold">Precio</span>
+          <span class="font-display text-4xl sm:text-5xl font-bold text-mustard">
+            $<%= number_to_currency(@disk.price, unit: '', delimiter: '.', separator: ',', precision: 0) %>
+          </span>
+        </div>
+      </div>
+
+      <!-- Audio Preview -->
+      <div class="mb-6 p-4 bg-cream-dark border-2 border-vinyl-groove">
+        <span class="label-retro mb-3 block">Preview</span>
+        <% if @disk.preview.attached? %>
+          <audio controls class="w-full">
+            <source src="<%= url_for(@disk.preview) %>" type="<%= @disk.preview.content_type %>">
+            Tu navegador no soporta audio.
+          </audio>
+        <% else %>
+          <audio controls class="w-full">
+            <source src="#" type="audio/mpeg">
+            Tu navegador no soporta audio.
+          </audio>
+          <p class="text-sepia text-xs mt-2 italic">Audio de demostracion proximamente</p>
+        <% end %>
+      </div>
+
+      <!-- Admin Actions -->
+      <div class="flex gap-3 mb-6">
+        <%= link_to "Editar", edit_admin_disk_path(@disk), class: "btn-secondary" %>
+        <%= link_to "Eliminar", admin_disk_path(@disk), method: :delete, data: { confirm: "¿Seguro que querés borrar este disco?" }, class: "btn-danger" %>
+      </div>
+
+      <!-- Internal Info (Fechas) -->
+      <div class="mt-8 pt-6 border-t-2 border-vinyl-groove/10">
+        <h3 class="font-display text-sm font-bold text-sepia uppercase tracking-widest mb-4">Información de Auditoría</h3>
+        <dl class="grid grid-cols-1 sm:grid-cols-2 gap-x-4 gap-y-4 text-sm">
+          <div>
+            <dt class="label-retro text-[10px] mb-1">Fecha de Ingreso</dt>
+            <dd class="font-mono text-vinyl-dark"><%= @disk.created_at.strftime("%d/%m/%Y %H:%M") %></dd>
+          </div>
+          
+          <div>
+            <dt class="label-retro text-[10px] mb-1">Última Modificación</dt>
+            <dd class="font-mono text-vinyl-dark"><%= @disk.updated_at.strftime("%d/%m/%Y %H:%M") %></dd>
+          </div>
+
+          <% if @disk.deleted_at.present? %>
+            <div class="col-span-1 sm:col-span-2 bg-rust/10 border border-rust p-3 rounded mt-2">
+              <dt class="label-retro text-[10px] text-rust mb-1">Fecha de Baja</dt>
+              <dd class="font-mono text-rust-dark font-bold"><%= @disk.deleted_at.strftime("%d/%m/%Y %H:%M") %></dd>
+            </div>
+          <% end %>
+        </dl>
+      </div>
+
+      <!-- Back Link -->
+      <div class="mt-8">
+        <%= link_to admin_disks_path, class: "inline-flex items-center gap-2 text-mustard-dark hover:text-mustard font-bold uppercase text-sm tracking-wider transition-colors" do %>
+          <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"></path>
+          </svg>
+          Volver al Catalogo Admin
+        <% end %>
+      </div>
+    </div>
+  </div>
+</article>

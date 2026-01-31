@@ -1,0 +1,93 @@
+<% content_for :title, "Catálogo - Ruby On Records" %>
+
+<!-- Page Header -->
+<div class="mb-8">
+  <h1 class="font-display text-4xl sm:text-5xl font-bold text-vinyl-black mb-2">Catálogo Completo</h1>
+  <p class="text-sepia text-lg">Explora toda nuestra colección de vinilos y CDs</p>
+</div>
+
+<!-- Filtros -->
+<div class="card-retro p-4 mb-8">
+  <%= form_with url: disks_path, method: :get, local: true, class: "space-y-4" do |form| %>
+    <div class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-3">
+      <!-- Búsqueda de texto -->
+      <div class="col-span-2 sm:col-span-3 lg:col-span-2">
+        <%= form.text_field :q, 
+            value: params[:q], 
+            placeholder: "Buscar título o artista...", 
+            class: "input-retro w-full" %>
+      </div>
+      
+      <!-- Filtro por género -->
+      <div>
+        <%= form.select :genre_id, 
+            @genres.map { |g| [g.genre_name, g.id] },
+            { prompt: "Género", selected: params[:genre_id] },
+            class: "select-retro w-full" %>
+      </div>
+      
+      <!-- Filtro por formato -->
+      <div>
+        <%= form.select :format_filter,
+            [['CD', 'CD'], ['Vinilo', 'Vinilo']],
+            { prompt: "Formato", selected: params[:format_filter] },
+            class: "select-retro w-full" %>
+      </div>
+      
+      <!-- Filtro por estado -->
+      <div>
+        <%= form.select :state,
+            [['Nuevo', 'Nuevo'], ['Usado', 'Usado']],
+            { prompt: "Estado", selected: params[:state] },
+            class: "select-retro w-full" %>
+      </div>
+      
+      <!-- Filtro por año -->
+      <div>
+        <%= form.select :year,
+            @years.map { |y| [y, y] },
+            { prompt: "Año", selected: params[:year] },
+            class: "select-retro w-full" %>
+      </div>
+    </div>
+    
+    <div class="flex flex-wrap items-center justify-between gap-4">
+      <p class="text-sepia text-sm">
+        <% if @disks.any? %>
+          <%= @disks.total_count %> disco(s) encontrado(s)
+        <% end %>
+      </p>
+      
+      <div class="flex gap-2">
+        <%= form.submit "🔍 Buscar", class: "btn-primary cursor-pointer" %>
+        <% if params[:q].present? || params[:genre_id].present? || params[:format_filter].present? || params[:state].present? || params[:year].present? %>
+          <%= link_to "Limpiar", disks_path, class: "btn-secondary" %>
+        <% end %>
+      </div>
+    </div>
+  <% end %>
+</div>
+
+<!-- Disk Grid -->
+<% if @disks.any? %>
+  <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
+    <% @disks.each do |disk| %>
+      <%= render 'shared/disk_card', disk: disk %>
+    <% end %>
+  </div>
+  
+  <div class="mt-8">
+    <%= paginate @disks %>
+  </div>
+<% else %>
+  <div class="card-retro p-12 text-center">
+    <div class="w-24 h-24 vinyl-record mx-auto mb-6 opacity-50"></div>
+    <h3 class="font-display text-2xl font-bold text-vinyl-black mb-2">No hay discos disponibles</h3>
+    <% if params[:q].present? || params[:genre_id].present? || params[:format_filter].present? %>
+      <p class="text-sepia mb-6">No encontramos discos con esos filtros</p>
+      <%= link_to "Ver todo el catálogo", disks_path, class: "btn-primary" %>
+    <% else %>
+      <p class="text-sepia mb-6">Vuelve pronto para ver nuestras novedades</p>
+    <% end %>
+  </div>
+<% end %>

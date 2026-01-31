@@ -1,0 +1,201 @@
+<% content_for :title, "#{@disk.title} - #{@disk.artist} | Ruby On Records" %>
+
+<div>
+  <article class="card-retro overflow-hidden">
+    <div class="grid grid-cols-1 lg:grid-cols-2">
+      <!-- Left Column - Carousel Portada -->
+      <div class="bg-vinyl-black p-8 lg:p-12 flex flex-col items-center justify-center min-h-[400px] relative overflow-hidden group">
+        <div class="absolute inset-0 opacity-10" style="background-image: repeating-radial-gradient(circle at center, transparent 0, transparent 2px, rgba(255,255,255,.1) 2px, rgba(255,255,255,.1) 4px);"></div>
+        
+        <!-- Carousel Container -->
+        <div id="disk-carousel" class="relative w-64 h-64 sm:w-80 sm:h-80 border-4 border-mustard bg-vinyl-dark overflow-hidden shadow-2xl">
+          
+          <% 
+            # Collect all images
+            images = []
+            if @disk.cover.attached?
+              images << @disk.cover
+            end
+            if @disk.photos.attached?
+              @disk.photos.each { |photo| images << photo }
+            end
+          %>
+          
+          <% if images.any? %>
+            <% images.each_with_index do |image, index| %>
+              <div class="carousel-slide absolute inset-0 w-full h-full" style="<%= index == 0 ? '' : 'display: none;' %>">
+                <%= image_tag image, class: "w-full h-full object-cover" %>
+              </div>
+            <% end %>
+          <% else %>
+            <!-- No images - show vinyl/cd -->
+            <div class="w-full h-full flex items-center justify-center bg-vinyl-groove">
+              <% if @disk.format == 'CD' %>
+                <div class="w-2/3 h-2/3 cd-record vinyl-spin-hover"></div>
+              <% else %>
+                <div class="w-2/3 h-2/3 vinyl-record vinyl-spin-hover"></div>
+              <% end %>
+            </div>
+          <% end %>
+
+          <!-- Controls Inside (Only if there are multiple images) -->
+          
+        </div>
+
+        <% if images.size > 1 %>
+          <div class="absolute w-full bottom-0 flex items-center justify-center">
+            <button type="button" id="btn-prev" class=" left-2 top-1/2 -translate-y-1/2 bg-black/60 hover:bg-mustard text-white hover:text-vinyl-black p-2 rounded-full transition-colors z-20">
+              <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7" />
+              </svg>
+            </button>
+            <button type="button" id="btn-next" class=" right-2 top-1/2 -translate-y-1/2 bg-black/60 hover:bg-mustard text-white hover:text-vinyl-black p-2 rounded-full transition-colors z-20">
+              <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" />
+              </svg>
+            </button>
+          </div>
+          <% end %>
+
+        <div class="absolute top-4 left-4 flex gap-2">
+          <span class="badge-retro bg-cream text-vinyl-black"><%= @disk.format %></span>
+          <span class="badge-retro bg-<%= @disk.state == 'Nuevo' ? 'teal' : 'sepia' %> text-cream"><%= @disk.state %></span>
+        </div>
+      </div>
+
+      <!-- Right Column - Info -->
+      <div class="p-8 lg:p-12 bg-paper">
+        <!-- Title & Artist -->
+        <div class="mb-6">
+          <h1 class="font-display text-3xl sm:text-4xl lg:text-5xl font-bold text-vinyl-black leading-tight mb-3">
+            <%= @disk.title %>
+          </h1>
+          <p class="text-xl sm:text-2xl text-sepia font-display">
+            <%= @disk.artist %>
+          </p>
+        </div>
+        
+        <!-- Géneros (burbujas sutiles) -->
+        <% if @disk.genres.any? %>
+          <div class="flex flex-wrap gap-2 mb-6">
+            <% @disk.genres.each do |genre| %>
+              <%= link_to genre.genre_name, 
+                  disks_path(genre_id: genre.id),
+                  class: "inline-block px-3 py-1 text-xs font-medium rounded-full bg-vinyl-groove/20 text-vinyl-dark hover:bg-mustard/30 hover:text-vinyl-black transition-colors" %>
+            <% end %>
+          </div>
+        <% end %>
+
+        <!-- Description -->
+        <% if @disk.description.present? %>
+          <div class="mb-8">
+            <p class="text-vinyl-dark leading-relaxed">
+              <%= @disk.description %>
+            </p>
+          </div>
+        <% end %>
+
+        <!-- Details Grid -->
+        <div class="grid grid-cols-2 gap-4 mb-8">
+          <div class="bg-cream-dark p-4 border-2 border-vinyl-black">
+            <span class="label-retro">Año</span>
+            <p class="font-display text-2xl font-bold text-vinyl-black"><%= @disk.year %></p>
+          </div>
+          <div class="bg-cream-dark p-4 border-2 border-vinyl-black">
+            <span class="label-retro">Formato</span>
+            <p class="font-display text-2xl font-bold text-vinyl-black"><%= @disk.format %></p>
+          </div>
+          <div class="bg-cream-dark p-4 border-2 border-vinyl-black">
+            <span class="label-retro">Estado</span>
+            <p class="font-display text-2xl font-bold text-vinyl-black"><%= @disk.state %></p>
+          </div>
+          <div class="bg-cream-dark p-4 border-2 border-vinyl-black">
+            <span class="label-retro">Stock</span>
+            <p class="font-display text-2xl font-bold <%= @disk.stock > 0 ? 'text-teal' : 'text-rust' %>">
+              <%= @disk.stock > 0 ? "#{@disk.stock} disp." : 'Agotado' %>
+            </p>
+          </div>
+        </div>
+
+        <!-- Price -->
+        <div class="bg-vinyl-black text-cream p-6 mb-8 border-4 border-mustard">
+          <div class="flex items-center justify-between">
+            <span class="text-mustard uppercase tracking-wider font-bold">Precio</span>
+            <span class="font-display text-4xl sm:text-5xl font-bold text-mustard">
+              $<%= number_to_currency(@disk.price, unit: '', delimiter: '.', separator: ',', precision: 0) %>
+            </span>
+          </div>
+        </div>
+
+        <!-- Audio Preview (Solo Usados) -->
+        <% if @disk.state == 'Usado' %>
+          <div class="mb-8 p-4 bg-cream-dark border-2 border-vinyl-groove">
+            <span class="label-retro mb-3 block">Preview</span>
+            <% if @disk.preview.attached? %>
+              <audio controls class="w-full">
+                <source src="<%= url_for(@disk.preview) %>" type="<%= @disk.preview.content_type %>">
+                Tu navegador no soporta audio.
+              </audio>
+            <% else %>
+              <audio controls class="w-full">
+                <source src="#" type="audio/mpeg">
+                Tu navegador no soporta audio.
+              </audio>
+              <p class="text-sepia text-xs mt-2 italic">Audio de demostración próximamente</p>
+            <% end %>
+          </div>
+        <% end %>
+
+        <!-- Back Link -->
+        <div class="mt-4 flex gap-4">
+          <%= link_to disks_path, class: "inline-flex items-center gap-2 text-mustard-dark hover:text-mustard font-bold uppercase text-sm tracking-wider transition-colors" do %>
+            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"></path>
+            </svg>
+            Volver al Catálogo
+          <% end %>
+        </div>
+      </div>
+    </div>
+  </article>
+
+
+
+<% if @related_disks.present? %>
+  <section class="mt-16">
+    <div class="divider-groovy"></div>
+    <h2 class="font-display text-2xl lg:text-3xl font-bold text-vinyl-black mb-8 text-center uppercase tracking-wider">
+      Tambien te podría gustar
+    </h2>
+    
+    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 xl:grid-cols-5 gap-6">
+      <% @related_disks.each do |disk| %>
+        <%= render 'shared/disk_card', disk: disk %>
+      <% end %>
+    </div>
+  </section>
+<% end %>
+
+<script>
+  document.addEventListener('DOMContentLoaded', function() {
+    var currentSlide = 0;
+    var slides = document.querySelectorAll('#disk-carousel .carousel-slide');
+    var total = slides.length;
+    var btnNext = document.getElementById('btn-next');
+    var btnPrev = document.getElementById('btn-prev');
+
+    if (total <= 1 || !btnNext || !btnPrev) return;
+
+    btnNext.addEventListener('click', function() {
+      slides[currentSlide].style.display = 'none';
+      currentSlide = (currentSlide + 1) % total;
+      slides[currentSlide].style.display = 'block';
+    });
+
+    btnPrev.addEventListener('click', function() {
+      slides[currentSlide].style.display = 'none';
+      currentSlide = (currentSlide - 1 + total) % total;
+      slides[currentSlide].style.display = 'block';
+    });
+  });
+</script>

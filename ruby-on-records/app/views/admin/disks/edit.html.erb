@@ -1,0 +1,10 @@
+<% content_for :title, "Editar #{@disk.title} - Backstore" %>
+
+<div class="mb-8">
+  <h1 class="font-display text-4xl font-bold text-vinyl-black mb-2">Editar Disco</h1>
+  <p class="text-sepia">Modificando: <span class="text-vinyl-black font-bold"><%= @disk.title %></span></p>
+</div>
+
+<div class="card-retro p-6 lg:p-8">
+  <%= render "form", disk: @disk %>
+</div>
