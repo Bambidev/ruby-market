@@ -66,9 +66,7 @@
                       title: "Descargar PDF" do %>
                     📄 PDF
                   <% end %>
-                  
-                  <%= link_to "Ver", [:admin, sale], 
-                      class: "text-teal hover:text-teal-dark font-bold uppercase text-xs tracking-wider transition-colors" %>
+            
                   
                   <% unless sale.cancelled? %>
                     <%= button_to cancel_admin_sale_path(sale), 

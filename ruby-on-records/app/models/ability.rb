@@ -7,28 +7,29 @@ class Ability
     # Usuario no logueado - sin permisos
     return unless user.present?
 
-    # Todos los usuarios logueados pueden:
-    can :read, Disk      # Ver discos (público)
-    can :read, Genre     # Ver géneros
-    can :read, Client    # Ver clientes
-    can :read, Sale      # Ver ventas
-    can :read, Item      # Ver items de ventas
-    can :read, :dashboard # Ver dashboard
+    # === Reglas Generales (Empleado y superiores) ===
+    # "Empleado: puede administrar productos y ventas"
+    can :manage, Disk
+    can :manage, Sale
+    can :manage, Item
+    can :manage, Client
+    can :manage, Genre
+    can :read, :dashboard
 
-    # Empleado: solo lectura (ya definido arriba)
-
-    # Gerente: puede gestionar discos, ventas, clientes, géneros, items
+    # === Reglas de Gerente ===
+    # "Gerente: puede gestionar usuarios, pero no puede crear ni modificar admins"
     if user.gerente? || user.admin?
-      can :manage, Disk
-      can :manage, Sale
-      can :manage, Client
-      can :manage, Genre
-      can :manage, Item
+      can :manage, User
     end
 
-    # Admin: puede todo, incluyendo gestionar usuarios
+    if user.gerente?
+      # No puede gestionar usuarios que sean admin
+      cannot :manage, User, role: 'admin'
+    end
+
+    # === Reglas de Admin ===
+    # "Administrador: acceso total"
     if user.admin?
-      can :manage, User
       can :manage, :all
     end
   end

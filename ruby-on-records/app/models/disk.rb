@@ -20,6 +20,17 @@ class Disk < ApplicationRecord
 
   scope :in_stock, -> { where("stock > 0") }
   scope :out_of_stock, -> { where(stock: 0) }
+  
+  # Soft Delete Scope
+  default_scope { where(deleted_at: nil) }
+
+  def soft_delete
+    update(deleted_at: Time.current)
+  end
+
+  def recover
+    update(deleted_at: nil)
+  end
 
 
   # === Relaciones === #

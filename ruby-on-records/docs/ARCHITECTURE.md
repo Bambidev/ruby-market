@@ -223,6 +223,84 @@ end
 
 ---
 
+### ¿Por qué Soft Delete en Discos?
+
+| Contexto | Decisión |
+|----------|----------|
+| 📊 Historial de ventas | No se puede eliminar un disco vendido |
+| 🔄 Recuperación | Permite recuperar productos dados de baja |
+| 📈 Auditoría | Mantiene trazabilidad de productos |
+
+**Implementación:**
+
+```ruby
+# app/models/disk.rb
+class Disk < ApplicationRecord
+  default_scope { where(deleted_at: nil) }
+  
+  def soft_delete
+    update(deleted_at: Time.current)
+  end
+  
+  def recover
+    update(deleted_at: nil)
+  end
+end
+```
+
+> **Decisión**: Usamos soft delete en lugar de hard delete para mantener la integridad referencial con ventas históricas y permitir auditoría.
+
+---
+
+### ¿Por qué Recomendaciones por Género?
+
+| Alternativa | Por qué no |
+|-------------|------------|
+| Machine Learning | Overkill para el proyecto |
+| Por artista | Muy limitado |
+| **Por género** ✅ | Simple, relevante, efectivo |
+
+```ruby
+# DisksController#show
+@related_disks = Disk.joins(:genres)
+  .where(genres: { id: @disk.genre_ids })
+  .where.not(id: @disk.id)
+  .distinct
+  .limit(5)
+```
+
+> **Decisión**: Las recomendaciones por género son simples de implementar y suficientemente relevantes para el caso de uso.
+
+---
+
+### ¿Por qué JavaScript Inline para el Carrusel?
+
+| Alternativa | Por qué no |
+|-------------|------------|
+| Stimulus Controller | Problemas de scope con Turbo |
+| Librería externa (Swiper) | Dependencia innecesaria |
+| CSS-only carousel | Menos control |
+| **JavaScript inline** ✅ | Simple, funciona con Turbo |
+
+**Implementación:**
+
+```html
+<script>
+  document.addEventListener('DOMContentLoaded', function() {
+    var slides = document.querySelectorAll('.carousel-slide');
+    var btnNext = document.getElementById('btn-next');
+    
+    btnNext.addEventListener('click', function() {
+      // Cambiar slides
+    });
+  });
+</script>
+```
+
+> **Lección aprendida**: Para componentes simples y específicos de una vista, JavaScript inline con `addEventListener` es más confiable que Stimulus cuando Turbo está activo.
+
+---
+
 ## 🏛️ Patrones Implementados
 
 ### 1. Service Objects

@@ -37,7 +37,13 @@ class DisksController < ApplicationController
   end
 
   # GET /disks/1
+  # GET /disks/1
   def show
+    @related_disks = Disk.joins(:genres)
+                         .where(genres: { id: @disk.genre_ids })
+                         .where.not(id: @disk.id)
+                         .distinct
+                         .limit(5)
   end
 
   private

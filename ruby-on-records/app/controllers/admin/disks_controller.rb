@@ -79,8 +79,8 @@ class Admin::DisksController < Admin::BaseController
 
   # DELETE /admin/disks/1
   def destroy
-    @disk.destroy!
-    redirect_to admin_disks_path, notice: "Disco eliminado exitosamente."
+    @disk.soft_delete
+    redirect_to admin_disks_path, notice: "Disco dado de baja exitosamente."
   end
 
   private

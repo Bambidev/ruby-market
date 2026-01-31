@@ -1,12 +1,23 @@
-<% content_for :title, "Editing user" %>
+<% content_for :title, "Editar Usuario | Admin" %>
 
-<h1>Editing user</h1>
+<div class="max-w-2xl mx-auto py-12 px-4">
+  <div class="mb-8 text-center">
+    <h1 class="font-display text-3xl sm:text-4xl font-bold text-vinyl-black mb-2">Editar Usuario</h1>
+    <p class="text-sepia">Modificar detalles y permisos.</p>
+  </div>
 
-<%= render "form", user: @user %>
+  <div class="card-retro p-8 bg-paper mb-8">
+    <%= render "form", user: @user %>
+  </div>
 
-<br>
+  <div class="flex items-center justify-between">
+    <%= link_to admin_users_path, class: "flex items-center gap-2 text-sepia hover:text-vinyl-black font-bold uppercase text-xs tracking-wider transition-colors" do %>
+      <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18" />
+      </svg>
+      Volver al Listado
+    <% end %>
 
-<div>
-  <%= link_to "Show this user", [:admin, @user] %> |
-  <%= link_to "Back to users", admin_users_path %>
+    <%= link_to "Ver Detalles", [:admin, @user], class: "text-mustard-dark hover:text-mustard font-bold uppercase text-xs tracking-wider transition-colors" %>
+  </div>
 </div>

@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.1].define(version: 2026_01_28_225210) do
+ActiveRecord::Schema[8.1].define(version: 2026_01_31_184513) do
   create_table "active_storage_attachments", force: :cascade do |t|
     t.bigint "blob_id", null: false
     t.datetime "created_at", null: false
@@ -54,6 +54,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_01_28_225210) do
   create_table "disks", force: :cascade do |t|
     t.string "artist"
     t.datetime "created_at", null: false
+    t.datetime "deleted_at"
     t.text "description"
     t.string "format"
     t.float "price"
@@ -63,6 +64,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_01_28_225210) do
     t.datetime "updated_at", null: false
     t.integer "year"
     t.index ["artist"], name: "index_disks_on_artist"
+    t.index ["deleted_at"], name: "index_disks_on_deleted_at"
     t.index ["format"], name: "index_disks_on_format"
     t.index ["price"], name: "index_disks_on_price"
     t.index ["state"], name: "index_disks_on_state"

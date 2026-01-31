@@ -31,9 +31,10 @@
 - Información completa (artista, año, descripción)
 - **Géneros como burbujas** clickeables
 - Preview de audio (si disponible)
-- Galería de fotos adicionales
+- **Carrusel de imágenes** (portada + fotos adicionales)
 - Indicador de stock
 - Precio destacado
+- **Productos relacionados** por género (hasta 5 recomendaciones)
 
 ---
 
@@ -51,8 +52,8 @@
 | **Listar** | Grid con filtros (género, formato, estado, año, stock) |
 | **Crear** | Formulario con validaciones y selección múltiple de géneros |
 | **Editar** | Modificar todos los campos incluyendo imágenes |
-| **Ver** | Detalle completo con géneros como badges |
-| **Eliminar** | Con confirmación |
+| **Ver** | Detalle completo con géneros como badges y datos de auditoría |
+| **Eliminar** | **Soft delete** - marca como dado de baja sin eliminar físicamente |
 
 **Campos del disco:**
 - Título, Artista, Año, Descripción
@@ -61,6 +62,7 @@
 - Estado (Nuevo / Usado)
 - Géneros (múltiples)
 - Portada, Fotos adicionales, Preview de audio
+- `deleted_at` (para soft delete)
 
 ### 🛒 Gestión de Ventas
 
@@ -100,14 +102,15 @@
 | **Ver** | Listado de discos del género |
 | **Eliminar** | Solo si no tiene discos asociados |
 
-### 👤 Gestión de Usuarios (Solo Admin)
+### 👤 Gestión de Usuarios (Solo Admin/Gerente)
 
 | Acción | Descripción |
 |--------|-------------|
 | **Listar** | Tabla con nombre, email, rol |
 | **Crear** | Asignar rol y credenciales |
 | **Editar** | Cambiar rol o datos |
-| **Eliminar** | Con confirmación |
+| **Ver** | Detalle con avatar, datos y fecha de registro |
+| **Eliminar** | Con confirmación (no permite auto-eliminación) |
 
 ---
 
@@ -115,9 +118,9 @@
 
 | Rol | Permisos |
 |-----|----------|
-| 👤 **Empleado** | Ver catálogo, dashboard. Crear/editar ventas y clientes |
-| 📊 **Gerente** | Todo lo anterior + gestionar discos y géneros |
-| 👑 **Admin** | Acceso total incluyendo gestión de usuarios |
+| 👤 **Empleado** | Gestionar productos, ventas, clientes, géneros. Ver dashboard |
+| 📊 **Gerente** | Todo lo anterior + gestionar usuarios (excepto admins) |
+| 👑 **Admin** | Acceso total incluyendo gestión de todos los usuarios |
 
 ---
 
