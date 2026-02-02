@@ -7,6 +7,11 @@ Rails.application.routes.draw do
   # === Backstore/Admin (requiere login) === #
   namespace :admin do
     root to: "dashboard#index"
+    
+    # Mi Perfil (disponible para todos los roles)
+    get "profile", to: "profile#edit", as: :profile
+    patch "profile", to: "profile#update"
+    
     resources :disks
     resources :sales do
       collection do

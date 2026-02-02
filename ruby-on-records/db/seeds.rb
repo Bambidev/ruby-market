@@ -8,6 +8,50 @@
 #     MovieGenre.find_or_create_by!(name: genre_name)
 #   end
 
+# === Helpers para adjuntar archivos === #
+
+SEEDS_ASSETS_PATH = Rails.root.join("db", "seeds", "assets")
+
+# Adjunta archivos a un disco basándose en el nombre del archivo
+# Los archivos deben estar nombrados como: nombre_del_disco.extension
+# Por ejemplo: diamonds_and_pearls.jpg, diamonds_and_pearls.mp3
+def attach_assets_to_disk(disk, folder_name)
+  # Normalizar nombre del disco para buscar archivos (ej: "Diamonds and Pearls" -> "diamonds_and_pearls")
+  normalized_name = folder_name.downcase.gsub(/[^a-z0-9]+/, "_").gsub(/^_|_$/, "")
+  
+  # Buscar y adjuntar cover
+  cover_path = Dir.glob(SEEDS_ASSETS_PATH.join("covers", "#{normalized_name}.*")).first
+  if cover_path && File.exist?(cover_path)
+    disk.cover.attach(
+      io: File.open(cover_path),
+      filename: File.basename(cover_path),
+      content_type: Marcel::MimeType.for(Pathname.new(cover_path))
+    )
+    puts "  ✓ Cover adjuntado: #{File.basename(cover_path)}"
+  end
+  
+  # Buscar y adjuntar preview (audio)
+  preview_path = Dir.glob(SEEDS_ASSETS_PATH.join("previews", "#{normalized_name}.*")).first
+  if preview_path && File.exist?(preview_path)
+    disk.preview.attach(
+      io: File.open(preview_path),
+      filename: File.basename(preview_path),
+      content_type: Marcel::MimeType.for(Pathname.new(preview_path))
+    )
+    puts "  ✓ Preview adjuntado: #{File.basename(preview_path)}"
+  end
+  
+  # Buscar y adjuntar photos (pueden ser múltiples: nombre_1.jpg, nombre_2.jpg, etc.)
+  photo_paths = Dir.glob(SEEDS_ASSETS_PATH.join("photos", "#{normalized_name}*.*"))
+  photo_paths.each do |photo_path|
+    disk.photos.attach(
+      io: File.open(photo_path),
+      filename: File.basename(photo_path),
+      content_type: Marcel::MimeType.for(Pathname.new(photo_path))
+    )
+    puts "  ✓ Foto adjuntada: #{File.basename(photo_path)}"
+  end
+end
 
 Disk.destroy_all
 Genre.destroy_all
@@ -40,6 +84,7 @@ disk.genres << Genre.find_or_create_by!(genre_name: "Pop")
 disk.genres << Genre.find_or_create_by!(genre_name: "R&B")
 disk.genres << Genre.find_or_create_by!(genre_name: "Soul")
 disk.genres << Genre.find_or_create_by!(genre_name: "Funk")
+attach_assets_to_disk(disk, disk.title)
 
 disk = Disk.create!(title: "Yours Truly, Angry Mob",
 year: 2007,
@@ -52,6 +97,7 @@ state: "Nuevo")
 disk.genres << Genre.find_or_create_by!(genre_name: "Indie")
 disk.genres << Genre.find_or_create_by!(genre_name: "Rock")
 disk.genres << Genre.find_or_create_by!(genre_name: "Rock alternativo")
+attach_assets_to_disk(disk, disk.title)
 
 disk = Disk.create!(title: "Wish You Were Here",
 year: 1975,
@@ -64,6 +110,7 @@ state: "Usado")
 disk.genres << Genre.find_or_create_by!(genre_name: "Rock progresivo")
 disk.genres << Genre.find_or_create_by!(genre_name: "Rock")
 disk.genres << Genre.find_or_create_by!(genre_name: "Psicodelico")
+attach_assets_to_disk(disk, disk.title)
 
 disk = Disk.create!(title: "Jessico",
 year: 2001,
@@ -78,6 +125,7 @@ disk.genres << Genre.find_or_create_by!(genre_name: "Rock")
 disk.genres << Genre.find_or_create_by!(genre_name: "Psicodelico")
 disk.genres << Genre.find_or_create_by!(genre_name: "Pop rock")
 disk.genres << Genre.find_or_create_by!(genre_name: "Pop")
+attach_assets_to_disk(disk, disk.title)
 
 disk = Disk.create!(title: "Alma de Diamante",
 year: 1980,
@@ -91,6 +139,7 @@ disk.genres << Genre.find_or_create_by!(genre_name: "Rock argentino")
 disk.genres << Genre.find_or_create_by!(genre_name: "Rock")
 disk.genres << Genre.find_or_create_by!(genre_name: "Jazz")
 disk.genres << Genre.find_or_create_by!(genre_name: "Rock progresivo")
+attach_assets_to_disk(disk, disk.title)
 
 # === Usuarios === #
 
@@ -98,7 +147,7 @@ User.destroy_all
 
 # Admin
 User.create!(
-  full_name: "Nicolas Admin",
+  full_name: "Admin",
   email: "admin@rubyonrecords.com",
   password: "admin123",
   password_confirmation: "admin123",
@@ -107,7 +156,7 @@ User.create!(
 
 # Gerente
 User.create!(
-  full_name: "Maria Gerente",
+  full_name: "Gerente",
   email: "gerente@rubyonrecords.com",
   password: "gerente123",
   password_confirmation: "gerente123",
@@ -116,7 +165,7 @@ User.create!(
 
 # Empleado
 User.create!(
-  full_name: "Juan Empleado",
+  full_name: "Empleado",
   email: "empleado@rubyonrecords.com",
   password: "empleado123",
   password_confirmation: "empleado123",

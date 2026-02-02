@@ -35,6 +35,7 @@ Ruby On Records es un **sistema de gestión completo** para tiendas de discos de
 | 🛒 **Catálogo Público** | Explora discos con filtros avanzados (género, año, formato, estado) |
 | 💼 **Panel Admin** | Gestión completa de inventario, ventas, clientes y usuarios |
 | 👥 **Sistema de Roles** | Empleado, Gerente y Administrador con permisos diferenciados |
+| 👤 **Mi Perfil** | Cada usuario puede editar sus datos personales (excepto su rol) |
 | 🧾 **Facturación PDF** | Genera facturas profesionales para cada venta |
 | 📊 **Control de Stock** | Actualización automática al registrar ventas o cancelaciones |
 | 🎨 **Diseño Retro** | Interfaz inspirada en disquerías vintage con animaciones sutiles |
@@ -200,6 +201,7 @@ ruby-on-records/
 ├── app/
 │   ├── controllers/
 │   │   ├── admin/          # 💼 Controllers del backstore
+│   │   │   └── profile_controller.rb  # 👤 Mi Perfil
 │   │   └── ...             # 🌐 Controllers públicos
 │   ├── models/             # 🗃️ Modelos y lógica de negocio
 │   ├── views/
@@ -212,8 +214,35 @@ ruby-on-records/
 │   └── routes.rb           # 🛤️ Definición de rutas
 ├── db/
 │   ├── migrate/            # 📦 Migraciones
-│   └── seeds.rb            # 🌱 Datos iniciales
+│   ├── seeds.rb            # 🌱 Datos iniciales
+│   └── seeds/assets/       # 🖼️ Archivos multimedia para seeds
+│       ├── covers/         # Portadas de discos
+│       ├── photos/         # Fotos adicionales
+│       └── previews/       # Audios de muestra
 └── docs/                   # 📖 Documentación técnica
+```
+
+### 📂 Seeds con Archivos Multimedia
+
+Los datos de prueba (`rails db:seed`) incluyen discos con imágenes y audios reales. Para que funcionen correctamente:
+
+1. Los archivos se ubican en `db/seeds/assets/`
+2. Se organizan en subcarpetas: `covers/`, `photos/`, `previews/`
+3. Los nombres de archivo deben coincidir con el título del disco (normalizado):
+   - Ejemplo: Disco "Diamonds and Pearls" → `diamonds_and_pearls.jpg`
+4. El seed detecta automáticamente y adjunta los archivos correspondientes
+
+```bash
+db/seeds/assets/
+├── covers/
+│   ├── diamonds_and_pearls.jpg
+│   ├── wish_you_were_here.jpg
+│   └── jessico.jpg
+├── photos/
+│   ├── diamonds_and_pearls_1.jpg
+│   └── diamonds_and_pearls_2.jpg
+└── previews/
+    └── wish_you_were_here.mp3
 ```
 
 ---

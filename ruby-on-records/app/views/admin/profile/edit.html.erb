@@ -1,0 +1,84 @@
+<% content_for :title, "Mi Perfil - Ruby On Records" %>
+
+<div class="max-w-2xl mx-auto">
+  <!-- Header -->
+  <div class="mb-8">
+    <h1 class="font-display text-4xl font-bold text-vinyl-black mb-2">Mi Perfil</h1>
+    <p class="text-sepia">Edita tu información personal</p>
+  </div>
+
+  <!-- User Info Card -->
+  <div class="card-retro p-6 mb-6">
+    <div class="flex items-center gap-4 mb-6">
+      <div class="w-16 h-16 vinyl-record"></div>
+      <div>
+        <h2 class="font-display text-2xl font-bold text-vinyl-black"><%= @user.full_name %></h2>
+        <span class="badge-retro bg-burgundy text-cream">
+          <%= @user.role.capitalize %>
+        </span>
+      </div>
+    </div>
+  </div>
+
+  <!-- Edit Form -->
+  <div class="card-retro p-6">
+    <%= form_with model: @user, url: admin_profile_path, method: :patch, local: true do |f| %>
+      
+      <% if @user.errors.any? %>
+        <div class="bg-rust/10 border-2 border-rust p-4 mb-6">
+          <h3 class="font-bold text-rust mb-2">Por favor corrige los siguientes errores:</h3>
+          <ul class="list-disc list-inside text-rust text-sm">
+            <% @user.errors.full_messages.each do |message| %>
+              <li><%= message %></li>
+            <% end %>
+          </ul>
+        </div>
+      <% end %>
+
+      <!-- Nombre Completo -->
+      <div class="mb-6">
+        <%= f.label :full_name, "Nombre Completo", class: "label-retro" %>
+        <%= f.text_field :full_name, class: "input-retro", required: true %>
+      </div>
+
+      <!-- Email -->
+      <div class="mb-6">
+        <%= f.label :email, "Email", class: "label-retro" %>
+        <%= f.email_field :email, class: "input-retro", required: true %>
+      </div>
+
+      <!-- Divider -->
+      <hr class="divider-groovy my-8">
+
+      <!-- Cambiar Contraseña (opcional) -->
+      <div class="mb-6">
+        <h3 class="font-display text-lg font-bold text-vinyl-black mb-4">Cambiar Contraseña</h3>
+        <p class="text-sepia text-sm mb-4">Deja estos campos vacíos si no deseas cambiar tu contraseña.</p>
+        
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+          <div>
+            <%= f.label :password, "Nueva Contraseña", class: "label-retro" %>
+            <%= f.password_field :password, class: "input-retro", autocomplete: "new-password" %>
+          </div>
+          <div>
+            <%= f.label :password_confirmation, "Confirmar Contraseña", class: "label-retro" %>
+            <%= f.password_field :password_confirmation, class: "input-retro", autocomplete: "new-password" %>
+          </div>
+        </div>
+      </div>
+
+      <!-- Rol (solo informativo, no editable) -->
+      <div class="mb-6 bg-cream-dark p-4 border-2 border-vinyl-groove/20">
+        <span class="label-retro">Rol</span>
+        <p class="font-display text-xl font-bold text-vinyl-dark"><%= @user.role.capitalize %></p>
+        <p class="text-sepia text-xs mt-1">El rol solo puede ser modificado por un administrador</p>
+      </div>
+
+      <!-- Actions -->
+      <div class="flex gap-4 mt-8">
+        <%= f.submit "Guardar Cambios", class: "btn-primary cursor-pointer" %>
+        <%= link_to "Cancelar", admin_root_path, class: "btn-secondary" %>
+      </div>
+    <% end %>
+  </div>
+</div>

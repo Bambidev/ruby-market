@@ -52,7 +52,7 @@
 
           <!-- User Menu -->
           <div class="flex items-center gap-4">
-            <div class="relative group">
+            <div class="relative group hidden lg:block">
               <button class="flex items-center gap-2 px-4 py-2 text-cream hover:text-mustard uppercase text-sm tracking-wider font-bold">
                 <%= current_user.full_name %>
                 <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -60,6 +60,9 @@
                 </svg>
               </button>
               <div class="absolute right-0 mt-0 w-48 bg-burgundy-dark border-2 border-mustard hidden group-hover:block z-50">
+                <%= link_to admin_profile_path, class: "block px-4 py-3 text-cream hover:bg-mustard hover:text-vinyl-black transition-colors uppercase text-sm tracking-wider" do %>
+                  Mi Perfil
+                <% end %>
                 <%= link_to root_path, class: "block px-4 py-3 text-cream hover:bg-mustard hover:text-vinyl-black transition-colors uppercase text-sm tracking-wider" do %>
                   Ver Tienda
                 <% end %>
@@ -87,6 +90,14 @@
             <% if can? :manage, User %>
               <%= link_to "Usuarios", admin_users_path, class: "px-4 py-3 text-cream hover:text-mustard hover:bg-burgundy-dark transition-colors uppercase text-sm tracking-wider font-bold" %>
             <% end %>
+            
+            <!-- User Options (Mobile) -->
+            <div class="border-t border-burgundy-dark mt-3 pt-3">
+              <p class="px-4 py-2 text-mustard text-xs uppercase tracking-widest"><%= current_user.full_name %></p>
+              <%= link_to "Mi Perfil", admin_profile_path, class: "block px-4 py-3 text-cream hover:text-mustard hover:bg-burgundy-dark transition-colors uppercase text-sm tracking-wider font-bold" %>
+              <%= link_to "Ver Tienda", root_path, class: "block px-4 py-3 text-cream hover:text-mustard hover:bg-burgundy-dark transition-colors uppercase text-sm tracking-wider font-bold" %>
+              <%= button_to "Cerrar Sesion", logout_path, method: :delete, class: "w-full text-left px-4 py-3 text-rust hover:bg-rust hover:text-white transition-colors uppercase text-sm tracking-wider font-bold" %>
+            </div>
           </div>
         </div>
       </nav>

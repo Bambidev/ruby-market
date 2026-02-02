@@ -66,7 +66,7 @@
 
             
             <% if logged_in? %>
-              <div class="relative group">
+              <div class="relative group hidden md:block">
                 <button class="flex items-center gap-2 px-4 py-2 text-cream hover:text-mustard uppercase text-sm tracking-wider font-bold">
                   <%= current_user.full_name %>
                   <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -81,7 +81,7 @@
                 </div>
               </div>
             <% else %>
-              <%= link_to "Ingresar", login_path, class: "btn-primary text-xs" %>
+              <%= link_to "Ingresar", login_path, class: "btn-primary text-xs hidden md:inline-block" %>
             <% end %>
 
             <!-- Mobile menu button -->
@@ -101,9 +101,22 @@
             <%= link_to "Nuevos", disks_path(filter: "new"), class: "px-4 py-3 text-cream hover:text-mustard hover:bg-vinyl-dark transition-colors uppercase text-sm tracking-wider font-bold" %>
             <%= link_to "Usados", disks_path(filter: "used"), class: "px-4 py-3 text-cream hover:text-mustard hover:bg-vinyl-dark transition-colors uppercase text-sm tracking-wider font-bold" %>
           </div>
-          <%= form_with url: root_path, method: :get, data: { turbo: false }, class: "mt-4 px-4" do |f| %>
+          
+          <!-- Search (Mobile) -->
+          <%= form_with url: disks_path, method: :get, data: { turbo: false }, class: "mt-4 px-4" do |f| %>
             <%= f.search_field :q, placeholder: "Buscar...", class: "w-full px-4 py-2 bg-vinyl-dark border-2 border-vinyl-groove text-cream placeholder:text-cream/50 focus:border-mustard focus:outline-none" %>
           <% end %>
+          
+          <!-- User Options (Mobile) -->
+          <div class="border-t border-vinyl-groove mt-4 pt-4">
+            <% if logged_in? %>
+              <p class="px-4 py-2 text-mustard text-xs uppercase tracking-widest"><%= current_user.full_name %></p>
+              <%= link_to "Backstore", admin_root_path, class: "block px-4 py-3 text-cream hover:text-mustard hover:bg-vinyl-dark transition-colors uppercase text-sm tracking-wider font-bold" %>
+              <%= button_to "Cerrar Sesion", logout_path, method: :delete, class: "w-full text-left px-4 py-3 text-rust hover:bg-rust hover:text-white transition-colors uppercase text-sm tracking-wider font-bold" %>
+            <% else %>
+              <%= link_to "Ingresar", login_path, class: "block px-4 py-3 text-mustard hover:text-cream hover:bg-vinyl-dark transition-colors uppercase text-sm tracking-wider font-bold" %>
+            <% end %>
+          </div>
         </div>
       </nav>
     </header>
