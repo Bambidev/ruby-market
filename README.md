@@ -67,7 +67,8 @@ rails db:setup
 bin/devc
 
 # posdata: si no tiene permisos de ejecucion el comando bin/dev utilizar
-chmod +x bin/dev
+chmod +x bin/*
+
 ```
 
 ### 🔑 Usuarios de prueba
