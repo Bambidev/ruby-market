@@ -1,32 +1,40 @@
 import { Controller } from "@hotwired/stimulus"
 
-// Simple carousel controller - no external dependencies
+// Gallery controller supporting Main Image + Thumbnails interaction
 export default class extends Controller {
-    static targets = ["slide"]
+    static targets = ["mainImage", "slide"]
 
     connect() {
-        this.currentIndex = 0
-        this.totalSlides = this.slideTargets.length
-        this.updateSlides()
+        // Pre-seleccionar la primera miniatura si existe
+        if (this.hasSlideTarget) {
+            this.highlightThumbnail(this.slideTargets[0])
+        }
     }
 
-    next() {
-        this.currentIndex = (this.currentIndex + 1) % this.totalSlides
-        this.updateSlides()
-    }
+    select(event) {
+        // Obtenemos el elemento clickeado (la miniatura)
+        const selectedThumb = event.currentTarget
+        const imageUrl = selectedThumb.dataset.url
 
-    prev() {
-        this.currentIndex = (this.currentIndex - 1 + this.totalSlides) % this.totalSlides
-        this.updateSlides()
-    }
+        // Actualizamos la imagen principal con una transición suave
+        this.mainImageTarget.style.opacity = "0.5"
+        
+        setTimeout(() => {
+            this.mainImageTarget.src = imageUrl
+            this.mainImageTarget.style.opacity = "1"
+        }, 150)
 
-    updateSlides() {
-        this.slideTargets.forEach((slide, index) => {
-            if (index === this.currentIndex) {
-                slide.style.display = "block"
-            } else {
-                slide.style.display = "none"
-            }
+        // Actualizamos el estado visual de las miniaturas
+        this.slideTargets.forEach(slide => {
+            slide.classList.remove("ring-4", "ring-mustard")
+            slide.classList.add("opacity-70", "hover:opacity-100")
         })
+
+        this.highlightThumbnail(selectedThumb)
+    }
+
+    highlightThumbnail(thumbnail) {
+        thumbnail.classList.remove("opacity-70", "hover:opacity-100")
+        thumbnail.classList.add("ring-4", "ring-mustard", "opacity-100")
     }
 }

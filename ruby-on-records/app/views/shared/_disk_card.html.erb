@@ -23,11 +23,13 @@
       </div>
       
       <!-- State Badge -->
-      <% if disk.state == 'Usado' %>
-        <div class="absolute top-3 right-3">
+      <div class="absolute top-3 right-3">
+        <% if disk.state == 'Nuevo' %>
+          <span class="badge-retro bg-teal text-cream">Nuevo</span>
+        <% elsif disk.state == 'Usado' %>
           <span class="badge-retro bg-sepia text-cream">Usado</span>
-        </div>
-      <% end %>
+        <% end %>
+      </div>
     </div>
     
     <!-- Card Content -->

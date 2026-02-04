@@ -1,10 +1,18 @@
 <% content_for :title, "#{@disk.title} - #{@disk.artist} | Ruby On Records" %>
 
+<% content_for :head do %>
+  <% if @disk.cover.attached? %>
+    <link rel="preload" as="image" href="<%= url_for(@disk.cover) %>">
+  <% end %>
+  <% @disk.photos.each do |photo| %>
+    <link rel="preload" as="image" href="<%= url_for(photo) %>">
+  <% end %>
+<% end %>
 <div>
   <article class="card-retro overflow-hidden">
     <div class="grid grid-cols-1 lg:grid-cols-2">
       <!-- Left Column - Carousel Portada -->
-      <div class="bg-vinyl-black p-8 lg:p-12 flex flex-col items-center justify-center min-h-[400px] relative overflow-hidden group">
+      <div class="bg-vinyl-black p-8 lg:p-12 flex flex-col items-center justify-center min-h-[400px] relative overflow-hidden group" data-controller="carousel">
         <div class="absolute inset-0 opacity-10" style="background-image: repeating-radial-gradient(circle at center, transparent 0, transparent 2px, rgba(255,255,255,.1) 2px, rgba(255,255,255,.1) 4px);"></div>
         
         <% 
@@ -18,56 +26,50 @@
           end
         %>
         
-        <!-- Carousel Container -->
-        <div id="disk-carousel" class="relative w-64 h-64 sm:w-80 sm:h-80 <%= images.any? ? 'border-4 border-mustard' : '' %> bg-vinyl-dark overflow-hidden shadow-2xl">
+        <!-- Gallery Container -->
+        <div class="w-full max-w-md mx-auto z-10">
           
-          <% if images.any? %>
-            <% images.each_with_index do |image, index| %>
-              <div class="carousel-slide absolute inset-0 w-full h-full" style="<%= index == 0 ? '' : 'display: none;' %>">
-                <%= image_tag image, class: "w-full h-full object-cover" %>
-              </div>
-            <% end %>
-          <% else %>
-            <!-- No images - show vinyl/cd -->
-            <div class="w-full h-full flex items-center justify-center bg-gradient-to-br from-vinyl-black via-vinyl-dark to-vinyl-groove relative">
-              <% if @disk.format == 'CD' %>
-                <div class="w-2/3 h-2/3 cd-record vinyl-spin-hover"></div>
-              <% else %>
-                <div class="w-2/3 h-2/3 vinyl-record vinyl-spin-hover"></div>
+          <!-- Main Image Display -->
+          <div class="relative w-full aspect-square bg-vinyl-dark border-4 border-mustard shadow-2xl overflow-hidden mb-4 rounded-sm">
+             <% if images.any? %>
+               <%= image_tag images.first, 
+                   class: "w-full h-full object-cover transition-opacity duration-300", 
+                   id: "main-product-image",
+                   data: { carousel_target: "mainImage" },
+                   loading: "eager" %>
+             <% else %>
+               <!-- Fallback for no images -->
+               <div class="w-full h-full flex items-center justify-center bg-gradient-to-br from-vinyl-black via-vinyl-dark to-vinyl-groove">
+                 <% if @disk.format == 'CD' %>
+                   <div class="w-2/3 h-2/3 cd-record vinyl-spin-hover"></div>
+                 <% else %>
+                   <div class="w-2/3 h-2/3 vinyl-record vinyl-spin-hover"></div>
+                 <% end %>
+               </div>
+             <% end %>
+
+            <!-- Bandera de Estado sobre la imagen principal -->
+             <div class="absolute top-4 left-4 flex gap-2">
+               <span class="badge-retro bg-cream text-vinyl-black"><%= @disk.format %></span>
+               <span class="badge-retro bg-<%= @disk.state == 'Nuevo' ? 'teal' : 'sepia' %> text-cream"><%= @disk.state %></span>
+             </div>
+          </div>
+
+          <!-- Thumbnails Grid -->
+          <% if images.size > 1 %>
+            <div class="flex flex-wrap justify-center gap-3 w-full">
+              <% images.each do |image| %>
+                <button type="button" 
+                        class="w-16 h-16 sm:w-20 sm:h-20 border-2 border-vinyl-black overflow-hidden cursor-pointer transition-all opacity-70 hover:opacity-100 focus:outline-none"
+                        data-action="click->carousel#select"
+                        data-carousel-target="slide"
+                        data-url="<%= url_for(image) %>">
+                  <%= image_tag image, class: "w-full h-full object-cover" %>
+                </button>
               <% end %>
-              <!-- Artist label on center -->
-              <div class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-24 h-24 sm:w-28 sm:h-28 rounded-full bg-mustard flex flex-col items-center justify-center text-center p-2 border-4 border-vinyl-dark z-10">
-                <span class="text-vinyl-black text-[8px] sm:text-[10px] font-bold uppercase tracking-wider leading-tight truncate w-full">
-                  <%= @disk.artist.truncate(20) %>
-                </span>
-                <div class="w-4 h-4 rounded-full bg-vinyl-black my-1"></div>
-                <span class="text-vinyl-black text-[7px] sm:text-[8px] uppercase tracking-wider"><%= @disk.year %></span>
-              </div>
             </div>
           <% end %>
 
-          <!-- Controls Inside (Only if there are multiple images) -->
-          
-        </div>
-
-        <% if images.size > 1 %>
-          <div class="absolute w-full bottom-0 flex items-center justify-center">
-            <button type="button" id="btn-prev" class=" left-2 top-1/2 -translate-y-1/2 bg-black/60 hover:bg-mustard text-white hover:text-vinyl-black p-2 rounded-full transition-colors z-20">
-              <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7" />
-              </svg>
-            </button>
-            <button type="button" id="btn-next" class=" right-2 top-1/2 -translate-y-1/2 bg-black/60 hover:bg-mustard text-white hover:text-vinyl-black p-2 rounded-full transition-colors z-20">
-              <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" />
-              </svg>
-            </button>
-          </div>
-          <% end %>
-
-        <div class="absolute top-4 left-4 flex gap-2">
-          <span class="badge-retro bg-cream text-vinyl-black"><%= @disk.format %></span>
-          <span class="badge-retro bg-<%= @disk.state == 'Nuevo' ? 'teal' : 'sepia' %> text-cream"><%= @disk.state %></span>
         </div>
       </div>
 
@@ -167,7 +169,7 @@
     </div>
   </article>
 
-
+</div>
 
 <% if @related_disks.present? %>
   <section class="mt-16">
@@ -183,27 +185,3 @@
     </div>
   </section>
 <% end %>
-
-<script>
-  document.addEventListener('DOMContentLoaded', function() {
-    var currentSlide = 0;
-    var slides = document.querySelectorAll('#disk-carousel .carousel-slide');
-    var total = slides.length;
-    var btnNext = document.getElementById('btn-next');
-    var btnPrev = document.getElementById('btn-prev');
-
-    if (total <= 1 || !btnNext || !btnPrev) return;
-
-    btnNext.addEventListener('click', function() {
-      slides[currentSlide].style.display = 'none';
-      currentSlide = (currentSlide + 1) % total;
-      slides[currentSlide].style.display = 'block';
-    });
-
-    btnPrev.addEventListener('click', function() {
-      slides[currentSlide].style.display = 'none';
-      currentSlide = (currentSlide - 1 + total) % total;
-      slides[currentSlide].style.display = 'block';
-    });
-  });
-</script>

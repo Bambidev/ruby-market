@@ -32,30 +32,14 @@ class Admin::SalesController < Admin::BaseController
 
   # POST /admin/sales
   def create
-    # Validaciones básicas antes de procesar
-    if sale_params[:client_id].blank? && sale_params[:client_attributes].blank?
-      @sale = Sale.new
-      @sale.errors.add(:base, "Debe seleccionar o crear un cliente")
-      load_form_data
-      render :new, status: :unprocessable_entity
-      return
-    end
-
-    if sale_params[:items_attributes].blank?
-      @sale = Sale.new(sale_params)
-      @sale.errors.add(:base, "Debe agregar al menos un producto")
-      load_form_data
-      render :new, status: :unprocessable_entity
-      return
-    end
-
     result = Sales::Creator.new(sale_params, current_user).call
 
     if result.success?
       redirect_to admin_sales_path, notice: "Venta registrada exitosamente"
     else
-      @sale = Sale.new(sale_params)
-      @sale.errors.add(:base, result.errors.join(", "))
+      @sale = result.sale || Sale.new(sale_params)
+      # Asegurar que los errores del servicio se pasen al modelo para mostrarlos en la vista
+      result.errors.each { |error| @sale.errors.add(:base, error) }
       load_form_data
       render :new, status: :unprocessable_entity
     end

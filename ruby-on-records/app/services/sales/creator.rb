@@ -43,23 +43,36 @@ module Sales
     end
 
     def valid?
+      validate_client
       validate_has_items
-      validate_items_have_disk
       validate_stock_availability
       @errors.empty?
     end
 
-    def validate_has_items
-      valid_items = @sale.items.reject { |i| i.disk_id.blank? }
-      @errors << "Debe agregar al menos un producto con disco seleccionado" if valid_items.empty?
+    def validate_client
+      # Verifica si hay un cliente asociado directamete o nested attributes para uno nuevo
+      has_client_id = @sale.client_id.present?
+      has_client_attrs = @sale.client.present? && @sale.client.name.present?
+
+      unless has_client_id || has_client_attrs
+        @errors << "Debe seleccionar o crear un cliente"
+      end
     end
 
-    def validate_items_have_disk
-      @sale.items.each_with_index do |item, index|
-        next if item.marked_for_destruction?
-        next if item.disk_id.present?
-        
-        @errors << "El producto ##{index + 1} no tiene disco seleccionado"
+    def validate_has_items
+      # Filtramos items marcados para eliminar
+      valid_items = @sale.items.reject(&:marked_for_destruction?)
+      
+      if valid_items.empty?
+        @errors << "Debe agregar al menos un producto"
+        return
+      end
+
+      # Validamos que los items tengan disco
+      valid_items.each_with_index do |item, index|
+        if item.disk_id.blank?
+          @errors << "El item ##{index + 1} no tiene un disco seleccionado"
+        end
       end
     end
 
