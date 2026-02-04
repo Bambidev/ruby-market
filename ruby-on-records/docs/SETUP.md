@@ -19,24 +19,30 @@ Antes de comenzar, asegúrate de tener instalado:
 | ![Ruby](https://img.shields.io/badge/-Ruby-CC342D?style=flat-square&logo=ruby&logoColor=white) | 3.4+ | `ruby -v` |
 | ![Node](https://img.shields.io/badge/-Node.js-339933?style=flat-square&logo=node.js&logoColor=white) | 18+ | `node -v` |
 | ![Git](https://img.shields.io/badge/-Git-F05032?style=flat-square&logo=git&logoColor=white) | 2.0+ | `git --version` |
+| ![FFmpeg](https://img.shields.io/badge/-FFmpeg-007808?style=flat-square&logo=ffmpeg&logoColor=white) | 4.0+ | `ffmpeg -version` |
 
 ---
 
 ## 🚀 Instalación Rápida
 
 ```bash
-# 1. Clonar el repositorio
+# 1. Instalar FFmpeg (Requerido para análisis de audio/video)
+# Ubuntu/WSL: sudo apt install ffmpeg
+# MacOS: brew install ffmpeg
+# Windows: choco install ffmpeg
+
+# 2. Clonar el repositorio
 git clone https://github.com/tu-usuario/ruby-on-records.git
 cd ruby-on-records
 
-# 2. Instalar dependencias de Ruby
+# 3. Instalar dependencias de Ruby
 bundle install
 
-# 3. Configurar base de datos
+# 4. Configurar base de datos
 rails db:setup
 # Esto ejecuta: db:create + db:migrate + db:seed
 
-# 4. Iniciar el servidor de desarrollo
+# 5. Iniciar el servidor de desarrollo
 bin/dev
 ```
 
@@ -46,42 +52,47 @@ bin/dev
 
 ## 📝 Instalación Detallada
 
-### 1️⃣ Clonar Repositorio
+### 1️⃣ Prerrequisitos del Sistema
+
+Es **crítico** tener instalado FFmpeg para que ActiveStorage pueda analizar la duración de los audios y procesar imágenes.
+
+**Ubuntu / WSL / Debian:**
+```bash
+sudo apt-get update && sudo apt-get install -y ffmpeg
+```
+
+**MacOS (Homebrew):**
+```bash
+brew install ffmpeg
+```
+
+**Windows (Chocolatey):**
+```powershell
+choco install ffmpeg
+```
+
+### 2️⃣ Clonar Repositorio
 
 ```bash
 git clone https://github.com/tu-usuario/ruby-on-records.git
 cd ruby-on-records
 ```
 
-### 2️⃣ Instalar Dependencias
+### 3️⃣ Instalar Dependencias
 
 ```bash
 # Dependencias de Ruby (gems)
 bundle install
-
-# Si hay problemas con bcrypt en Windows:
-# gem install bcrypt --platform=ruby
 ```
 
-### 3️⃣ Configurar Base de Datos
+### 4️⃣ Configurar Base de Datos
 
 ```bash
-# Crear base de datos
-rails db:create
-
-# Ejecutar migraciones
-rails db:migrate
-
-# Cargar datos de prueba
-rails db:seed
-```
-
-**Alternativamente, todo en un comando:**
-```bash
+# Crear base de datos, migrar y cargar semillas
 rails db:setup
 ```
 
-### 4️⃣ Iniciar Servidor
+### 5️⃣ Iniciar Servidor
 
 ```bash
 # Opción 1: Con Tailwind watch (recomendado)
@@ -92,6 +103,8 @@ rails server
 ```
 
 ---
+
+
 
 ## 🔑 Credenciales de Acceso
 
@@ -131,9 +144,6 @@ rails db:migrate:status
 
 # Rollback última migración
 rails db:rollback
-
-# Rollback múltiples
-rails db:rollback STEP=3
 ```
 
 ### Tailwind CSS
@@ -175,20 +185,9 @@ bundle install
 rails db:reset
 ```
 
-### Error: Tailwind no compila
+### Error: "Validation failed: Preview..."
 
-```bash
-# Reinstalar tailwindcss-rails
-bundle exec rails tailwindcss:install
-```
-
-### Error en Windows con bcrypt
-
-```bash
-# Instalar versión específica
-gem install bcrypt --platform=ruby
-bundle install
-```
+Asegúrate de que `ffmpeg` esté instalado y accesible en el PATH. Si estás en WSL, instálalo dentro de WSL, no en Windows.
 
 ---
 
@@ -204,7 +203,7 @@ ruby-on-records/
 ├── log/
 │   └── development.log      ← Logs de desarrollo
 └── tmp/
-    └── cache/               ← Caché de la app
+│   └── cache/               ← Caché de la app
 ```
 
 ---
@@ -244,6 +243,7 @@ rails test test/models/disk_test.rb
 
 - [ ] Ruby 3.4+ instalado
 - [ ] Node.js 18+ instalado
+- [ ] **FFmpeg instalado**
 - [ ] Repositorio clonado
 - [ ] `bundle install` exitoso
 - [ ] `rails db:setup` exitoso
@@ -253,6 +253,6 @@ rails test test/models/disk_test.rb
 
 ---
 
-*¿Problemas? Abre un issue en el repositorio*
+*¿Problemas? Abrí un issue en el repositorio*
 
 </div>
