@@ -172,8 +172,38 @@ User.create!(
   role: :empleado
 )
 
+# === Clientes === #
+
+Client.destroy_all
+
+Client.create!(
+  name: "Juan Perez",
+  email: "juan.perez@example.com",
+  phone: "1122334455",
+  dni: "12345678"
+)
+
+Client.create!(
+  name: "Maria Lopez",
+  email: "maria.lopez@example.com",
+  dni: "87654321"
+)
+
+Client.create!(
+  name: "Carlos Sanchez",
+  email: "carlos.s@example.com",
+  phone: "1199887766",
+  dni: "11223344"
+)
+
+Client.create!(
+  name: "Ana Gomez",
+  dni: "44332211"
+)
+
 p "* * * * * * * * * * * * * * * "
 p "* * * #{Genre.count} géneros creados * * *"
 p "* * * #{Disk.count} discos creados * * *"
 p "* * * #{User.count} usuarios creados * * *"
+p "* * * #{Client.count} clientes creados * * *"
 p "* * * * * * * * * * * * * * * "
