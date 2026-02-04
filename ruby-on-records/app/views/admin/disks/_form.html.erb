@@ -90,9 +90,44 @@
       </div>
 
       <div>
-        <%= form.label :preview, "Preview de audio", class: "label-retro" %>
-        <%= form.file_field :preview, class: "file-input-retro" %>
+      <div>
+        <%= form.label :preview, "Preview de audio (Max 60s)", class: "label-retro" %>
+        <%= form.file_field :preview, class: "file-input-retro", accept: "audio/*", onchange: "validateAudioDuration(this)" %>
+        <p id="audio-error" class="text-rust text-xs mt-1 hidden font-bold"></p>
       </div>
+
+      <script>
+        function validateAudioDuration(input) {
+          const file = input.files[0];
+          const errorMsg = document.getElementById('audio-error');
+          
+          if (file) {
+            const audio = new Audio();
+            const objectUrl = URL.createObjectURL(file);
+            
+            audio.onloadedmetadata = function() {
+              URL.revokeObjectURL(objectUrl);
+              const duration = audio.duration;
+              
+              if (duration > 61) { // 61s de tolerancia
+                input.value = ''; // Limpiar input
+                errorMsg.textContent = `⚠️ El audio dura ${Math.round(duration)}s. El máximo permitido es 60s.`;
+                errorMsg.classList.remove('hidden');
+              } else {
+                errorMsg.classList.add('hidden');
+                errorMsg.textContent = '';
+              }
+            };
+            
+            audio.onerror = function() {
+              errorMsg.textContent = "Error al leer el archivo de audio.";
+              errorMsg.classList.remove('hidden');
+            };
+
+            audio.src = objectUrl;
+          }
+        }
+      </script>
 
       <div class="grid grid-cols-2 gap-4">
         <div>

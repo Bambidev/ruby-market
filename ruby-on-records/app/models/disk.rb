@@ -80,4 +80,26 @@ class Disk < ApplicationRecord
   # :state ::= Nuevo o usado
   validates :state, presence: true, inclusion: { in: %w[Nuevo Usado],
     message: "No trabajamos discos en estado '%{value}'" }
+
+  validate :validate_audio_length
+
+  private
+
+  def validate_audio_length
+    return unless preview.attached?
+
+    # Aseguramos que el blob esté analizado para tener metadata
+    unless preview.blob.analyzed?
+      preview.blob.analyze
+    end
+
+    duration = preview.blob.metadata[:duration]
+    
+    if duration.present? && duration > 60
+      errors.add(:preview, "no puede durar más de 60 segundos (duración actual: #{duration.round}s)")
+    end
+  rescue ActiveStorage::Error
+    # Si falla el análisis, permitimos pasar (o agregamos error si queremos ser estrictos)
+    errors.add(:preview, "no pudo ser analizado. Asegúrate de que es un archivo de audio válido")
+  end
 end
