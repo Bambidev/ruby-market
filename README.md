@@ -64,7 +64,11 @@ bundle install
 rails db:setup
 
 # 4. Iniciar el servidor
-bin/dev
+bin/devc
+
+# posdata: si no tiene permisos de ejecucion el comando bin/dev utilizar
+chmod +x bin/*
+
 ```
 
 ### 🔑 Usuarios de prueba
