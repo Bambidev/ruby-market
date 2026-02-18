@@ -138,11 +138,11 @@ chmod +x bin/*
 
 | Documento | Descripción |
 |-----------|-------------|
-| [📐 Arquitectura](docs/ARCHITECTURE.md) | Estructura técnica y decisiones de diseño |
-| [🗃️ Modelo de Datos](docs/DATA_MODEL.md) | Entidades, relaciones y validaciones |
-| [🎨 Sistema de Diseño](docs/DESIGN_SYSTEM.md) | Paleta de colores, tipografía y componentes |
-| [⚙️ Setup](docs/SETUP.md) | Guía detallada de instalación |
-| [📋 Features](docs/FEATURES.md) | Listado completo de funcionalidades |
+| [📐 Arquitectura](ruby-on-records/docs/ARCHITECTURE.md) | Estructura técnica y decisiones de diseño |
+| [🗃️ Modelo de Datos](ruby-on-records/docs/DATA_MODEL.md) | Entidades, relaciones y validaciones |
+| [🎨 Sistema de Diseño](ruby-on-records/docs/DESIGN_SYSTEM.md) | Paleta de colores, tipografía y componentes |
+| [⚙️ Setup](ruby-on-records/docs/SETUP.md) | Guía detallada de instalación |
+| [📋 Features](ruby-on-records/docs/FEATURES.md) | Listado completo de funcionalidades |
 
 ---
 
